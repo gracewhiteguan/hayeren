@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Hayeren">
+<meta name="theme-color" content="#6B7C3A">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236B7C3A'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='serif'>Հ</text></svg>">
+<title>Hayeren Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF7F2; --card-bg: #FFFFFF; --text: #2C2416; --muted: #8A7D6B;
+  --olive: #6B7C3A; --olive-light: #E8EDDA; --terracotta: #C4704B;
+  --red: #C0392B; --gold: #D4A84B; --border: #E5DFD4;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-armenian: 'Noto Sans Armenian', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; min-height: 100dvh; }
+.shell { max-width: 520px; margin: 0 auto; padding: 0 16px 40px; padding-top: env(safe-area-inset-top); }
+header { text-align: center; padding: 28px 0 12px; }
+header h1 { font-family: var(--font-display); font-size: 26px; font-weight: 700; }
+header p { font-family: var(--font-body); font-size: 13px; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
+.nav { display: flex; gap: 4px; margin-bottom: 20px; background: var(--card-bg); border-radius: 10px; padding: 4px; border: 1px solid var(--border); }
+.nav button { flex: 1; padding: 10px 0; border: none; border-radius: 8px; font-family: var(--font-body); font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s; }
+.nav button.active { background: var(--olive); color: #fff; }
+.nav button:not(.active) { background: transparent; color: var(--muted); }
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+.btn { border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-family: var(--font-body); cursor: pointer; font-weight: 600; transition: opacity .15s; white-space: nowrap; }
+.btn-olive { background: var(--olive); color: #fff; }
+.btn-terracotta { background: var(--terracotta); color: #fff; }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-red { background: var(--red); color: #fff; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-ghost-olive { background: transparent; border: 1px solid var(--border); color: var(--olive); }
+.btn-ghost-red { background: transparent; border: 1px solid var(--border); color: var(--red); }
+input, textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font-body); font-size: 14px; background: var(--card-bg); outline: none; color: var(--text); }
+.cat-btn { font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600; border: none; font-family: var(--font-body); }
+.cat-btn.active { background: var(--olive); color: #fff; }
+.cat-btn:not(.active) { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+.reveal-box { background: var(--olive-light); border-radius: 8px; padding: 16px; margin-bottom: 16px; text-align: center; }
+.reveal-box.alpha { padding: 24px; }
+.tag { display: inline-block; margin-top: 8px; font-size: 11px; color: var(--terracotta); background: #FDF0E9; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+.entry-card { display: flex; justify-content: space-between; align-items: flex-start; }
+.entry-actions { display: flex; gap: 4px; margin-left: 8px; flex-shrink: 0; }
+.score-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.quiz-prompt { font-size: 12px; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+.flex-row { display: flex; gap: 8px; }
+.flex-1 { flex: 1; }
+.hidden { display: none; }
+audio { height: 32px; max-width: 180px; }
+details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--terracotta); padding: 8px 0; }
+</style>
+</head>
+<body>
+<div class="shell" id="app"></div>
+
+<script>
+// ─── Data ──────────────────────────────────────────────────────────
+const DB_KEY = "hayeren-quiz-data";
+const SEED_DATA = {
+  categories: ["Alphabet", "Lesson 1"],
+  entries: [
+    {"id":"alpha001","english":"Ayb \u2014 sounds like: a (as in father)","armenian":"\u0531 \u0561","pronunciation":"ayb \u2014 e.g. ayb = alphabet","category":"Alphabet","audio":null},
+    {"id":"alpha002","english":"Ben \u2014 sounds like: b","armenian":"\u0532 \u0562","pronunciation":"ben \u2014 e.g. barev = hello","category":"Alphabet","audio":null},
+    {"id":"alpha003","english":"Gim \u2014 sounds like: g","armenian":"\u0533 \u0563","pronunciation":"gim \u2014 e.g. gisher = night","category":"Alphabet","audio":null},
+    {"id":"alpha004","english":"Da \u2014 sounds like: d","armenian":"\u0534 \u0564","pronunciation":"da \u2014 e.g. da = that","category":"Alphabet","audio":null},
+    {"id":"alpha005","english":"Yech \u2014 sounds like: ye / e (like ay)","armenian":"\u0535 \u0565","pronunciation":"yech \u2014 e.g. em = am","category":"Alphabet","audio":null},
+    {"id":"alpha006","english":"Za \u2014 sounds like: z","armenian":"\u0536 \u0566","pronunciation":"za \u2014 e.g. dzez = you (formal)","category":"Alphabet","audio":null},
+    {"id":"alpha007","english":"E \u2014 sounds like: e (like eh)","armenian":"\u0537 \u0567","pronunciation":"e \u2014 e.g. es = you are","category":"Alphabet","audio":null},
+    {"id":"alpha008","english":"Y\u0259t \u2014 sounds like: \u0259 (uh)","armenian":"\u0538 \u0568","pronunciation":"y\u0259t \u2014 e.g. \u0568nker = friend","category":"Alphabet","audio":null},
+    {"id":"alpha009","english":"T\u02b0o \u2014 sounds like: t\u02b0 (aspirated t)","armenian":"\u0539 \u0569","pronunciation":"t\u02b0o \u2014 e.g. t\u02b0e = tea","category":"Alphabet","audio":null},
+    {"id":"alpha010","english":"Zhe \u2014 sounds like: zh (like measure)","armenian":"\u053A \u056A","pronunciation":"zhe \u2014 e.g. zhpit = smile","category":"Alphabet","audio":null},
+    {"id":"alpha011","english":"Ini \u2014 sounds like: i (like ee)","armenian":"\u053B \u056B","pronunciation":"ini \u2014 e.g. inch = what","category":"Alphabet","audio":null},
+    {"id":"alpha012","english":"Lyun \u2014 sounds like: l","armenian":"\u053C \u056C","pronunciation":"lyun \u2014 e.g. luys = light","category":"Alphabet","audio":null},
+    {"id":"alpha013","english":"Khe \u2014 sounds like: kh (throaty h)","armenian":"\u053D \u056D","pronunciation":"khe \u2014 e.g. khntrem = you\u2019re welcome","category":"Alphabet","audio":null},
+    {"id":"alpha014","english":"Tsa \u2014 sounds like: ts","armenian":"\u053E \u056E","pronunciation":"tsa \u2014 e.g. tstesutyun = goodbye","category":"Alphabet","audio":null},
+    {"id":"alpha015","english":"Ken \u2014 sounds like: k (sounds like g)","armenian":"\u053F \u056F","pronunciation":"ken \u2014 e.g. kov = cow","category":"Alphabet","audio":null},
+    {"id":"alpha016","english":"Ho \u2014 sounds like: h","armenian":"\u0540 \u0570","pronunciation":"ho \u2014 e.g. hajoghutyun = good luck","category":"Alphabet","audio":null},
+    {"id":"alpha017","english":"Dza \u2014 sounds like: dz","armenian":"\u0541 \u0571","pronunciation":"dza \u2014 e.g. dzez = you (formal)","category":"Alphabet","audio":null},
+    {"id":"alpha018","english":"Ghat \u2014 sounds like: gh (French r-like)","armenian":"\u0542 \u0572","pronunciation":"ghat \u2014 e.g. ghat = fat","category":"Alphabet","audio":null},
+    {"id":"alpha019","english":"Tche \u2014 sounds like: ch (aspirated)","armenian":"\u0543 \u0573","pronunciation":"tche \u2014 e.g. chanapar = road","category":"Alphabet","audio":null},
+    {"id":"alpha020","english":"Men \u2014 sounds like: m","armenian":"\u0544 \u0574","pronunciation":"men \u2014 e.g. mersi = thanks","category":"Alphabet","audio":null},
+    {"id":"alpha021","english":"Yi \u2014 sounds like: y","armenian":"\u0545 \u0575","pronunciation":"yi \u2014 e.g. yes = I","category":"Alphabet","audio":null},
+    {"id":"alpha022","english":"Nu \u2014 sounds like: n","armenian":"\u0546 \u0576","pronunciation":"nu \u2014 e.g. na = he/she","category":"Alphabet","audio":null},
+    {"id":"alpha023","english":"Sha \u2014 sounds like: sh","armenian":"\u0547 \u0577","pronunciation":"sha \u2014 e.g. shat = a lot","category":"Alphabet","audio":null},
+    {"id":"alpha024","english":"Vo \u2014 sounds like: v (word-initial) / o","armenian":"\u0548 \u0578","pronunciation":"vo \u2014 e.g. or = day","category":"Alphabet","audio":null},
+    {"id":"alpha025","english":"Cha \u2014 sounds like: ch","armenian":"\u0549 \u0579","pronunciation":"cha \u2014 e.g. che = no","category":"Alphabet","audio":null},
+    {"id":"alpha026","english":"Pey \u2014 sounds like: p","armenian":"\u054A \u057A","pronunciation":"pey \u2014 e.g. panir = cheese","category":"Alphabet","audio":null},
+    {"id":"alpha027","english":"Jhey \u2014 sounds like: j","armenian":"\u054B \u057B","pronunciation":"jhey \u2014 e.g. jan = dear","category":"Alphabet","audio":null},
+    {"id":"alpha028","english":"Ra \u2014 sounds like: rr (rolled r)","armenian":"\u054C \u057C","pronunciation":"ra \u2014 e.g. ktor = nose","category":"Alphabet","audio":null},
+    {"id":"alpha029","english":"Seh \u2014 sounds like: s","armenian":"\u054D \u057D","pronunciation":"seh \u2014 e.g. ser = love","category":"Alphabet","audio":null},
+    {"id":"alpha030","english":"Vev \u2014 sounds like: v","armenian":"\u054E \u057E","pronunciation":"vev \u2014 e.g. vaghy = tomorrow","category":"Alphabet","audio":null},
+    {"id":"alpha031","english":"Tyun \u2014 sounds like: t","armenian":"\u054F \u057F","pronunciation":"tyun \u2014 e.g. tun = house","category":"Alphabet","audio":null},
+    {"id":"alpha032","english":"Re \u2014 sounds like: r (soft r)","armenian":"\u0550 \u0580","pronunciation":"re \u2014 e.g. or = day","category":"Alphabet","audio":null},
+    {"id":"alpha033","english":"Ts\u02b0o \u2014 sounds like: ts\u02b0 (aspirated ts)","armenian":"\u0551 \u0581","pronunciation":"ts\u02b0o \u2014 e.g. tsav = pain","category":"Alphabet","audio":null},
+    {"id":"alpha034","english":"Vyun \u2014 sounds like: u/v (digraph \u0578\u0582 = u)","armenian":"\u0552 \u0582","pronunciation":"vyun \u2014 e.g. uzum = want","category":"Alphabet","audio":null},
+    {"id":"alpha035","english":"P\u02b0yur \u2014 sounds like: p\u02b0 (aspirated p)","armenian":"\u0553 \u0583","pronunciation":"p\u02b0yur \u2014 e.g. p\u02b0ok = small","category":"Alphabet","audio":null},
+    {"id":"alpha036","english":"K\u02b0e \u2014 sounds like: k\u02b0 (aspirated k)","armenian":"\u0554 \u0584","pronunciation":"k\u02b0e \u2014 e.g. k\u02b0o = your","category":"Alphabet","audio":null},
+    {"id":"alpha037","english":"O \u2014 sounds like: o","armenian":"\u0555 \u0585","pronunciation":"o \u2014 e.g. or = day","category":"Alphabet","audio":null},
+    {"id":"alpha038","english":"Fe \u2014 sounds like: f","armenian":"\u0556 \u0586","pronunciation":"fe \u2014 e.g. futbol = football","category":"Alphabet","audio":null},
+    {"id":"alpha039","english":"Yev (ligature) \u2014 sounds like: yev (and)","armenian":"\u0587","pronunciation":"yev \u2014 e.g. yev = and","category":"Alphabet","audio":null},
+    {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
+    {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
+    {"id":"seed002","english":"Good morning (luys = light)","armenian":"\u0532\u0561\u0580\u056B \u056C\u0578\u0582\u0575\u057D","pronunciation":"bari luys","category":"Lesson 1","audio":null},
+    {"id":"seed003","english":"Good afternoon (or = day)","armenian":"\u0532\u0561\u0580\u056B \u0585\u0580","pronunciation":"bari or","category":"Lesson 1","audio":null},
+    {"id":"seed004","english":"Good evening (gisher = night)","armenian":"\u0532\u0561\u0580\u056B \u0563\u056B\u0577\u0565\u0580","pronunciation":"bari gisher","category":"Lesson 1","audio":null},
+    {"id":"seed006","english":"Goodbye (most common, formal)","armenian":"\u0581\u057F\u0565\u057D\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"tstesutyun","category":"Lesson 1","audio":null},
+    {"id":"seed007","english":"Good luck / Goodbye (less formal, short: hajo)","armenian":"\u0540\u0561\u057B\u0578\u0572\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"hajoghutyun (short: hajo)","category":"Lesson 1","audio":null},
+    {"id":"seed011","english":"See you soon","armenian":"\u053F\u0570\u0561\u0576\u0564\u056B\u057A\u0565\u0576\u0584","pronunciation":"khandipenk","category":"Lesson 1","audio":null},
+    {"id":"seed012","english":"See you tomorrow (vagh = tomorrow)","armenian":"\u0544\u056B\u0576\u0579\u0587 \u057E\u0561\u0572\u0568","pronunciation":"minch vagh","category":"Lesson 1","audio":null},
+    {"id":"seed005","english":"Way / Road / \u201CSafe travels\u201D (for a longer trip)","armenian":"\u0543\u0561\u0576\u0561\u057A\u0561\u0580\u0570","pronunciation":"chanapar","category":"Lesson 1","audio":null},
+    {"id":"seed008","english":"Many / Much / A lot","armenian":"\u0547\u0561\u057F","pronunciation":"shat","category":"Lesson 1","audio":null},
+    {"id":"seed013","english":"Thank you (merci is common informal alternative)","armenian":"\u0547\u0576\u0578\u0580\u0570\u0561\u056F\u0561\u056C\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"shnorhakalutyun (or: merci)","category":"Lesson 1","audio":null},
+    {"id":"seed014","english":"Thank you very much","armenian":"\u0547\u0561\u057F \u0577\u0576\u0578\u0580\u0570\u0561\u056F\u0561\u056C\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"shat shnorhakalutyun","category":"Lesson 1","audio":null},
+    {"id":"seed009","english":"You\u2019re welcome","armenian":"\u053D\u0576\u0564\u0580\u0565\u0574","pronunciation":"khnrem","category":"Lesson 1","audio":null},
+    {"id":"seed010","english":"Please","armenian":"\u053D\u0576\u0564\u0580\u0565\u0574","pronunciation":"khndrem","category":"Lesson 1","audio":null}
+  ]
+};
+
+// ─── Storage (localStorage) ────────────────────────────────────────
+function loadData() {
+  try {
+    const raw = localStorage.getItem(DB_KEY);
+    if (raw) {
+      const d = JSON.parse(raw);
+      // Merge any new seed entries
+      const ids = new Set(d.entries.map(e => e.id));
+      const added = SEED_DATA.entries.filter(e => !ids.has(e.id));
+      if (added.length) {
+        d.entries.push(...added);
+        d.categories = [...new Set([...d.categories, ...SEED_DATA.categories])];
+        localStorage.setItem(DB_KEY, JSON.stringify(d));
+      }
+      return d;
+    }
+  } catch(e) {}
+  localStorage.setItem(DB_KEY, JSON.stringify(SEED_DATA));
+  return JSON.parse(JSON.stringify(SEED_DATA));
+}
+function saveData(data) { localStorage.setItem(DB_KEY, JSON.stringify(data)); }
+function shuffle(a) { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// ─── App State ─────────────────────────────────────────────────────
+let data = loadData();
+let view = 'quiz';
+let editId = null;
+// Quiz state
+let quiz = { queue:[], current:null, revealed:false, score:{correct:0,total:0}, filterCat:'All', active:false };
+
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <header><h1>\u0540\u0561\u0575\u0565\u0580\u0565\u0576</h1><p>ARMENIAN PRACTICE</p></header>
+    <div class="nav">
+      <button class="${view==='quiz'?'active':''}" onclick="setView('quiz')">Quiz</button>
+      <button class="${view==='manage'?'active':''}" onclick="setView('manage')">Library</button>
+      <button class="${view==='add'?'active':''}" onclick="setView('add')">+ Add</button>
+    </div>
+    <div id="content"></div>
+  `;
+  if (view==='quiz') renderQuiz();
+  else if (view==='manage') renderManage();
+  else if (view==='add'||view==='edit') renderForm();
+}
+
+function setView(v) { view=v; editId=null; if(v==='quiz'){quiz.active=false;} render(); }
+
+// ─── Quiz ──────────────────────────────────────────────────────────
+function renderQuiz() {
+  const el = document.getElementById('content');
+  if (!data.entries.length) {
+    el.innerHTML = `<div class="card" style="text-align:center;padding:40px"><p style="font-size:32px;margin-bottom:12px">\u{1F4DD}</p><p style="color:var(--muted);font-size:15px;line-height:1.6">No entries yet. Add some phrases to start quizzing!</p></div>`;
+    return;
+  }
+  if (!quiz.active) {
+    const cats = ['All', ...new Set(data.entries.map(e=>e.category).filter(Boolean))];
+    el.innerHTML = `
+      <div class="card" style="text-align:center">
+        <p style="font-size:15px;margin-bottom:16px">Choose a category to quiz:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:20px">
+          ${cats.map(c=>`<button class="cat-btn ${c===quiz.filterCat?'active':''}" style="font-size:13px;padding:6px 14px;cursor:pointer" onclick="quiz.filterCat='${esc(c)}';renderQuiz()">${esc(c)}</button>`).join('')}
+        </div>
+        <button class="btn btn-terracotta" style="width:100%;padding:14px 0;font-size:16px" onclick="startQuiz()">Start Quiz</button>
+      </div>
+    `;
+    return;
+  }
+  if (!quiz.current) {
+    const pct = quiz.score.total ? Math.round(quiz.score.correct/quiz.score.total*100) : 0;
+    el.innerHTML = `
+      <div class="card" style="text-align:center">
+        <p style="font-size:40px;margin-bottom:8px">\u{1F389}</p>
+        <p style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:8px">Session Complete!</p>
+        <p style="font-size:28px;color:var(--olive);font-weight:700">${quiz.score.correct} / ${quiz.score.total}</p>
+        <p style="color:var(--muted);font-size:14px;margin:4px 0 24px">${pct}% correct</p>
+        <button class="btn btn-olive" style="width:100%;padding:12px 0" onclick="quiz.active=false;quiz.score={correct:0,total:0};renderQuiz()">New Session</button>
+      </div>
+    `;
+    return;
+  }
+  const c = quiz.current;
+  const isAlpha = c.category === 'Alphabet';
+  const num = quiz.score.total + 1;
+  const total = num + quiz.queue.length;
+
+  let front, revealHTML;
+  if (isAlpha) {
+    // Alphabet: Armenian letter on front, name + sound on back
+    front = `<p style="font-family:var(--font-armenian);font-size:64px;font-weight:700;text-align:center;margin:24px 0;letter-spacing:16px">${esc(c.armenian)}</p>`;
+    revealHTML = `
+      <div class="reveal-box alpha">
+        <p style="font-size:20px;font-weight:700;margin-bottom:6px">${esc(c.english)}</p>
+        ${c.pronunciation ? `<p style="font-size:14px;color:var(--muted);font-style:italic">${esc(c.pronunciation)}</p>` : ''}
+        ${c.audio ? `<div style="margin-top:10px"><button class="btn btn-olive" style="padding:6px 12px;font-size:13px" onclick="playAudio('${c.id}')">&#9654; Play</button><audio id="aud-${c.id}" src="${c.audio}"></audio></div>` : ''}
+      </div>
+    `;
+  } else {
+    // Lesson cards: English on front, pronunciation + Armenian on back
+    front = `<p style="font-family:var(--font-body);font-size:22px;font-weight:700;text-align:center;margin:20px 0 8px;line-height:1.4">${esc(c.english)}</p>`;
+    revealHTML = `
+      <div class="reveal-box">
+        ${c.pronunciation ? `<p style="font-size:18px;font-weight:600;margin-bottom:8px">${esc(c.pronunciation)}</p>` : ''}
+        ${c.armenian ? `<p style="font-family:var(--font-armenian);font-size:15px;color:var(--muted)">${esc(c.armenian)}</p>` : ''}
+        ${c.audio ? `<div style="margin-top:10px"><button class="btn btn-olive" style="padding:6px 12px;font-size:13px" onclick="playAudio('${c.id}')">&#9654; Play</button><audio id="aud-${c.id}" src="${c.audio}"></audio></div>` : ''}
+      </div>
+    `;
+  }
+
+  el.innerHTML = `
+    <div class="score-row">
+      <span style="font-size:13px;color:var(--muted)">${num} / ${total}</span>
+      <span style="font-size:13px;color:var(--olive);font-weight:600">${quiz.score.correct} correct</span>
+    </div>
+    <div class="card">
+      <p class="quiz-prompt">${isAlpha ? 'What is this letter?' : 'How do you say this in Armenian?'}</p>
+      ${front}
+      ${!quiz.revealed ? `
+        <button class="btn btn-gold" style="width:100%;padding:14px 0;font-size:15px;margin-top:12px" onclick="quiz.revealed=true;renderQuiz()">Reveal Answer</button>
+      ` : `
+        <div style="margin-top:16px">
+          ${revealHTML}
+          <div class="flex-row">
+            <button class="btn btn-red flex-1" onclick="nextCard(false)">Missed it</button>
+            <button class="btn btn-olive flex-1" onclick="nextCard(true)">Got it \u2713</button>
+          </div>
+        </div>
+      `}
+    </div>
+    ${c.category ? `<p style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px">${esc(c.category)}</p>` : ''}
+  `;
+}
+
+function startQuiz() {
+  const pool = quiz.filterCat==='All' ? data.entries : data.entries.filter(e=>e.category===quiz.filterCat);
+  if (!pool.length) return;
+  const q = shuffle(pool);
+  quiz.queue = q.slice(1);
+  quiz.current = q[0];
+  quiz.revealed = false;
+  quiz.score = {correct:0,total:0};
+  quiz.active = true;
+  renderQuiz();
+}
+function nextCard(correct) {
+  quiz.score.correct += correct?1:0;
+  quiz.score.total += 1;
+  if (!quiz.queue.length) { quiz.current=null; quiz.active=true; renderQuiz(); return; }
+  quiz.current = quiz.queue.shift();
+  quiz.revealed = false;
+  renderQuiz();
+}
+function playAudio(id) { const a=document.getElementById('aud-'+id); if(a) a.play(); }
+
+// ─── Library / Manage ──────────────────────────────────────────────
+let manageFilter = 'All';
+let manageSearch = '';
+
+function renderManage() {
+  const el = document.getElementById('content');
+  const cats = ['All', ...new Set(data.entries.map(e=>e.category).filter(Boolean))];
+  const filtered = data.entries.filter(e => {
+    if (manageFilter!=='All' && e.category!==manageFilter) return false;
+    if (manageSearch) {
+      const s = manageSearch.toLowerCase();
+      return (e.english||'').toLowerCase().includes(s) || (e.armenian||'').toLowerCase().includes(s) || (e.pronunciation||'').toLowerCase().includes(s);
+    }
+    return true;
+  });
+  const alphaCount = data.entries.filter(e=>e.category==='Alphabet').length;
+  const vocabCount = data.entries.filter(e=>e.category!=='Alphabet').length;
+
+  el.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:13px;color:var(--muted)">${alphaCount} alphabet cards, ${vocabCount} vocab cards</span>
+    </div>
+    <input type="text" placeholder="Search entries\u2026" value="${esc(manageSearch)}" oninput="manageSearch=this.value;renderManage()" style="margin-bottom:10px">
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px">
+      ${cats.map(c=>`<button class="cat-btn ${c===manageFilter?'active':''}" onclick="manageFilter='${esc(c)}';renderManage()">${esc(c)}</button>`).join('')}
+    </div>
+    ${filtered.length===0 ? `<p style="text-align:center;color:var(--muted);padding:20px">${data.entries.length===0?'No entries yet \u2014 add your first one!':'No matches found.'}</p>` : `
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${filtered.map(e => `
+          <div class="card" style="padding:16px">
+            <div class="entry-card">
+              <div style="flex:1;min-width:0">
+                <p style="font-weight:600;font-size:15px;margin-bottom:4px">${esc(e.english)}</p>
+                ${e.armenian ? `<p style="font-family:var(--font-armenian);font-size:16px;font-weight:600;color:var(--olive);margin-bottom:2px">${esc(e.armenian)}</p>` : ''}
+                ${e.pronunciation ? `<p style="font-size:13px;color:var(--muted);font-style:italic">${esc(e.pronunciation)}</p>` : ''}
+              </div>
+              <div class="entry-actions">
+                ${e.audio ? `<button class="btn btn-olive" style="padding:6px 12px;font-size:13px" onclick="playAudio('m${e.id}')">&#9654; Play</button><audio id="aud-m${e.id}" src="${e.audio}"></audio>` : ''}
+                <button class="btn btn-ghost-olive" style="padding:6px 10px;font-size:12px" onclick="startEdit('${e.id}')">Edit</button>
+                <button class="btn btn-ghost-red" style="padding:6px 10px;font-size:12px" onclick="deleteEntry('${e.id}')">&times;</button>
+              </div>
+            </div>
+            ${e.category ? `<span class="tag">${esc(e.category)}</span>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `}
+    <details style="margin-top:24px">
+      <summary>\u{1F4D6} Pronunciation Notes</summary>
+      <div class="card" style="margin-top:8px;padding:16px;font-size:13px;line-height:1.7">
+        <p style="margin-bottom:8px"><strong>kh</strong> = throaty "h" (like clearing your throat gently)</p>
+        <p style="margin-bottom:8px"><strong>k</strong> sounds a bit like <strong>g</strong></p>
+        <p style="margin-bottom:8px"><strong>\u0565</strong> (ech) = pronounced more like "ay"</p>
+        <p style="margin-bottom:8px"><strong>\u0568</strong> (y\u0259) = the "upside down e" = sounds like "uh"</p>
+        <p style="margin-bottom:8px"><strong>gh</strong> = similar to the French r (as in <em>rue</em>); if you can't produce it, a quick throaty h works</p>
+        <p style="color:var(--muted);font-style:italic">Add your own notes here by editing this section after each lesson!</p>
+      </div>
+    </details>
+  `;
+}
+
+function deleteEntry(id) { data.entries = data.entries.filter(e=>e.id!==id); saveData(data); renderManage(); }
+function startEdit(id) { editId=id; view='edit'; render(); }
+
+// ─── Add / Edit Form ──────────────────────────────────────────────
+let formState = {};
+function initForm() {
+  const ex = editId ? data.entries.find(e=>e.id===editId) : null;
+  formState = {
+    english: ex?.english||'', armenian: ex?.armenian||'', pronunciation: ex?.pronunciation||'',
+    category: ex?.category||'', audio: ex?.audio||null, bulkMode: false, bulkText: '',
+    newCat: '', showNewCat: false, recording: false, mediaRec: null, chunks: []
+  };
+}
+
+function renderForm() {
+  initForm();
+  const el = document.getElementById('content');
+  const ex = editId ? data.entries.find(e=>e.id===editId) : null;
+  el.innerHTML = `<div class="card" id="form-card"></div>`;
+  renderFormInner();
+}
+
+function renderFormInner() {
+  const ex = editId ? data.entries.find(e=>e.id===editId) : null;
+  const fc = document.getElementById('form-card');
+  if (!fc) return;
+  fc.innerHTML = `
+    <h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:20px">${ex?'Edit Entry':'Add Entries'}</h2>
+    ${!ex ? `
+      <div style="display:flex;gap:4px;margin-bottom:16px">
+        <button class="btn ${formState.bulkMode?'btn-ghost':'btn-olive'}" style="font-size:13px;padding:6px 14px" onclick="formState.bulkMode=false;renderFormInner()">Single</button>
+        <button class="btn ${formState.bulkMode?'btn-olive':'btn-ghost'}" style="font-size:13px;padding:6px 14px" onclick="formState.bulkMode=true;renderFormInner()">Bulk Paste</button>
+      </div>
+    ` : ''}
+    <div style="margin-bottom:14px">
+      <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Category</label>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">
+        ${data.categories.map(c=>`<button class="cat-btn ${c===formState.category?'active':''}" style="background:${c===formState.category?'var(--terracotta)':'transparent'};color:${c===formState.category?'#fff':'var(--text)'}" onclick="formState.category='${esc(c)}';renderFormInner()">${esc(c)}</button>`).join('')}
+        ${!formState.showNewCat ? `<button class="btn btn-ghost-olive" style="font-size:12px;padding:4px 10px" onclick="formState.showNewCat=true;renderFormInner()">+ New</button>` : `
+          <div style="display:flex;gap:4px;align-items:center">
+            <input id="new-cat-input" style="width:120px;padding:4px 8px;font-size:12px" placeholder="New category" value="${esc(formState.newCat)}">
+            <button class="btn btn-olive" style="font-size:12px;padding:4px 8px" onclick="addNewCat()">Add</button>
+          </div>
+        `}
+      </div>
+    </div>
+    ${formState.bulkMode && !ex ? `
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Paste entries (one per line)</label>
+        <p style="font-size:12px;color:var(--muted);margin:4px 0 8px">Format: English | Armenian script | pronunciation</p>
+        <textarea id="bulk-text" rows="8" style="resize:vertical" placeholder="Hello | \u0532\u0561\u0580\u0587 | barev">${esc(formState.bulkText)}</textarea>
+      </div>
+      <div class="flex-row">
+        <button class="btn btn-ghost flex-1" style="color:var(--muted)" onclick="setView('manage')">Cancel</button>
+        <button class="btn btn-olive flex-1" onclick="handleBulkAdd()">Add All</button>
+      </div>
+    ` : `
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">English *</label>
+        <input id="f-english" style="margin-top:6px" placeholder="Hello" value="${esc(formState.english)}">
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Armenian Script</label>
+        <input id="f-armenian" style="margin-top:6px;font-family:var(--font-armenian)" placeholder="\u0532\u0561\u0580\u0587" value="${esc(formState.armenian)}">
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Pronunciation</label>
+        <input id="f-pronunciation" style="margin-top:6px" placeholder="barev" value="${esc(formState.pronunciation)}">
+      </div>
+      <div style="margin-bottom:20px">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Audio Pronunciation</label>
+        <div id="audio-controls" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-olive" onclick="startRecording()" id="rec-btn"><span style="display:inline-block;width:8px;height:8px;background:#fff;border-radius:50%;margin-right:6px"></span>Record</button>
+          ${formState.audio ? `<audio controls src="${formState.audio}" style="height:32px;max-width:180px"></audio><button class="btn btn-ghost-red" style="font-size:12px;padding:2px 6px" onclick="formState.audio=null;renderFormInner()">Remove</button>` : ''}
+        </div>
+      </div>
+      <div class="flex-row">
+        <button class="btn btn-ghost flex-1" style="color:var(--muted)" onclick="setView('manage')">Cancel</button>
+        <button class="btn btn-olive flex-1" onclick="handleSubmit()">${ex?'Save Changes':'Add Entry'}</button>
+      </div>
+    `}
+  `;
+}
+
+function handleSubmit() {
+  const english = document.getElementById('f-english')?.value?.trim();
+  if (!english) return;
+  const entry = {
+    id: editId || Date.now().toString(),
+    english,
+    armenian: document.getElementById('f-armenian')?.value?.trim()||'',
+    pronunciation: document.getElementById('f-pronunciation')?.value?.trim()||'',
+    category: formState.category || 'Uncategorized',
+    audio: formState.audio
+  };
+  if (editId) { data.entries = data.entries.map(e=>e.id===editId?entry:e); }
+  else { data.entries.push(entry); }
+  saveData(data); setView('manage');
+}
+
+function handleBulkAdd() {
+  const text = document.getElementById('bulk-text')?.value||'';
+  const lines = text.trim().split('\n').filter(Boolean);
+  lines.forEach(line => {
+    const parts = line.split('|').map(s=>s.trim());
+    if (parts[0]) {
+      data.entries.push({
+        id: Date.now().toString() + Math.random().toString(36).slice(2,6),
+        english: parts[0], armenian: parts[1]||'', pronunciation: parts[2]||'',
+        category: formState.category||'Uncategorized', audio: null
+      });
+    }
+  });
+  saveData(data); setView('manage');
+}
+
+function addNewCat() {
+  const v = document.getElementById('new-cat-input')?.value?.trim();
+  if (v && !data.categories.includes(v)) {
+    data.categories.push(v);
+    formState.category = v;
+    formState.showNewCat = false;
+    saveData(data);
+    renderFormInner();
+  }
+}
+
+// ─── Audio Recording ───────────────────────────────────────────────
+function startRecording() {
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
+    const mr = new MediaRecorder(stream);
+    const chunks = [];
+    mr.ondataavailable = e => chunks.push(e.data);
+    mr.onstop = () => {
+      const blob = new Blob(chunks, {type:'audio/webm'});
+      const reader = new FileReader();
+      reader.onloadend = () => { formState.audio = reader.result; stream.getTracks().forEach(t=>t.stop()); renderFormInner(); };
+      reader.readAsDataURL(blob);
+    };
+    mr.start();
+    const btn = document.getElementById('rec-btn');
+    if (btn) {
+      btn.innerHTML = '<span style="display:inline-block;width:8px;height:8px;background:#fff;border-radius:2px;margin-right:6px"></span>Stop';
+      btn.className = 'btn btn-red';
+      btn.onclick = () => mr.stop();
+    }
+  }).catch(() => alert('Microphone access needed to record pronunciation.'));
+}
+
+// ─── Init ──────────────────────────────────────────────────────────
+render();
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
