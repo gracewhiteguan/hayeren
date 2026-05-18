@@ -64,47 +64,8 @@ details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var
 // ─── Data ──────────────────────────────────────────────────────────
 const DB_KEY = "hayeren-quiz-data";
 const SEED_DATA = {
-  categories: ["Alphabet", "Lesson 1", "Lesson 2", "Lesson 3"],
+  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4"],
   entries: [
-    {"id":"alpha001","english":"Ayb \u2014 sounds like: a (as in father)","armenian":"\u0531 \u0561","pronunciation":"ayb \u2014 e.g. ayb = alphabet","category":"Alphabet","audio":null},
-    {"id":"alpha002","english":"Ben \u2014 sounds like: b","armenian":"\u0532 \u0562","pronunciation":"ben \u2014 e.g. barev = hello","category":"Alphabet","audio":null},
-    {"id":"alpha003","english":"Gim \u2014 sounds like: g","armenian":"\u0533 \u0563","pronunciation":"gim \u2014 e.g. gisher = night","category":"Alphabet","audio":null},
-    {"id":"alpha004","english":"Da \u2014 sounds like: d","armenian":"\u0534 \u0564","pronunciation":"da \u2014 e.g. da = that","category":"Alphabet","audio":null},
-    {"id":"alpha005","english":"Yech \u2014 sounds like: ye / e (like ay)","armenian":"\u0535 \u0565","pronunciation":"yech \u2014 e.g. em = am","category":"Alphabet","audio":null},
-    {"id":"alpha006","english":"Za \u2014 sounds like: z","armenian":"\u0536 \u0566","pronunciation":"za \u2014 e.g. dzez = you (formal)","category":"Alphabet","audio":null},
-    {"id":"alpha007","english":"E \u2014 sounds like: e (like eh)","armenian":"\u0537 \u0567","pronunciation":"e \u2014 e.g. es = you are","category":"Alphabet","audio":null},
-    {"id":"alpha008","english":"Y\u0259t \u2014 sounds like: \u0259 (uh)","armenian":"\u0538 \u0568","pronunciation":"y\u0259t \u2014 e.g. \u0568nker = friend","category":"Alphabet","audio":null},
-    {"id":"alpha009","english":"T\u02b0o \u2014 sounds like: t\u02b0 (aspirated t)","armenian":"\u0539 \u0569","pronunciation":"t\u02b0o \u2014 e.g. t\u02b0e = tea","category":"Alphabet","audio":null},
-    {"id":"alpha010","english":"Zhe \u2014 sounds like: zh (like measure)","armenian":"\u053A \u056A","pronunciation":"zhe \u2014 e.g. zhpit = smile","category":"Alphabet","audio":null},
-    {"id":"alpha011","english":"Ini \u2014 sounds like: i (like ee)","armenian":"\u053B \u056B","pronunciation":"ini \u2014 e.g. inch = what","category":"Alphabet","audio":null},
-    {"id":"alpha012","english":"Lyun \u2014 sounds like: l","armenian":"\u053C \u056C","pronunciation":"lyun \u2014 e.g. luys = light","category":"Alphabet","audio":null},
-    {"id":"alpha013","english":"Khe \u2014 sounds like: kh (throaty h)","armenian":"\u053D \u056D","pronunciation":"khe \u2014 e.g. khntrem = you\u2019re welcome","category":"Alphabet","audio":null},
-    {"id":"alpha014","english":"Tsa \u2014 sounds like: ts","armenian":"\u053E \u056E","pronunciation":"tsa \u2014 e.g. tstesutyun = goodbye","category":"Alphabet","audio":null},
-    {"id":"alpha015","english":"Ken \u2014 sounds like: k (sounds like g)","armenian":"\u053F \u056F","pronunciation":"ken \u2014 e.g. kov = cow","category":"Alphabet","audio":null},
-    {"id":"alpha016","english":"Ho \u2014 sounds like: h","armenian":"\u0540 \u0570","pronunciation":"ho \u2014 e.g. hajoghutyun = good luck","category":"Alphabet","audio":null},
-    {"id":"alpha017","english":"Dza \u2014 sounds like: dz","armenian":"\u0541 \u0571","pronunciation":"dza \u2014 e.g. dzez = you (formal)","category":"Alphabet","audio":null},
-    {"id":"alpha018","english":"Ghat \u2014 sounds like: gh (French r-like)","armenian":"\u0542 \u0572","pronunciation":"ghat \u2014 e.g. ghat = fat","category":"Alphabet","audio":null},
-    {"id":"alpha019","english":"Tche \u2014 sounds like: ch (aspirated)","armenian":"\u0543 \u0573","pronunciation":"tche \u2014 e.g. chanapar = road","category":"Alphabet","audio":null},
-    {"id":"alpha020","english":"Men \u2014 sounds like: m","armenian":"\u0544 \u0574","pronunciation":"men \u2014 e.g. mersi = thanks","category":"Alphabet","audio":null},
-    {"id":"alpha021","english":"Yi \u2014 sounds like: y","armenian":"\u0545 \u0575","pronunciation":"yi \u2014 e.g. yes = I","category":"Alphabet","audio":null},
-    {"id":"alpha022","english":"Nu \u2014 sounds like: n","armenian":"\u0546 \u0576","pronunciation":"nu \u2014 e.g. na = he/she","category":"Alphabet","audio":null},
-    {"id":"alpha023","english":"Sha \u2014 sounds like: sh","armenian":"\u0547 \u0577","pronunciation":"sha \u2014 e.g. shat = a lot","category":"Alphabet","audio":null},
-    {"id":"alpha024","english":"Vo \u2014 sounds like: v (word-initial) / o","armenian":"\u0548 \u0578","pronunciation":"vo \u2014 e.g. or = day","category":"Alphabet","audio":null},
-    {"id":"alpha025","english":"Cha \u2014 sounds like: ch","armenian":"\u0549 \u0579","pronunciation":"cha \u2014 e.g. che = no","category":"Alphabet","audio":null},
-    {"id":"alpha026","english":"Pey \u2014 sounds like: p","armenian":"\u054A \u057A","pronunciation":"pey \u2014 e.g. panir = cheese","category":"Alphabet","audio":null},
-    {"id":"alpha027","english":"Jhey \u2014 sounds like: j","armenian":"\u054B \u057B","pronunciation":"jhey \u2014 e.g. jan = dear","category":"Alphabet","audio":null},
-    {"id":"alpha028","english":"Ra \u2014 sounds like: rr (rolled r)","armenian":"\u054C \u057C","pronunciation":"ra \u2014 e.g. ktor = nose","category":"Alphabet","audio":null},
-    {"id":"alpha029","english":"Seh \u2014 sounds like: s","armenian":"\u054D \u057D","pronunciation":"seh \u2014 e.g. ser = love","category":"Alphabet","audio":null},
-    {"id":"alpha030","english":"Vev \u2014 sounds like: v","armenian":"\u054E \u057E","pronunciation":"vev \u2014 e.g. vaghy = tomorrow","category":"Alphabet","audio":null},
-    {"id":"alpha031","english":"Tyun \u2014 sounds like: t","armenian":"\u054F \u057F","pronunciation":"tyun \u2014 e.g. tun = house","category":"Alphabet","audio":null},
-    {"id":"alpha032","english":"Re \u2014 sounds like: r (soft r)","armenian":"\u0550 \u0580","pronunciation":"re \u2014 e.g. or = day","category":"Alphabet","audio":null},
-    {"id":"alpha033","english":"Ts\u02b0o \u2014 sounds like: ts\u02b0 (aspirated ts)","armenian":"\u0551 \u0581","pronunciation":"ts\u02b0o \u2014 e.g. tsav = pain","category":"Alphabet","audio":null},
-    {"id":"alpha034","english":"Vyun \u2014 sounds like: u/v (digraph \u0578\u0582 = u)","armenian":"\u0552 \u0582","pronunciation":"vyun \u2014 e.g. uzum = want","category":"Alphabet","audio":null},
-    {"id":"alpha035","english":"P\u02b0yur \u2014 sounds like: p\u02b0 (aspirated p)","armenian":"\u0553 \u0583","pronunciation":"p\u02b0yur \u2014 e.g. p\u02b0ok = small","category":"Alphabet","audio":null},
-    {"id":"alpha036","english":"K\u02b0e \u2014 sounds like: k\u02b0 (aspirated k)","armenian":"\u0554 \u0584","pronunciation":"k\u02b0e \u2014 e.g. k\u02b0o = your","category":"Alphabet","audio":null},
-    {"id":"alpha037","english":"O \u2014 sounds like: o","armenian":"\u0555 \u0585","pronunciation":"o \u2014 e.g. or = day","category":"Alphabet","audio":null},
-    {"id":"alpha038","english":"Fe \u2014 sounds like: f","armenian":"\u0556 \u0586","pronunciation":"fe \u2014 e.g. futbol = football","category":"Alphabet","audio":null},
-    {"id":"alpha039","english":"Yev (ligature) \u2014 sounds like: yev (and)","armenian":"\u0587","pronunciation":"yev \u2014 e.g. yev = and","category":"Alphabet","audio":null},
     {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
     {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
     {"id":"seed002","english":"Good morning","armenian":"\u0532\u0561\u0580\u056B \u056C\u0578\u0582\u0575\u057D","pronunciation":"bari luys (luys = light)","category":"Lesson 1","audio":null},
@@ -197,7 +158,32 @@ const SEED_DATA = {
     {"id":"L3024","english":"Good-natured / Kind","armenian":"Բարի","pronunciation":"bari","category":"Lesson 3","audio":null},
     {"id":"L3025","english":"Ա ա — first letter of the alphabet","armenian":"Ա ա","pronunciation":"ah","category":"Lesson 3","audio":null},
     {"id":"L3026","english":"Բ բ — second letter of the alphabet","armenian":"Բ բ","pronunciation":"buh","category":"Lesson 3","audio":null},
-    {"id":"L3027","english":"Գ գ — third letter of the alphabet","armenian":"Գ գ","pronunciation":"guh","category":"Lesson 3","audio":null}
+    {"id":"L3027","english":"Գ գ — third letter of the alphabet","armenian":"Գ գ","pronunciation":"guh","category":"Lesson 3","audio":null},
+    {"id":"L4001","english":"Room","armenian":"\u057d\u0565\u0576\u0575\u0561\u056f","pronunciation":"senyak","category":"Lesson 4","audio":null},
+    {"id":"L4002","english":"Window","armenian":"\u054a\u0561\u057f\u0578\u0582\u0570\u0561\u0576","pronunciation":"p\u2019at\u2019uhan","category":"Lesson 4","audio":null},
+    {"id":"L4003","english":"Door","armenian":"\u0534\u0578\u0582\u057c","pronunciation":"dur\u2019","category":"Lesson 4","audio":null},
+    {"id":"L4004","english":"Chair","armenian":"\u0531\u0569\u0578\u057c","pronunciation":"ator\u2019","category":"Lesson 4","audio":null},
+    {"id":"L4005","english":"Building","armenian":"\u0547\u0565\u0576\u0584","pronunciation":"shenq","category":"Lesson 4","audio":null},
+    {"id":"L4006","english":"Table","armenian":"\u054d\u0565\u0572\u0561\u0576","pronunciation":"seghan","category":"Lesson 4","audio":null},
+    {"id":"L4007","english":"Street","armenian":"\u0553\u0578\u0572\u0578\u0581","pronunciation":"poghots","category":"Lesson 4","audio":null},
+    {"id":"L4008","english":"Shop (the shop = khanuty)","armenian":"\u053d\u0561\u0576\u0578\u0582\u0569","pronunciation":"khanut","category":"Lesson 4","audio":null},
+    {"id":"L4009","english":"Park (the park = aygin)","armenian":"\u0531\u0575\u0563\u056b","pronunciation":"aygi (sounds like: i-gi)","category":"Lesson 4","audio":null},
+    {"id":"L4010","english":"House","armenian":"\u054f\u0578\u0582\u0576","pronunciation":"t\u2019un","category":"Lesson 4","audio":null},
+    {"id":"L4011","english":"Bank","armenian":"\u0532\u0561\u0576\u056f","pronunciation":"bank","category":"Lesson 4","audio":null},
+    {"id":"L4012","english":"Cafe","armenian":"\u054d\u0565\u057c\u0564\u056b\u0561\u0580\u0561\u0576","pronunciation":"sehrdjaran (ser-djaran)","category":"Lesson 4","audio":null},
+    {"id":"L4013","english":"Job / Work","armenian":"\u0531\u0577\u056d\u0561\u057f\u0561\u0576\u0584","pronunciation":"ashkhat\u2019anq","category":"Lesson 4","audio":null},
+    {"id":"L4014","english":"Hotel (hyur = guest)","armenian":"\u0540\u0575\u0578\u0582\u0580\u0561\u0576\u0578\u0581","pronunciation":"hyuranots","category":"Lesson 4","audio":null},
+    {"id":"L4015","english":"City","armenian":"\u0554\u0561\u0572\u0561\u0584","pronunciation":"qaghaq","category":"Lesson 4","audio":null},
+    {"id":"L4016","english":"Wall","armenian":"\u054a\u0561\u057f","pronunciation":"p\u2019at (sounds like: baht)","category":"Lesson 4","audio":null},
+    {"id":"L4017","english":"Coffee","armenian":"\u054d\u0578\u0582\u0580\u0573","pronunciation":"suhrd","category":"Lesson 4","audio":null},
+    {"id":"L4018","english":"Old / New","armenian":"\u0540\u056b\u0576 / \u0546\u0578\u0580","pronunciation":"hin / nor","category":"Lesson 4","audio":null},
+    {"id":"L4019","english":"Open / Closed","armenian":"\u0532\u0561\u0581 / \u0553\u0561\u056f","pronunciation":"bats / pak","category":"Lesson 4","audio":null},
+    {"id":"L4020","english":"Comfortable","armenian":"\u0540\u0561\u0580\u0574\u0561\u0580","pronunciation":"harmar","category":"Lesson 4","audio":null},
+    {"id":"L4021","english":"And","armenian":"\u0535\u057e / \u0578\u0582","pronunciation":"yev / u","category":"Lesson 4","audio":null},
+    {"id":"L4022","english":"But","armenian":"\u0532\u0561\u0575\u0581","pronunciation":"bayts","category":"Lesson 4","audio":null},
+    {"id":"L4023","english":"And / While / But","armenian":"\u053b\u057d\u056f","pronunciation":"isk","category":"Lesson 4","audio":null},
+    {"id":"L4024","english":"Or","armenian":"\u053f\u0561\u0574","pronunciation":"kam","category":"Lesson 4","audio":null},
+    {"id":"L4025","english":"Because","armenian":"\u0548\u0580\u0578\u057e\u0570\u0565\u057f\u0587","pronunciation":"vorovhet\u2019ev","category":"Lesson 4","audio":null}
   ]
 };
 
@@ -411,6 +397,10 @@ function renderManage() {
         <p style="margin-bottom:8px"><strong>\u0565</strong> (ech) = pronounced more like "ay"</p>
         <p style="margin-bottom:8px"><strong>\u0568</strong> (y\u0259) = the "upside down e" = sounds like "uh"</p>
         <p style="margin-bottom:8px"><strong>gh</strong> = similar to the French r (as in <em>rue</em>); if you can't produce it, a quick throaty h works</p>
+        <p style="margin-bottom:8px"><strong>e</strong> = &quot;is&quot; (e.g. na e = he/she is)</p>
+        <p style="margin-bottom:8px"><strong>Definite article</strong> (&quot;the&quot;) = add իկ (&quot;uh&quot;) to end of word &mdash; e.g. khanut &rarr; khanuty</p>
+        <p style="margin-bottom:8px"><strong>Exception:</strong> if word ends in a vowel, use ն instead &mdash; e.g. aygi &rarr; aygin</p>
+        <p style="margin-bottom:8px"><strong>No indefinite article</strong> &mdash; no word for &quot;a&quot; in Armenian</p>
         <p style="color:var(--muted);font-style:italic">Add your own notes here by editing this section after each lesson!</p>
       </div>
     </details>
