@@ -64,7 +64,7 @@ details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var
 // ─── Data ──────────────────────────────────────────────────────────
 const DB_KEY = "hayeren-quiz-data";
 const SEED_DATA = {
-  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4"],
+  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Alphabet"],
   entries: [
     {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
     {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
@@ -183,7 +183,29 @@ const SEED_DATA = {
     {"id":"L4022","english":"But","armenian":"\u0532\u0561\u0575\u0581","pronunciation":"bayts","category":"Lesson 4","audio":null},
     {"id":"L4023","english":"And / While / But","armenian":"\u053b\u057d\u056f","pronunciation":"isk","category":"Lesson 4","audio":null},
     {"id":"L4024","english":"Or","armenian":"\u053f\u0561\u0574","pronunciation":"kam","category":"Lesson 4","audio":null},
-    {"id":"L4025","english":"Because","armenian":"\u0548\u0580\u0578\u057e\u0570\u0565\u057f\u0587","pronunciation":"vorovhet\u2019ev","category":"Lesson 4","audio":null}
+    {"id":"L4025","english":"Because","armenian":"\u0548\u0580\u0578\u057e\u0570\u0565\u057f\u0587","pronunciation":"vorovhet\u2019ev","category":"Lesson 4","audio":null},
+    {"id":"L5001", "english":"Fish", "armenian":"Ձուկ", "pronunciation":"dzuk", "category":"Lesson 5", "audio":null},
+    {"id":"L5002", "english":"Mountain", "armenian":"Լեռ / Սար", "pronunciation":"ler’ / sar", "category":"Lesson 5", "audio":null},
+    {"id":"L5003", "english":"Finger", "armenian":"Մատ", "pronunciation":"mat’", "category":"Lesson 5", "audio":null},
+    {"id":"L5004", "english":"Grandchild", "armenian":"Թոռ", "pronunciation":"tor’", "category":"Lesson 5", "audio":null},
+    {"id":"L5005", "english":"Woman", "armenian":"Կին", "pronunciation":"kin", "category":"Lesson 5", "audio":null},
+    {"id":"L5006", "english":"Person", "armenian":"Մարդ", "pronunciation":"mart", "category":"Lesson 5", "audio":null},
+    {"id":"L5007", "english":"Man", "armenian":"Տղամարդ", "pronunciation":"tghamart", "category":"Lesson 5", "audio":null},
+    {"id":"L5008", "english":"Doors (plural)", "armenian":"Դռներ", "pronunciation":"dur’ner (exception — not dur’er)", "category":"Lesson 5", "audio":null},
+    {"id":"L5009", "english":"Fish (plural)", "armenian":"Ձկներ", "pronunciation":"dzukner (exception)", "category":"Lesson 5", "audio":null},
+    {"id":"L5010", "english":"Women (plural)", "armenian":"Կանայք", "pronunciation":"kanaik (exception — never takes article)", "category":"Lesson 5", "audio":null},
+    {"id":"L5011", "english":"People (plural)", "armenian":"Մարդիկ", "pronunciation":"martik (exception — never takes article)", "category":"Lesson 5", "audio":null},
+    {"id":"L5012", "english":"Men (plural)", "armenian":"Տղամարդիկ", "pronunciation":"tghamartik (exception — never takes article)", "category":"Lesson 5", "audio":null},
+    {"id":"AL001", "english":"Ա ա — first letter", "armenian":"Ա ա", "pronunciation":"ah", "category":"Alphabet", "audio":null},
+    {"id":"AL002", "english":"Բ բ — second letter", "armenian":"Բ բ", "pronunciation":"buh", "category":"Alphabet", "audio":null},
+    {"id":"AL003", "english":"Գ գ — third letter — note:գ (guh) easily confused with զ (zuh)", "armenian":"Գ գ", "pronunciation":"guh", "category":"Alphabet", "audio":null},
+    {"id":"AL004", "english":"Դ դ — fourth letter", "armenian":"Դ դ", "pronunciation":"duh", "category":"Alphabet", "audio":null},
+    {"id":"AL005", "english":"Ե ե — fifth letter", "armenian":"Ե ե", "pronunciation":"ye / e", "category":"Alphabet", "audio":null},
+    {"id":"AL006", "english":"Զ զ — sixth letter — note:զ (zuh) easily confused with գ (guh)", "armenian":"Զ զ", "pronunciation":"zuh", "category":"Alphabet", "audio":null},
+    {"id":"AL007", "english":"Է է — seventh letter — means “is”", "armenian":"Է է", "pronunciation":"e", "category":"Alphabet", "audio":null},
+    {"id":"AL008", "english":"Ը ը — eighth letter — the definite article, add to end of word (e.g. tunը)", "armenian":"Ը ը", "pronunciation":"uh (upside down e) — also the definite article “the”", "category":"Alphabet", "audio":null},
+    {"id":"AL009", "english":"Թ թ — ninth letter — e.g. tutak", "armenian":"Թ թ", "pronunciation":"tuh", "category":"Alphabet", "audio":null},
+    {"id":"AL010", "english":"Ժ ժ — tenth letter — e.g. zham", "armenian":"Ժ ժ", "pronunciation":"zhuh", "category":"Alphabet", "audio":null}
   ]
 };
 
@@ -398,9 +420,12 @@ function renderManage() {
         <p style="margin-bottom:8px"><strong>\u0568</strong> (y\u0259) = the "upside down e" = sounds like "uh"</p>
         <p style="margin-bottom:8px"><strong>gh</strong> = similar to the French r (as in <em>rue</em>); if you can't produce it, a quick throaty h works</p>
         <p style="margin-bottom:8px"><strong>e</strong> = &quot;is&quot; (e.g. na e = he/she is)</p>
-        <p style="margin-bottom:8px"><strong>Definite article</strong> (&quot;the&quot;) = add իկ (&quot;uh&quot;) to end of word &mdash; e.g. khanut &rarr; khanuty</p>
-        <p style="margin-bottom:8px"><strong>Exception:</strong> if word ends in a vowel, use ն instead &mdash; e.g. aygi &rarr; aygin</p>
         <p style="margin-bottom:8px"><strong>No indefinite article</strong> &mdash; no word for &quot;a&quot; in Armenian</p>
+        <p style="margin-bottom:8px"><strong>Definite article singular</strong> (&quot;the&quot;) = add -ը to end of word &mdash; e.g. tun &rarr; tunը = the house</p>
+        <p style="margin-bottom:8px"><strong>Definite article plural</strong> = make plural first, then add -ը &mdash; e.g. sar &rarr; sarևր &rarr; sarևրը = the mountains</p>
+        <p style="margin-bottom:8px"><strong>Plural rule (1 syllable):</strong> add -ևր &mdash; e.g. shenq &rarr; shenqևր</p>
+        <p style="margin-bottom:8px"><strong>Plural rule (2+ syllables):</strong> add -նևր &mdash; e.g. hyuranots &rarr; hyuranotsնևր</p>
+        <p style="margin-bottom:8px"><strong>These plurals never take articles:</strong> martik (people), kanaik (women), tghamartik (men)</p>
         <p style="color:var(--muted);font-style:italic">Add your own notes here by editing this section after each lesson!</p>
       </div>
     </details>
