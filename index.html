@@ -64,7 +64,7 @@ details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var
 // ─── Data ──────────────────────────────────────────────────────────
 const DB_KEY = "hayeren-quiz-data";
 const SEED_DATA = {
-  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Alphabet"],
+  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Alphabet"],
   entries: [
     {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
     {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
@@ -196,6 +196,25 @@ const SEED_DATA = {
     {"id":"L5010", "english":"Women (plural)", "armenian":"Կանայք", "pronunciation":"kanaik (exception — never takes article)", "category":"Lesson 5", "audio":null},
     {"id":"L5011", "english":"People (plural)", "armenian":"Մարդիկ", "pronunciation":"martik (exception — never takes article)", "category":"Lesson 5", "audio":null},
     {"id":"L5012", "english":"Men (plural)", "armenian":"Տղամարդիկ", "pronunciation":"tghamartik (exception — never takes article)", "category":"Lesson 5", "audio":null},
+    {"id":"L7001", "english":"Airport (ot = air, nav = boat/ship)", "armenian":"Օդանավակայան", "pronunciation":"otanavakayan", "category":"Lesson 7", "audio":null},
+    {"id":"L7002", "english":"Restaurant", "armenian":"Ռեստորան", "pronunciation":"r’est’oran", "category":"Lesson 7", "audio":null},
+    {"id":"L7003", "english":"Embassy (desp’an = ambassador)", "armenian":"Դեսպանատուն", "pronunciation":"desp’anat’un", "category":"Lesson 7", "audio":null},
+    {"id":"L7004", "english":"Pharmacy (degh = medicine)", "armenian":"Դեղատուն", "pronunciation":"deghat’un", "category":"Lesson 7", "audio":null},
+    {"id":"L7005", "english":"Hospital (hivand = sick)", "armenian":"Հիվանդանոց", "pronunciation":"hivandanots", "category":"Lesson 7", "audio":null},
+    {"id":"L7006", "english":"Church", "armenian":"Եկեղեցի", "pronunciation":"yekeghetsi", "category":"Lesson 7", "audio":null},
+    {"id":"L7007", "english":"Market", "armenian":"Շուկա", "pronunciation":"shuka", "category":"Lesson 7", "audio":null},
+    {"id":"L7008", "english":"Theatre", "armenian":"Թատրոն", "pronunciation":"tat’ron", "category":"Lesson 7", "audio":null},
+    {"id":"L7009", "english":"Bag / Purse", "armenian":"Պայուսակ", "pronunciation":"p’ayusak", "category":"Lesson 7", "audio":null},
+    {"id":"L7010", "english":"School", "armenian":"Դպրոց", "pronunciation":"dep’rots", "category":"Lesson 7", "audio":null},
+    {"id":"L7011", "english":"Square (public facility)", "armenian":"Հրապարակ", "pronunciation":"horap’arak", "category":"Lesson 7", "audio":null},
+    {"id":"L7012", "english":"Cinema / Movie theater (kino+tat’ron)", "armenian":"Կինոթատրոն", "pronunciation":"kinotat’ron", "category":"Lesson 7", "audio":null},
+    {"id":"L7013", "english":"Museum", "armenian":"Թանգարան", "pronunciation":"tangaran", "category":"Lesson 7", "audio":null},
+    {"id":"L7014", "english":"Taxi", "armenian":"Տաքսի", "pronunciation":"t’aqsi", "category":"Lesson 7", "audio":null},
+    {"id":"L7015", "english":"Bus (short: bous)", "armenian":"Ավտոբուս", "pronunciation":"avt’obus (short: bous)", "category":"Lesson 7", "audio":null},
+    {"id":"L7016", "english":"Airplane", "armenian":"Ինքնաթիռ", "pronunciation":"inqnatir’", "category":"Lesson 7", "audio":null},
+    {"id":"L7017", "english":"Metro", "armenian":"Մետրո", "pronunciation":"met’ro", "category":"Lesson 7", "audio":null},
+    {"id":"L7018", "english":"Car", "armenian":"Մեքենա", "pronunciation":"meqena", "category":"Lesson 7", "audio":null},
+    {"id":"L7019", "english":"Film / Movie", "armenian":"Ֆիլm", "pronunciation":"film", "category":"Lesson 7", "audio":null},
     {"id":"AL001", "english":"Ա ա — first letter", "armenian":"Ա ա", "pronunciation":"ah", "category":"Alphabet", "audio":null},
     {"id":"AL002", "english":"Բ բ — second letter", "armenian":"Բ բ", "pronunciation":"buh", "category":"Alphabet", "audio":null},
     {"id":"AL003", "english":"Գ գ — third letter — note:գ (guh) easily confused with զ (zuh)", "armenian":"Գ գ", "pronunciation":"guh", "category":"Alphabet", "audio":null},
@@ -215,12 +234,15 @@ function loadData() {
     const raw = localStorage.getItem(DB_KEY);
     if (raw) {
       const d = JSON.parse(raw);
+      // One-time cleanup: remove old full alphabet entries (alpha001-alpha039)
+      const before = d.entries.length;
+      d.entries = d.entries.filter(e => !e.id.match(/^alpha\d+$/));
       // Merge any new seed entries
       const ids = new Set(d.entries.map(e => e.id));
       const added = SEED_DATA.entries.filter(e => !ids.has(e.id));
-      if (added.length) {
+      if (added.length || d.entries.length < before) {
         d.entries.push(...added);
-        d.categories = [...new Set([...d.categories, ...SEED_DATA.categories])];
+        d.categories = [...new Set([...SEED_DATA.categories, ...d.categories.filter(c => !['Greetings','Farewells','Useful Words','Pronunciation Rules','Family'].includes(c))])];
         localStorage.setItem(DB_KEY, JSON.stringify(d));
       }
       return d;
