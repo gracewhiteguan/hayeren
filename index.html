@@ -64,7 +64,7 @@ details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var
 // ─── Data ──────────────────────────────────────────────────────────
 const DB_KEY = "hayeren-quiz-data";
 const SEED_DATA = {
-  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Alphabet"],
+  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Lesson 8", "Alphabet"],
   entries: [
     {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
     {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
@@ -215,6 +215,38 @@ const SEED_DATA = {
     {"id":"L7017", "english":"Metro", "armenian":"Մետրո", "pronunciation":"met’ro", "category":"Lesson 7", "audio":null},
     {"id":"L7018", "english":"Car", "armenian":"Մեքենա", "pronunciation":"meqena", "category":"Lesson 7", "audio":null},
     {"id":"L7019", "english":"Film / Movie", "armenian":"Ֆիլm", "pronunciation":"film", "category":"Lesson 7", "audio":null},
+    {"id":"L8001", "english":"What? (singular)", "armenian":"Ինչ", "pronunciation":"inch", "category":"Lesson 8", "audio":null},
+    {"id":"L8002", "english":"What? (plural)", "armenian":"Ինչեր", "pronunciation":"incher", "category":"Lesson 8", "audio":null},
+    {"id":"L8003", "english":"Who? (singular)", "armenian":"Ով", "pronunciation":"ov", "category":"Lesson 8", "audio":null},
+    {"id":"L8004", "english":"Who? (plural)", "armenian":"Ովքեր", "pronunciation":"ovqer", "category":"Lesson 8", "audio":null},
+    {"id":"L8005", "english":"Where? (location)", "armenian":"Որտեղ", "pronunciation":"vort’egh", "category":"Lesson 8", "audio":null},
+    {"id":"L8006", "english":"Where? (direction)", "armenian":"Ուր", "pronunciation":"ur", "category":"Lesson 8", "audio":null},
+    {"id":"L8007", "english":"When?", "armenian":"Երբ", "pronunciation":"yerp", "category":"Lesson 8", "audio":null},
+    {"id":"L8008", "english":"Why?", "armenian":"Ինչու", "pronunciation":"inchu", "category":"Lesson 8", "audio":null},
+    {"id":"L8009", "english":"Which?", "armenian":"Որ", "pronunciation":"vor", "category":"Lesson 8", "audio":null},
+    {"id":"L8010", "english":"Whose? / Whom?", "armenian":"Ում", "pronunciation":"um", "category":"Lesson 8", "audio":null},
+    {"id":"L8011", "english":"What kind of?", "armenian":"Ինչպիսի", "pronunciation":"inchp’isi", "category":"Lesson 8", "audio":null},
+    {"id":"L8012", "english":"How many? (countable nouns, e.g. qani mart = how many people)", "armenian":"Քանի", "pronunciation":"qani", "category":"Lesson 8", "audio":null},
+    {"id":"L8013", "english":"How much? (uncountable nouns, e.g. how much water)", "armenian":"Ինչքան", "pronunciation":"inchqan", "category":"Lesson 8", "audio":null},
+    {"id":"L8014", "english":"Book", "armenian":"Գիրք", "pronunciation":"girq", "category":"Lesson 8", "audio":null},
+    {"id":"L8015", "english":"Health", "armenian":"Առողջություն", "pronunciation":"aroghjutyun", "category":"Lesson 8", "audio":null},
+    {"id":"L8016", "english":"Healthy", "armenian":"Առողջ", "pronunciation":"arogh", "category":"Lesson 8", "audio":null},
+    {"id":"L8017", "english":"Your (informal)", "armenian":"Քո", "pronunciation":"qo", "category":"Lesson 8", "audio":null},
+    {"id":"L8018", "english":"Your (formal)", "armenian":"Ձեր", "pronunciation":"dzer", "category":"Lesson 8", "audio":null},
+    {"id":"L8019", "english":"My", "armenian":"Իմ", "pronunciation":"im", "category":"Lesson 8", "audio":null},
+    {"id":"L8020", "english":"Where are you from? (informal — du can be skipped)", "armenian":"Որտեղից ես?", "pronunciation":"vort’eghits es?", "category":"Lesson 8", "audio":null},
+    {"id":"L8021", "english":"Where are you from? (formal)", "armenian":"Որտեղից եք?", "pronunciation":"vort’eghits eq?", "category":"Lesson 8", "audio":null},
+    {"id":"L8022", "english":"Where are they from? (don’t skip neranq)", "armenian":"Որտեղից են նրանք?", "pronunciation":"vort’eghits en neranq?", "category":"Lesson 8", "audio":null},
+    {"id":"L8023", "english":"Where is Grace from? (add “the” to names)", "armenian":"Որտեղից է Grace-ը?", "pronunciation":"vort’eghits e Grace-uh?", "category":"Lesson 8", "audio":null},
+    {"id":"L8024", "english":"I’m from America", "armenian":"Ես Ամերիկայից եմ", "pronunciation":"yes Amerikayits em", "category":"Lesson 8", "audio":null},
+    {"id":"L8025", "english":"I’m from London", "armenian":"Ես Լոնդոնից եմ", "pronunciation":"yes Londonits em", "category":"Lesson 8", "audio":null},
+    {"id":"L8026", "english":"He/She is from London", "armenian":"Նա Լոնդոնից է", "pronunciation":"na Londonits e", "category":"Lesson 8", "audio":null},
+    {"id":"L8027", "english":"What is your name? (informal)", "armenian":"Ինչ է քո անունը?", "pronunciation":"inch e qo anunը", "category":"Lesson 8", "audio":null},
+    {"id":"L8028", "english":"What is your name? (formal / first meeting)", "armenian":"Ինչ է ձեր անունը?", "pronunciation":"inch e dzer anunը", "category":"Lesson 8", "audio":null},
+    {"id":"L8029", "english":"My name is Grace", "armenian":"Իմ անունը Grace է", "pronunciation":"im anunը Grace e", "category":"Lesson 8", "audio":null},
+    {"id":"L8030", "english":"Who are they? (W-question word order: ov en neranq, not neranq en ov)", "armenian":"Ովքեր են նրանք?", "pronunciation":"ovqer en neranq?", "category":"Lesson 8", "audio":null},
+    {"id":"L8031", "english":"Who is he? (word order: ov e na, not na-e ov)", "armenian":"Ով է նա?", "pronunciation":"ov e na?", "category":"Lesson 8", "audio":null},
+    {"id":"L8032", "english":"Are you hungry? (yes/no question — same word order as a statement)", "armenian":"Դու սովածես?", "pronunciation":"du sovatzes?", "category":"Lesson 8", "audio":null},
     {"id":"AL001", "english":"Ա ա — first letter", "armenian":"Ա ա", "pronunciation":"ah", "category":"Alphabet", "audio":null},
     {"id":"AL002", "english":"Բ բ — second letter", "armenian":"Բ բ", "pronunciation":"buh", "category":"Alphabet", "audio":null},
     {"id":"AL003", "english":"Գ գ — third letter — note:գ (guh) easily confused with զ (zuh)", "armenian":"Գ գ", "pronunciation":"guh", "category":"Alphabet", "audio":null},
@@ -448,6 +480,15 @@ function renderManage() {
         <p style="margin-bottom:8px"><strong>Plural rule (1 syllable):</strong> add -ևր &mdash; e.g. shenq &rarr; shenqևր</p>
         <p style="margin-bottom:8px"><strong>Plural rule (2+ syllables):</strong> add -նևր &mdash; e.g. hyuranots &rarr; hyuranotsնևր</p>
         <p style="margin-bottom:8px"><strong>These plurals never take articles:</strong> martik (people), kanaik (women), tghamartik (men)</p>
+        <p style="margin-bottom:8px"><strong>From</strong> = suffix -ից (its) — e.g. dep’rotsits (from school). Exception: from home = tnits (drop tun)</p>
+        <p style="margin-bottom:8px"><strong>At / in / on (the)</strong> = suffix -ում (um) — e.g. restoranum, hyuranotsum, poghotsum, khanutum. Exception: at home = t’anuh; deghat’un → deghatanը; desp’anat’un → desp’at’anը</p>
+        <p style="margin-bottom:8px"><strong>By (means of transport)</strong> = suffix -ով (ov) — e.g. taqsiov, inqnatirrov. If word ends in a vowel (ah/oh), add y first — e.g. metro → metroyov, meqena → meqenayov</p>
+        <p style="margin-bottom:8px"><strong>Whose + noun</strong> and <strong>which + noun</strong> ALWAYS take the definite article — e.g. um payusaknը harmar e; vor girqը-n e p’ayusakum</p>
+        <p style="margin-bottom:8px"><strong>W-question word order</strong> matches English, not statement order — e.g. “who is he” = ov e na (not na e ov)</p>
+        <p style="margin-bottom:8px"><strong>Yes/No questions</strong> keep statement word order — e.g. “are you hungry?” = du sovatzes? (same as the statement “you are hungry”)</p>
+        <p style="margin-bottom:8px"><strong>vort’eghits</strong> (where from): skip du/duq in casual speech, but don’t skip neranq (they)</p>
+        <p style="margin-bottom:8px"><strong>qani</strong> (how many) is for countable nouns; <strong>inchqan</strong> (how much) is for uncountable nouns. Both always take a singular noun — e.g. qani mart = how many people, not qani martik</p>
+        <p style="margin-bottom:8px"><strong>vort’egh</strong> (location) can be used generally for both location and direction questions; vort’egh vs. ur distinction mostly matters when "go" is in the question</p>
         <p style="color:var(--muted);font-style:italic">Add your own notes here by editing this section after each lesson!</p>
       </div>
     </details>
