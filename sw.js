@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hayeren-v18';
+const CACHE_NAME = 'hayeren-v20';
 const ASSETS = [
   './',
   './index.html',

@@ -64,7 +64,7 @@ details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var
 // ─── Data ──────────────────────────────────────────────────────────
 const DB_KEY = "hayeren-quiz-data";
 const SEED_DATA = {
-  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Lesson 8", "Lesson 10", "Lesson 11", "Lesson 12", "Lesson 13", "Numbers", "Alphabet"],
+  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Lesson 8", "Lesson 10", "Lesson 11", "Lesson 12", "Lesson 13", "Lesson 15", "Lesson 16", "Numbers", "Alphabet", "Dialogue"],
   entries: [
     {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
     {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
@@ -351,7 +351,74 @@ const SEED_DATA = {
     {"id":"AL007", "english":"Է է — seventh letter — means “is”", "armenian":"Է է", "pronunciation":"e", "category":"Alphabet", "audio":null},
     {"id":"AL008", "english":"Ը ը — eighth letter — the definite article, add to end of word (e.g. tunը)", "armenian":"Ը ը", "pronunciation":"uh (upside down e) — also the definite article “the”", "category":"Alphabet", "audio":null},
     {"id":"AL009", "english":"Թ թ — ninth letter — e.g. tutak", "armenian":"Թ թ", "pronunciation":"tuh", "category":"Alphabet", "audio":null},
-    {"id":"AL010", "english":"Ժ ժ — tenth letter — e.g. zham", "armenian":"Ժ ժ", "pronunciation":"zhuh", "category":"Alphabet", "audio":null}
+    {"id":"AL010", "english":"Ժ ժ — tenth letter — e.g. zham", "armenian":"Ժ ժ", "pronunciation":"zhuh", "category":"Alphabet", "audio":null},
+    {"id":"DLG001", "english":"My name is Grace, nice to get acquainted", "armenian":"Իմ անունը Grace է, հաճելի է ծանոթանալ", "pronunciation":"im anuny Grace e, hajeli e tsanotanal", "category":"Dialogue", "audio":null},
+    {"id":"DLG002", "english":"I've been studying Armenian for a few months", "armenian":"Մի քանի ամիս է, որ սովորում եմ հայերեն", "pronunciation":"mi qani amis e, vor sovorum em hayeren", "category":"Dialogue", "audio":null},
+    {"id":"DLG003", "english":"I studied at Penn (university) — verify Penn transliteration w/ boyfriend", "armenian":"Ես սովորել եմ Փենի համալսարանում", "pronunciation":"yes sovorel em Penni hamalsaranum", "category":"Dialogue", "audio":null},
+    {"id":"DLG004", "english":"I work in fintech — word order adjusted from your note, double-check", "armenian":"Ես աշխատում եմ ֆինթեքում", "pronunciation":"yes ashkhatum em fintechum", "category":"Dialogue", "audio":null},
+    {"id":"DLG101", "english":"Q: Which city are you from?", "armenian":"Որ քաղաքից ես?", "pronunciation":"vor qaghaqits es?", "category":"Dialogue", "audio":null, "answerArmenian":"Ես Irvine-ից եմ:", "answerPronunciation":"yes Irvine-its em.", "answerEnglish":"I'm from Irvine."},
+    {"id":"DLG102", "english":"Q: Where do your parents live?", "armenian":"Քո ծնողները որտեղ են ապրում?", "pronunciation":"ko tsnoghnery vortegh en aprum?", "category":"Dialogue", "audio":null, "answerArmenian":"Իմ ծնողներս ապրում են Irvine-ում: Իմ հայրիկս պրոֆեսոր է:", "answerPronunciation":"im tsnoghneruh aprum en Irvine-um. im hayrikuh professor e.", "answerEnglish":"My parents live in Irvine. My dad is a professor."},
+    {"id":"DLG103", "english":"Q: Do you have any siblings?", "armenian":"Ունես քույր կամ եղբայր?", "pronunciation":"unes k'uyr kam yeghbayr?", "category":"Dialogue", "audio":null, "answerArmenian":"Այո, ունեմ եղբայր: Նա ապրում է Նյու Յորքում: Նա ունի երկու կատու:", "answerPronunciation":"ayo, unem yeghbayr. na aprum e New York-um. na uni yerku katu.", "answerEnglish":"Yes, I have a brother. He lives in New York. He has two cats."},
+    {"id":"DLG104", "english":"Q: Do you also live in New York?", "armenian":"Դու էլ Նյու Յորքում ես ապրում?", "pronunciation":"du el New York-um es aprum?", "category":"Dialogue", "audio":null, "answerArmenian":"Ես սովորաբար Նյու Յորքում եմ ապրում, բայց ուզում եմ տեղափոխվել Լոնդոն:", "answerPronunciation":"yes sovorabar New York-um em aprum, bays uzum em teghap'okhvel London.", "answerEnglish":"I usually live in New York, but I want to move to London."},
+    {"id":"DLG105", "english":"Q: What do you like to do in your free time?", "armenian":"Ինչ ես սիրում անել ազատ ժամանակ?", "pronunciation":"inch es sirum anel azat zhamanak?", "category":"Dialogue", "audio":null, "answerArmenian":"Ես սիրում եմ կարդալ և սիրում եմ ճանապարհորդել, և գնում եմ մարզասրահ:", "answerPronunciation":"yes sirum em kardal yev sirum em chanaparhortel, yev gnum em marzasrah.", "answerEnglish":"I like to read and travel, and I go to the gym."},
+    {"id":"DLG106", "english":"Q: How was it in Armenia?", "armenian":"Ինչպես էր Հայաստանում?", "pronunciation":"inch'pes er Hayastanum?", "category":"Dialogue", "audio":null, "answerArmenian":"Շոգ էր: Հայաստանը սիրուն երկիր է: Ես տեսել եմ սիրուն նկարներ:", "answerPronunciation":"shoq er. Hayastany sirun yerkir e. yes tesel em sirun nkarner.", "answerEnglish":"It was hot. Armenia is a beautiful country. I saw beautiful sights."},
+    {"id":"AL016", "english":"Հ հ — sixteenth letter", "armenian":"Հ հ", "pronunciation":"huh", "category":"Alphabet", "audio":null},
+    {"id":"AL017", "english":"Ձ ձ — seventeenth letter — e.g. barev dzez", "armenian":"Ձ ձ", "pronunciation":"dzuh (dz)", "category":"Alphabet", "audio":null},
+    {"id":"AL018", "english":"Ղ ղ — eighteenth letter", "armenian":"Ղ ղ", "pronunciation":"ghuh (gh)", "category":"Alphabet", "audio":null},
+    {"id":"AL019", "english":"Ճ ճ — nineteenth letter — e.g. djanap'ar", "armenian":"Ճ ճ", "pronunciation":"djuh (dj)", "category":"Alphabet", "audio":null},
+    {"id":"AL020", "english":"Մ մ — twentieth letter — e.g. muhnal", "armenian":"Մ մ", "pronunciation":"muh (m)", "category":"Alphabet", "audio":null},
+    {"id":"L15001", "english":"To come (exception verb — present stem is irregular: galis, not the expected -um form)", "armenian":"Գալ", "pronunciation":"gal → present stem: galis", "category":"Lesson 15", "audio":null},
+    {"id":"L15002", "english":"I'm coming / I come to the theater", "armenian":"Ես գալիս եմ թատրոն", "pronunciation":"yes galis em tatron", "category":"Lesson 15", "audio":null},
+    {"id":"L15003", "english":"I'm not coming to the theater (negative before verb)", "armenian":"Ես չեմ գալիս թատրոն", "pronunciation":"yes chem galis tatron", "category":"Lesson 15", "audio":null},
+    {"id":"L15004", "english":"I'm going / I go to school (present continuous = Armenian present tense)", "armenian":"Ես գնում եմ դպրոց", "pronunciation":"yes gnum em d'prots", "category":"Lesson 15", "audio":null},
+    {"id":"L15005", "english":"To give (exception verb — present stem: talis)", "armenian":"Տալ", "pronunciation":"t'al → present stem: talis", "category":"Lesson 15", "audio":null},
+    {"id":"L15006", "english":"To cry (exception verb — present stem: lalis)", "armenian":"Լալ", "pronunciation":"l'al → present stem: lalis", "category":"Lesson 15", "audio":null},
+    {"id":"L15007", "english":"Party — going to an activity (not a building) takes suffix -ի, not -ում", "armenian":"Երեկույթ → երեկույթի", "pronunciation":"yerekuyt → yerekuyti (yes gnumem yerekuyti = I'm going to a party)", "category":"Lesson 15", "audio":null},
+    {"id":"L15008", "english":"Class — activity, takes suffix -ի", "armenian":"Դաս → դասի", "pronunciation":"das → dasi (yes gnumem dasi = I'm going to class)", "category":"Lesson 15", "audio":null},
+    {"id":"L15009", "english":"Meeting — activity, irregular genitive (not just +ի)", "armenian":"Հանդիպում → հանդիպման", "pronunciation":"handipum → handipman (yes gnumem handipman = I'm going to a meeting)", "category":"Lesson 15", "audio":null},
+    {"id":"L15010", "english":"Job / work — activity, takes suffix -ի", "armenian":"Աշխատանք → աշխատանքի", "pronunciation":"ashkhatanq → ashkhatanqi (yes gnumem ashkhatanqi = I'm going to work)", "category":"Lesson 15", "audio":null},
+    {"id":"L15011", "english":"I'm late for work (from = suffix -ից on the activity)", "armenian":"Ես ուշանում եմ աշխատանքից", "pronunciation":"yes ushanum em ashkhatanqits", "category":"Lesson 15", "audio":null},
+    {"id":"L15012", "english":"I'm not late", "armenian":"Ես չեմ ուշանում", "pronunciation":"yes chem ushanum", "category":"Lesson 15", "audio":null},
+    {"id":"L15013", "english":"He/She is late for school", "armenian":"Նա ուշանում է դպրոցից", "pronunciation":"na ushanum e d'protsits", "category":"Lesson 15", "audio":null},
+    {"id":"L16001", "english":"11 — Eleven", "armenian":"Տասնմեկ", "pronunciation":"t'asnəmek", "category":"Lesson 16", "audio":null},
+    {"id":"L16002", "english":"12 — Twelve", "armenian":"Տասներկու", "pronunciation":"t'asnerku", "category":"Lesson 16", "audio":null},
+    {"id":"L16003", "english":"13 — Thirteen", "armenian":"Տասներեք", "pronunciation":"t'asnereq", "category":"Lesson 16", "audio":null},
+    {"id":"L16004", "english":"14 — Fourteen", "armenian":"Տասնչորս", "pronunciation":"t'asnəchors", "category":"Lesson 16", "audio":null},
+    {"id":"L16005", "english":"15 — Fifteen", "armenian":"Տասնհինգ", "pronunciation":"t'asnəhing", "category":"Lesson 16", "audio":null},
+    {"id":"L16006", "english":"16 — Sixteen", "armenian":"Տասնվեց", "pronunciation":"t'asnəvets", "category":"Lesson 16", "audio":null},
+    {"id":"L16007", "english":"17 — Seventeen", "armenian":"Տասնյոթ", "pronunciation":"t'asnəyot", "category":"Lesson 16", "audio":null},
+    {"id":"L16008", "english":"18 — Eighteen", "armenian":"Տասնութ", "pronunciation":"t'asnut", "category":"Lesson 16", "audio":null},
+    {"id":"L16009", "english":"19 — Nineteen", "armenian":"Տասնինը", "pronunciation":"t'asninə", "category":"Lesson 16", "audio":null},
+    {"id":"L16010", "english":"20 — Twenty", "armenian":"Քսան", "pronunciation":"qsan", "category":"Lesson 16", "audio":null},
+    {"id":"L16011", "english":"30 — Thirty", "armenian":"Երեսուն", "pronunciation":"yeresun", "category":"Lesson 16", "audio":null},
+    {"id":"L16012", "english":"40 — Forty", "armenian":"Քառասուն", "pronunciation":"qar'asun", "category":"Lesson 16", "audio":null},
+    {"id":"L16013", "english":"50 — Fifty", "armenian":"Հիսուն", "pronunciation":"hisun", "category":"Lesson 16", "audio":null},
+    {"id":"L16014", "english":"60 — Sixty", "armenian":"Վաթսուն", "pronunciation":"vatsun", "category":"Lesson 16", "audio":null},
+    {"id":"L16015", "english":"70 — Seventy", "armenian":"Յոթանասուն", "pronunciation":"yotanasun", "category":"Lesson 16", "audio":null},
+    {"id":"L16016", "english":"80 — Eighty", "armenian":"Ութսուն", "pronunciation":"utsun", "category":"Lesson 16", "audio":null},
+    {"id":"L16017", "english":"90 — Ninety", "armenian":"Իննսուն", "pronunciation":"innəsun", "category":"Lesson 16", "audio":null},
+    {"id":"L16018", "english":"100 — One hundred", "armenian":"Հարյուր", "pronunciation":"haryur", "category":"Lesson 16", "audio":null},
+    {"id":"L16019", "english":"1,000 — One thousand", "armenian":"Հազար", "pronunciation":"hazar", "category":"Lesson 16", "audio":null},
+    {"id":"L16020", "english":"1,000,000 — One million", "armenian":"Միլիոն", "pronunciation":"milion", "category":"Lesson 16", "audio":null},
+    {"id":"L16021", "english":"21 — compound: 20+1 written together", "armenian":"Քսան+մեկ=Քսանմեկ", "pronunciation":"qsanmek", "category":"Lesson 16", "audio":null},
+    {"id":"L16022", "english":"43 — compound: 40+3 written together", "armenian":"Քառասուն+երեք=Քառասուներեք", "pronunciation":"qar'asunereq", "category":"Lesson 16", "audio":null},
+    {"id":"L16023", "english":"67 — compound: 60+7 written together", "armenian":"Վաթսուն+յոթ=Վաթսունյոթ", "pronunciation":"vatsunyot", "category":"Lesson 16", "audio":null},
+    {"id":"L16024", "english":"99 — compound: 90+9 written together", "armenian":"Իննսուն+ինը=Իննսունինը", "pronunciation":"innəsuninə", "category":"Lesson 16", "audio":null},
+    {"id":"L16025", "english":"105 — hundreds + remainder, written separately", "armenian":"Հարյուր հինգ", "pronunciation":"haryur hing", "category":"Lesson 16", "audio":null},
+    {"id":"L16026", "english":"407 — hundreds + remainder, written separately", "armenian":"Չորս հարյուր յոթ", "pronunciation":"chors haryur yot", "category":"Lesson 16", "audio":null},
+    {"id":"L16027", "english":"077 — leading zero + compound tens", "armenian":"Զրո յոթանասունյոթ", "pronunciation":"zəro yotanasunyot", "category":"Lesson 16", "audio":null},
+    {"id":"L16028", "english":"Rule: numerals 11–99 are written together as one word", "armenian":"", "pronunciation":"e.g. tasnmek, qarasunereq", "category":"Lesson 16", "audio":null},
+    {"id":"L16029", "english":"Rule: nouns stay singular after a numeral", "armenian":"Երկու աղջիկ", "pronunciation":"yerku akhchik = two girls (not akhchikner)", "category":"Lesson 16", "audio":null},
+    {"id":"L16030", "english":"Times / occurrences", "armenian":"Անգամ", "pronunciation":"anqam (mek anqam = once)", "category":"Lesson 16", "audio":null},
+    {"id":"L16031", "english":"Phone", "armenian":"Հեռախոս", "pronunciation":"herrakhos", "category":"Lesson 16", "audio":null},
+    {"id":"L16032", "english":"Number", "armenian":"Համար", "pronunciation":"hamar", "category":"Lesson 16", "audio":null},
+    {"id":"L16033", "english":"Phone number", "armenian":"Հեռախոսի համար", "pronunciation":"herrakhosi hamar", "category":"Lesson 16", "audio":null},
+    {"id":"L16034", "english":"To be born", "armenian":"Ծնվել", "pronunciation":"tsnvel", "category":"Lesson 16", "audio":null},
+    {"id":"L16035", "english":"How old are you? (informal)", "armenian":"Քանի՞ տարեկան ես", "pronunciation":"qani tarekan es?", "category":"Lesson 16", "audio":null},
+    {"id":"L16036", "english":"How old are you? (formal)", "armenian":"Քանի՞ տարեկան եք", "pronunciation":"qani tarekan eq?", "category":"Lesson 16", "audio":null},
+    {"id":"L16037", "english":"I am 10 years old", "armenian":"Ես տասը տարեկան եմ", "pronunciation":"yes tasə tarekan em", "category":"Lesson 16", "audio":null},
+    {"id":"L16038", "english":"Year (calendar year)", "armenian":"Թվական", "pronunciation":"tvakan", "category":"Lesson 16", "audio":null},
+    {"id":"L16039", "english":"I was born in 1993", "armenian":"Ես ծնվել եմ 1993 թվականին", "pronunciation":"yes tsnvel em 1993 tvakanin", "category":"Lesson 16", "audio":null}
   ]
 };
 
@@ -499,9 +566,27 @@ function renderQuiz() {
   }
   const c = quiz.current;
   const isAlpha = c.category === 'Alphabet';
+  const isQA = c.category === 'Dialogue' && c.answerArmenian;
 
   let front, revealHTML;
-  if (isAlpha) {
+  if (isQA) {
+    // Dialogue Q&A: Armenian question on front (recognition), your response on back
+    front = `
+      <p style="font-family:var(--font-armenian);font-size:24px;font-weight:700;text-align:center;margin:20px 0 8px;line-height:1.4">${esc(c.armenian)}</p>
+      ${c.pronunciation ? `<p style="font-size:14px;color:var(--muted);font-style:italic;text-align:center">${esc(c.pronunciation)}</p>` : ''}
+    `;
+    revealHTML = `
+      <div class="reveal-box">
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--terracotta);margin-bottom:6px">Your response</p>
+        <p style="font-family:var(--font-armenian);font-size:17px;font-weight:600;margin-bottom:4px">${esc(c.answerArmenian)}</p>
+        ${c.answerPronunciation ? `<p style="font-size:14px;color:var(--muted);font-style:italic;margin-bottom:8px">${esc(c.answerPronunciation)}</p>` : ''}
+        <div style="border-top:1px solid var(--border);margin:8px 0;padding-top:8px">
+          <p style="font-size:12px;color:var(--muted)">${esc(c.english.replace(/^Q:\s*/,''))} &rarr; ${esc(c.answerEnglish||'')}</p>
+        </div>
+        ${c.audio ? `<div style="margin-top:10px"><button class="btn btn-olive" style="padding:6px 12px;font-size:13px" onclick="playAudio('${c.id}')">&#9654; Play</button><audio id="aud-${c.id}" src="${c.audio}"></audio></div>` : ''}
+      </div>
+    `;
+  } else if (isAlpha) {
     // Alphabet: Armenian letter on front, name + sound on back
     front = `<p style="font-family:var(--font-armenian);font-size:64px;font-weight:700;text-align:center;margin:24px 0;letter-spacing:16px">${esc(c.armenian)}</p>`;
     revealHTML = `
@@ -534,7 +619,7 @@ function renderQuiz() {
       <span style="font-size:13px;color:${isDueCard ? 'var(--terracotta)' : 'var(--muted)'};font-weight:600">${isDueCard ? 'Due' : 'Upcoming'} &middot; ${quiz.score.correct} correct</span>
     </div>
     <div class="card">
-      <p class="quiz-prompt">${isAlpha ? 'What is this letter?' : 'How do you say this in Armenian?'}</p>
+      <p class="quiz-prompt">${isQA ? 'They ask you this — how do you respond?' : isAlpha ? 'What is this letter?' : 'How do you say this in Armenian?'}</p>
       ${front}
       ${!quiz.revealed ? `
         <button class="btn btn-gold" style="width:100%;padding:14px 0;font-size:15px;margin-top:12px" onclick="quiz.revealed=true;renderQuiz()">Reveal Answer</button>
@@ -615,6 +700,7 @@ function renderManage() {
                 <p style="font-weight:600;font-size:15px;margin-bottom:4px">${esc(e.english)}</p>
                 ${e.armenian ? `<p style="font-family:var(--font-armenian);font-size:16px;font-weight:600;color:var(--olive);margin-bottom:2px">${esc(e.armenian)}</p>` : ''}
                 ${e.pronunciation ? `<p style="font-size:13px;color:var(--muted);font-style:italic">${esc(e.pronunciation)}</p>` : ''}
+                ${e.answerArmenian ? `<p style="font-size:12px;color:var(--terracotta);margin-top:6px">&rarr; ${esc(e.answerArmenian)}${e.answerPronunciation ? ' ('+esc(e.answerPronunciation)+')' : ''}</p>` : ''}
               </div>
               <div class="entry-actions">
                 ${e.audio ? `<button class="btn btn-olive" style="padding:6px 12px;font-size:13px" onclick="playAudio('m${e.id}')">&#9654; Play</button><audio id="aud-m${e.id}" src="${e.audio}"></audio>` : ''}
@@ -666,6 +752,7 @@ function initForm() {
   const ex = editId ? data.entries.find(e=>e.id===editId) : null;
   formState = {
     english: ex?.english||'', armenian: ex?.armenian||'', pronunciation: ex?.pronunciation||'',
+    answerArmenian: ex?.answerArmenian||'', answerPronunciation: ex?.answerPronunciation||'', answerEnglish: ex?.answerEnglish||'',
     category: ex?.category||'', audio: ex?.audio||null, bulkMode: false, bulkText: '',
     newCat: '', showNewCat: false, recording: false, mediaRec: null, chunks: []
   };
@@ -706,7 +793,7 @@ function renderFormInner() {
     ${formState.bulkMode && !ex ? `
       <div style="margin-bottom:14px">
         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Paste entries (one per line)</label>
-        <p style="font-size:12px;color:var(--muted);margin:4px 0 8px">Format: English | Armenian script | pronunciation</p>
+        <p style="font-size:12px;color:var(--muted);margin:4px 0 8px">Format: English | Armenian script | pronunciation${formState.category === 'Dialogue' ? ' | response Armenian | response pronunciation | response English (last 3 optional — omit for a plain phrase card)' : ''}</p>
         <textarea id="bulk-text" rows="8" style="resize:vertical" placeholder="Hello | \u0532\u0561\u0580\u0587 | barev">${esc(formState.bulkText)}</textarea>
       </div>
       <div class="flex-row">
@@ -726,6 +813,17 @@ function renderFormInner() {
         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Pronunciation</label>
         <input id="f-pronunciation" style="margin-top:6px" placeholder="barev" value="${esc(formState.pronunciation)}">
       </div>
+      ${formState.category === 'Dialogue' ? `
+      <div style="margin-bottom:14px;padding:12px;background:var(--olive-light);border-radius:8px">
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--terracotta);margin-bottom:8px">Your response (leave blank for a plain phrase card)</p>
+        <label style="font-size:12px;font-weight:600;color:var(--muted)">Response — Armenian Script</label>
+        <input id="f-answer-armenian" style="margin-top:6px;margin-bottom:10px;font-family:var(--font-armenian)" placeholder="Ես Irvine-ից եմ" value="${esc(formState.answerArmenian)}">
+        <label style="font-size:12px;font-weight:600;color:var(--muted)">Response — Pronunciation</label>
+        <input id="f-answer-pronunciation" style="margin-top:6px;margin-bottom:10px" placeholder="yes Irvine-its em" value="${esc(formState.answerPronunciation)}">
+        <label style="font-size:12px;font-weight:600;color:var(--muted)">Response — English</label>
+        <input id="f-answer-english" style="margin-top:6px" placeholder="I'm from Irvine." value="${esc(formState.answerEnglish)}">
+      </div>
+      ` : ''}
       <div style="margin-bottom:20px">
         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Audio Pronunciation</label>
         <div id="audio-controls" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -752,6 +850,11 @@ function handleSubmit() {
     category: formState.category || 'Uncategorized',
     audio: formState.audio
   };
+  if (formState.category === 'Dialogue') {
+    entry.answerArmenian = document.getElementById('f-answer-armenian')?.value?.trim()||'';
+    entry.answerPronunciation = document.getElementById('f-answer-pronunciation')?.value?.trim()||'';
+    entry.answerEnglish = document.getElementById('f-answer-english')?.value?.trim()||'';
+  }
   if (editId) { data.entries = data.entries.map(e=>e.id===editId?entry:e); }
   else { data.entries.push(entry); }
   saveData(data); setView('manage');
@@ -763,11 +866,15 @@ function handleBulkAdd() {
   lines.forEach(line => {
     const parts = line.split('|').map(s=>s.trim());
     if (parts[0]) {
-      data.entries.push({
+      const entry = {
         id: Date.now().toString() + Math.random().toString(36).slice(2,6),
         english: parts[0], armenian: parts[1]||'', pronunciation: parts[2]||'',
         category: formState.category||'Uncategorized', audio: null
-      });
+      };
+      if (formState.category === 'Dialogue' && (parts[3]||parts[4]||parts[5])) {
+        entry.answerArmenian = parts[3]||''; entry.answerPronunciation = parts[4]||''; entry.answerEnglish = parts[5]||'';
+      }
+      data.entries.push(entry);
     }
   });
   saveData(data); setView('manage');
