@@ -64,7 +64,7 @@ details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var
 // ─── Data ──────────────────────────────────────────────────────────
 const DB_KEY = "hayeren-quiz-data";
 const SEED_DATA = {
-  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Lesson 8", "Lesson 10", "Lesson 11", "Lesson 12", "Lesson 13", "Lesson 15", "Lesson 16", "Lesson 17", "Numbers", "Alphabet", "Dialogue"],
+  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Lesson 8", "Lesson 10", "Lesson 11", "Lesson 12", "Lesson 13", "Lesson 15", "Lesson 16", "Lesson 17", "Numbers", "Alphabet", "Dialogue", "Days/Months/Time"],
   entries: [
     {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
     {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
@@ -505,7 +505,40 @@ const SEED_DATA = {
     {"id":"L17069", "english":"Why are you going?", "armenian":"Ինչու՞ ես գնում", "pronunciation":"inchu es gənum?", "category":"Lesson 17", "audio":null},
     {"id":"L17070", "english":"I am going to a restaurant to eat", "armenian":"Ես գնում եմ ռեստորան ուտելու", "pronunciation":"yes gənum em rest'oran ut'elu", "category":"Lesson 17", "audio":null},
     {"id":"L17071", "english":"I am going to a club to have fun", "armenian":"Ես գնում եմ ակումբ զվարճանալու", "pronunciation":"yes gənum em akumb zəvardjanalu", "category":"Lesson 17", "audio":null},
-    {"id":"L17072", "english":"I am going home to dine", "armenian":"Ես գնում եմ տուն ճաշելու", "pronunciation":"yes gənum em t'un djashelu", "category":"Lesson 17", "audio":null}
+    {"id":"L17072", "english":"I am going home to dine", "armenian":"Ես գնում եմ տուն ճաշելու", "pronunciation":"yes gənum em t'un djashelu", "category":"Lesson 17", "audio":null},
+    {"id":"DMT001", "english":"Century", "armenian":"Դար", "pronunciation":"dar", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT002", "english":"Year", "armenian":"Տարի", "pronunciation":"t'ari", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT003", "english":"Week", "armenian":"Շաբաթ", "pronunciation":"shabat", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT004", "english":"Hour", "armenian":"Ժամ", "pronunciation":"zham", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT005", "english":"Minute", "armenian":"Րոպե", "pronunciation":"rop'e", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT006", "english":"Second", "armenian":"Վայրկյան", "pronunciation":"varkyan", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT007", "english":"Monday", "armenian":"Երկուշաբթի", "pronunciation":"yerkushapti", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT008", "english":"Tuesday", "armenian":"Երեքշաբթի", "pronunciation":"yereqshapti", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT009", "english":"Wednesday", "armenian":"Չորեքշաբթի", "pronunciation":"choreqshapti", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT010", "english":"Thursday", "armenian":"Հինգշաբթի", "pronunciation":"hingshapti", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT011", "english":"Friday", "armenian":"Ուրբաթ", "pronunciation":"urpat", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT012", "english":"Saturday", "armenian":"Շաբաթ", "pronunciation":"shapat", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT013", "english":"Sunday", "armenian":"Կիրակի", "pronunciation":"kiraki", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT014", "english":"Note: shapat means both \"week\" and \"Saturday\" — to specify Saturday, say shapat oruh", "armenian":"Շաբաթ օրը", "pronunciation":"shapat oruh (Saturday, lit. \"the Saturday day\")", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT015", "english":"Note: no preposition needed for \"on [day]\" — just use the day name alone", "armenian":"Երկուշաբթի", "pronunciation":"yerkushapti = on Monday (no separate word for \"on\")", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT016", "english":"January", "armenian":"Հունվար", "pronunciation":"hunvar", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT017", "english":"February", "armenian":"Փետրվար", "pronunciation":"pet'ervar", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT018", "english":"March", "armenian":"Մարտ", "pronunciation":"mart'", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT019", "english":"April", "armenian":"Ապրիլ", "pronunciation":"ap'ril", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT020", "english":"May", "armenian":"Մայիս", "pronunciation":"mayis", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT021", "english":"June", "armenian":"Հունիս", "pronunciation":"hunis", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT022", "english":"July", "armenian":"Հուլիս", "pronunciation":"hulis", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT023", "english":"August", "armenian":"Օգոստոս", "pronunciation":"ogost'os", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT024", "english":"September", "armenian":"Սեպտեմբեր", "pronunciation":"sept'ember", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT025", "english":"October", "armenian":"Հոկտեմբեր", "pronunciation":"hokt'ember", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT026", "english":"November", "armenian":"Նոյեմբեր", "pronunciation":"noyember", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT027", "english":"December", "armenian":"Դեկտեմբեր", "pronunciation":"dekt'ember", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT028", "english":"Note: for dates, numbers ending in 2, 12, 22 add an \"s\" before the ending", "armenian":"Սեպտեմբերի տասներկուսին", "pronunciation":"sept'emberi t'asnerkusin = on September 12th", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT029", "english":"Which day of the month? (used to ask the date)", "armenian":"Ամսի քանիսը", "pronunciation":"amsi qanisə (amis + qani, \"month's how-manieth\")", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT030", "english":"What day is it today?", "armenian":"Ի՞նչ օր է այսօր", "pronunciation":"inch or e aysor?", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT031", "english":"Today is Sunday", "armenian":"Այսօր կիրակի է", "pronunciation":"aysor kiraki e", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT032", "english":"On Monday", "armenian":"Երկուշաբթի", "pronunciation":"yerkushapti", "category":"Days/Months/Time", "audio":null},
+    {"id":"DMT033", "english":"What's today's date?", "armenian":"Այսօր ամսի քանիսն է", "pronunciation":"aysor amsi qanisne?", "category":"Days/Months/Time", "audio":null}
   ]
 };
 
