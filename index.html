@@ -634,12 +634,14 @@ function render() {
       <button class="${view==='quiz'?'active':''}" onclick="setView('quiz')">Quiz</button>
       <button class="${view==='manage'?'active':''}" onclick="setView('manage')">Library</button>
       <button class="${view==='add'?'active':''}" onclick="setView('add')">+ Add</button>
+      <button class="${view==='scores'?'active':''}" onclick="setView('scores')">Scores</button>
     </div>
     <div id="content"></div>
   `;
   if (view==='quiz') renderQuiz();
   else if (view==='manage') renderManage();
   else if (view==='add'||view==='edit') renderForm();
+  else if (view==='scores') renderScores();
 }
 
 function setView(v) { view=v; editId=null; if(v==='quiz'){quiz.active=false;} render(); }
@@ -865,6 +867,81 @@ function renderManage() {
 
 function deleteEntry(id) { data.entries = data.entries.filter(e=>e.id!==id); saveData(data); renderManage(); }
 function startEdit(id) { editId=id; view='edit'; render(); }
+
+// ─── Scores ────────────────────────────────────────────────────────
+// Score = streak (correct answers in a row). A miss resets it to 0.
+function scoreBuckets() {
+  const reviews = loadReviews();
+  const labels = ['Never reviewed', '0 · missed last time', '1', '2', '3', '4', '5', '6+'];
+  const counts = new Array(labels.length).fill(0);
+  data.entries.forEach(e => {
+    const r = reviews[e.id];
+    if (!r) counts[0]++;
+    else counts[Math.min(Math.max(parseInt(r.streak, 10) || 0, 0), 6) + 1]++;
+  });
+  return { labels, counts };
+}
+
+function buildScoreExport() {
+  const reviews = loadReviews();
+  const seed = {};
+  SEED_DATA.entries.forEach(e => { seed[e.id] = e; });
+  const fields = ['english', 'armenian', 'pronunciation', 'category', 'answerArmenian', 'answerPronunciation', 'answerEnglish'];
+  const lines = ['HAYEREN-SCORES v1 ' + new Date().toISOString() + ' cards=' + data.entries.length];
+  const custom = [];
+  data.entries.forEach(e => {
+    const r = reviews[e.id];
+    const s = seed[e.id];
+    // "c" = card was added or edited on this phone, so its text is included below
+    const changed = !s || fields.some(k => (e[k] || '') !== (s[k] || ''));
+    lines.push([e.id, r ? r.streak : '-', r ? String(r.due || '').slice(0, 10) : '-', (e.audio ? 'a' : '') + (changed ? 'c' : '')].join(','));
+    if (changed) { const c = Object.assign({}, e); delete c.audio; custom.push(JSON.stringify(c)); }
+  });
+  if (custom.length) { lines.push('#CARDS'); custom.forEach(c => lines.push(c)); }
+  return lines.join('\n');
+}
+
+function renderScores() {
+  const el = document.getElementById('content');
+  const { labels, counts } = scoreBuckets();
+  const total = data.entries.length;
+  const max = Math.max(1, ...counts);
+  const colors = ['var(--muted)', 'var(--red)', 'var(--terracotta)', 'var(--gold)', 'var(--olive)', 'var(--olive)', 'var(--olive)', 'var(--olive)'];
+  el.innerHTML = `
+    <div class="card">
+      <h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:6px">Scores</h2>
+      <p style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:18px">${total} cards, grouped by streak &mdash; correct answers in a row. A miss resets a card to 0.</p>
+      ${labels.map((l, i) => `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="width:128px;flex-shrink:0;font-size:13px;font-weight:600">${l}</span>
+          <div style="flex:1;height:14px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="height:100%;width:${counts[i] / max * 100}%;background:${colors[i]};border-radius:4px"></div></div>
+          <span style="width:68px;flex-shrink:0;text-align:right;font-size:13px;font-variant-numeric:tabular-nums">${counts[i]} <span style="color:var(--muted)">(${total ? Math.round(counts[i] / total * 100) : 0}%)</span></span>
+        </div>`).join('')}
+    </div>
+    <div class="card" style="margin-top:12px">
+      <p style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:12px">Copy every card&rsquo;s score as text to share outside the app.</p>
+      <button class="btn btn-terracotta" style="width:100%;padding:14px 0;font-size:16px" onclick="copyScores()">Copy scores</button>
+      <p id="copy-msg" style="font-size:13px;color:var(--olive);font-weight:600;margin:10px 0;min-height:18px"></p>
+      <textarea id="score-export" readonly rows="4" style="font-size:11px;font-family:monospace;color:var(--muted)"></textarea>
+    </div>
+  `;
+  document.getElementById('score-export').value = buildScoreExport();
+}
+
+function copyScores() {
+  const ta = document.getElementById('score-export');
+  const text = ta.value;
+  const done = ok => {
+    const m = document.getElementById('copy-msg');
+    if (m) m.textContent = ok ? 'Copied — paste it wherever you need it.' : 'Couldn’t copy automatically. Tap the box below, choose Select All, then Copy.';
+  };
+  const fallback = () => {
+    try { ta.focus(); ta.select(); ta.setSelectionRange(0, text.length); done(document.execCommand('copy')); }
+    catch (e) { done(false); }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true)).catch(fallback);
+  else fallback();
+}
 
 // ─── Add / Edit Form ──────────────────────────────────────────────
 let formState = {};
