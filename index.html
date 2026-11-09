@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Hayeren">
-<meta name="theme-color" content="#6B7C3A">
+<meta name="apple-mobile-web-app-title" content="Hayaren 2">
+<meta name="theme-color" content="#C4704B">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236B7C3A'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='serif'>Հ</text></svg>">
-<title>Hayeren Practice</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23C4704B'/><text x='44' y='68' font-size='50' text-anchor='middle' fill='white' font-family='serif'>Հ</text><text x='76' y='80' font-size='26' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>2</text></svg>">
+<title>Hayaren 2</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -62,483 +62,332 @@ details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var
 
 <script>
 // ─── Data ──────────────────────────────────────────────────────────
-const DB_KEY = "hayeren-quiz-data";
+// Separate storage keys from the original Hayeren deck so the two never collide.
+const DB_KEY = "hayaren2-quiz-data";
+// Bump SEED_VERSION whenever cards are re-categorized or edited in SEED_DATA.
+const SEED_VERSION_KEY = "hayaren2-seed-version";
+const SEED_VERSION = "3";
 const SEED_DATA = {
-  categories: ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4", "Lesson 5", "Lesson 7", "Lesson 8", "Lesson 10", "Lesson 11", "Lesson 12", "Lesson 13", "Lesson 15", "Lesson 16", "Lesson 17", "Numbers", "Alphabet", "Dialogue", "Days/Months/Time"],
+  categories: ["Alphabet", "People & Things", "Describing", "Questions & Phrases", "Verbs", "Time & Numbers", "Foods", "Past Continuous", "Past Time Adverbs"],
   entries: [
-    {"id":"seed001","english":"Hello (formal / plural)","armenian":"\u0532\u0561\u0580\u0587 \u0541\u0565\u0566","pronunciation":"barev dzez","category":"Lesson 1","audio":null},
-    {"id":"seed001b","english":"Hi (informal)","armenian":"\u0532\u0561\u0580\u0587","pronunciation":"barev","category":"Lesson 1","audio":null},
-    {"id":"seed002","english":"Good morning","armenian":"\u0532\u0561\u0580\u056B \u056C\u0578\u0582\u0575\u057D","pronunciation":"bari luys (luys = light)","category":"Lesson 1","audio":null},
-    {"id":"seed003","english":"Good afternoon","armenian":"\u0532\u0561\u0580\u056B \u0585\u0580","pronunciation":"bari or (or = day)","category":"Lesson 1","audio":null},
-    {"id":"seed004","english":"Good night","armenian":"\u0532\u0561\u0580\u056B \u0563\u056B\u0577\u0565\u0580","pronunciation":"bari gisher (gisher = night)","category":"Lesson 1","audio":null},
-    {"id":"seed004b","english":"Good evening","armenian":"\u0532\u0561\u0580\u056B \u0565\u0580\u0565\u056F\u0578","pronunciation":"bari yereko","category":"Lesson 1","audio":null},
-    {"id":"seed006","english":"Goodbye (most common, formal)","armenian":"\u0581\u057F\u0565\u057D\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"tstesutyun","category":"Lesson 1","audio":null},
-    {"id":"seed007","english":"Good luck / Goodbye (less formal, short: hajo)","armenian":"\u0540\u0561\u057B\u0578\u0572\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"hajoghutyun (short: hajo)","category":"Lesson 1","audio":null},
-    {"id":"seed011","english":"See you soon","armenian":"\u053F\u0570\u0561\u0576\u0564\u056B\u057A\u0565\u0576\u0584","pronunciation":"khandipenk","category":"Lesson 1","audio":null},
-    {"id":"seed012","english":"See you tomorrow","armenian":"\u0544\u056B\u0576\u0579\u0587 \u057E\u0561\u0572\u0568","pronunciation":"minch vaghy (vaghy = tomorrow)","category":"Lesson 1","audio":null},
-    {"id":"seed005","english":"Have a nice journey / Safe travels","armenian":"\u0532\u0561\u0580\u056B \u0573\u0561\u0576\u0561\u057A\u0561\u0580\u0570","pronunciation":"bari djanap\u2019ar","category":"Lesson 1","audio":null},
-    {"id":"seed008","english":"Many / Much / A lot","armenian":"\u0547\u0561\u057F","pronunciation":"shat","category":"Lesson 1","audio":null},
-    {"id":"seed013","english":"Thank you (merci is common informal alternative)","armenian":"\u0547\u0576\u0578\u0580\u0570\u0561\u056F\u0561\u056C\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"shnorhakalutyun (or: merci)","category":"Lesson 1","audio":null},
-    {"id":"seed014","english":"Thank you very much","armenian":"\u0547\u0561\u057F \u0577\u0576\u0578\u0580\u0570\u0561\u056F\u0561\u056C\u0578\u0582\u0569\u0575\u0578\u0582\u0576","pronunciation":"shat shnorhakalutyun","category":"Lesson 1","audio":null},
-    {"id":"seed009","english":"You\u2019re welcome","armenian":"\u053D\u0576\u057F\u0580\u0565\u0574","pronunciation":"khentrem","category":"Lesson 1","audio":null},
-    {"id":"seed010","english":"Please","armenian":"\u053D\u0576\u057F\u0580\u0578\u0582\u0574\u0565\u0576","pronunciation":"khentrumen","category":"Lesson 1","audio":null},
-    {"id":"L2001","english":"No problem","armenian":"\u053D\u0576\u0564\u056B\u0580 \u0579\u056F\u0561","pronunciation":"khentir cheka","category":"Lesson 2","audio":null},
-    {"id":"L2002","english":"Sorry / Excuse me","armenian":"\u0546\u0565\u0580\u0565\u0581\u0565\u0584","pronunciation":"kenereq / neretseq","category":"Lesson 2","audio":null},
-    {"id":"L2003","english":"How are you? (formal)","armenian":"\u053B\u0576\u0579\u057A\u0565\u057D \u0565\u0584\u0589","pronunciation":"inchp\u2019es eq?","category":"Lesson 2","audio":null},
-    {"id":"L2004","english":"How are you? (informal)","armenian":"\u054E\u0578\u0576\u0581 \u0565\u057D\u0589","pronunciation":"vonts es?","category":"Lesson 2","audio":null},
-    {"id":"L2005","english":"I\u2019m well","armenian":"\u053C\u0561\u057E \u0565\u0574","pronunciation":"lav em","category":"Lesson 2","audio":null},
-    {"id":"L2006","english":"I\u2019m bad","armenian":"\u054E\u0561\u057F \u0565\u0574","pronunciation":"vat em","category":"Lesson 2","audio":null},
-    {"id":"L2007","english":"So so / Nothing / It\u2019s ok","armenian":"\u0548\u0579\u056B\u0576\u0579","pronunciation":"vochinch","category":"Lesson 2","audio":null},
-    {"id":"L2008","english":"How are things going?","armenian":"\u053B\u0576\u0579\u057A\u0565\u057D \u0565\u0576 \u0563\u0578\u0580\u056E\u0565\u0580\u0564\u0589","pronunciation":"inchp\u2019es en gortzerd?","category":"Lesson 2","audio":null},
-    {"id":"L2009","english":"All is well","armenian":"\u0531\u0574\u0565\u0576 \u056B\u0576\u0579 \u056C\u0561\u057E \u0567","pronunciation":"amen inch lav e","category":"Lesson 2","audio":null},
-    {"id":"L2010","english":"Everything","armenian":"\u0531\u0574\u0565\u0576 \u056B\u0576\u0579","pronunciation":"amen inch","category":"Lesson 2","audio":null},
-    {"id":"L2011","english":"Good","armenian":"\u053C\u0561\u057E \u0567","pronunciation":"lav e","category":"Lesson 2","audio":null},
-    {"id":"L2012","english":"Normal / Ordinary","armenian":"\u054D\u0578\u057E\u0578\u0580\u0561\u056F\u0561\u0576","pronunciation":"sovorakan","category":"Lesson 2","audio":null},
-    {"id":"L2013","english":"What\u2019s up?","armenian":"\u053B\u0576\u0579 \u056F\u0561 \u0579\u056F\u0561\u0589","pronunciation":"inch ka cheka?","category":"Lesson 2","audio":null},
-    {"id":"L2014","english":"Nice to meet you","armenian":"\u0548\u0582\u0580\u0561\u056D \u0565\u0574","pronunciation":"urakh em","category":"Lesson 2","audio":null},
-    {"id":"L2015","english":"Pleasure to meet you","armenian":"\u0540\u0561\u0573\u0565\u056C\u056B \u0567","pronunciation":"hadjeli e","category":"Lesson 2","audio":null},
-    {"id":"L2016","english":"Certainly","armenian":"\u0531\u0576\u057A\u0561\u0575\u0574\u0561\u0576","pronunciation":"anp\u2019ayman","category":"Lesson 2","audio":null},
-    {"id":"L2017","english":"Yes","armenian":"\u0531\u0575\u0578","pronunciation":"ayo","category":"Lesson 2","audio":null},
-    {"id":"L2018","english":"Yes (colloquial)","armenian":"\u0540\u0561","pronunciation":"ha","category":"Lesson 2","audio":null},
-    {"id":"L2019","english":"No","armenian":"\u054E\u0578\u0579","pronunciation":"voch","category":"Lesson 2","audio":null},
-    {"id":"L2020","english":"No (colloquial)","armenian":"\u0549\u0565","pronunciation":"che","category":"Lesson 2","audio":null},
-    {"id":"L2021","english":"Friend","armenian":"\u0538\u0576\u056F\u0565\u0580","pronunciation":"uhnker","category":"Lesson 2","audio":null},
-    {"id":"L2022","english":"Family","armenian":"\u0538\u0576\u057F\u0561\u0576\u056B\u0584","pronunciation":"uhnt\u2019aniq","category":"Lesson 2","audio":null},
-    {"id":"L2023","english":"Girl","armenian":"\u0531\u0572\u057B\u056B\u056F","pronunciation":"akhchik","category":"Lesson 2","audio":null},
-    {"id":"L2024","english":"Boy","armenian":"\u054F\u0572\u0561","pronunciation":"t\u2019uhgha","category":"Lesson 2","audio":null},
-    {"id":"L2025","english":"Teacher","armenian":"\u0548\u0582\u057D\u0578\u0582\u0581\u056B\u0579","pronunciation":"usutsich","category":"Lesson 2","audio":null},
-    {"id":"L2026","english":"Student","armenian":"\u0548\u0582\u057D\u0561\u0576\u0578\u0572","pronunciation":"usanogh","category":"Lesson 2","audio":null},
-    {"id":"L2027","english":"I (pronoun)","armenian":"\u0535\u057D","pronunciation":"yes","category":"Lesson 2","audio":null},
-    {"id":"L2028","english":"You (pronoun)","armenian":"\u0534\u0578\u0582","pronunciation":"du","category":"Lesson 2","audio":null},
-    {"id":"L2029","english":"He / She","armenian":"\u0546\u0561","pronunciation":"na","category":"Lesson 2","audio":null},
-    {"id":"L2030","english":"We","armenian":"\u0544\u0565\u0576\u0584","pronunciation":"menq","category":"Lesson 2","audio":null},
-    {"id":"L2031","english":"You (formal / plural)","armenian":"\u0534\u0578\u0582\u0584","pronunciation":"duk","category":"Lesson 2","audio":null},
-    {"id":"L2032","english":"They","armenian":"\u0546\u0565\u0580\u0561\u0576\u0584","pronunciation":"neranq","category":"Lesson 2","audio":null},
-    {"id":"L2033","english":"I am","armenian":"\u0535\u057D \u0565\u0574","pronunciation":"yes em","category":"Lesson 2","audio":null},
-    {"id":"L2034","english":"You are","armenian":"\u0534\u0578\u0582 \u0565\u057D","pronunciation":"du es","category":"Lesson 2","audio":null},
-    {"id":"L2035","english":"He / She is","armenian":"\u0546\u0561 \u0567","pronunciation":"na e","category":"Lesson 2","audio":null},
-    {"id":"L2036","english":"We are","armenian":"\u0544\u0565\u0576\u0584 \u0565\u0576\u0584","pronunciation":"menq enq","category":"Lesson 2","audio":null},
-    {"id":"L2037","english":"You are (plural)","armenian":"\u0534\u0578\u0582\u0584 \u0565\u0584","pronunciation":"duq eq","category":"Lesson 2","audio":null},
-    {"id":"L2038","english":"They are","armenian":"\u0546\u0565\u0580\u0561\u0576\u0584 \u0565\u0576","pronunciation":"neranq en","category":"Lesson 2","audio":null},
-    {"id":"L2039","english":"I am well","armenian":"\u0535\u057D \u056C\u0561\u057E-\u0565\u0574","pronunciation":"yes lav-em","category":"Lesson 2","audio":null},
-    {"id":"L2040","english":"You are well","armenian":"\u0534\u0578\u0582 \u056C\u0561\u057E-\u0565\u057D","pronunciation":"du lav-es","category":"Lesson 2","audio":null},
-    {"id":"L2041","english":"He / She is well","armenian":"\u0546\u0561 \u056C\u0561\u057E-\u0567","pronunciation":"na lav-e","category":"Lesson 2","audio":null},
-    {"id":"L2042","english":"We are well","armenian":"\u0544\u0565\u0576\u0584 \u056C\u0561\u057E-\u0565\u0576\u0584","pronunciation":"menq lav-enq","category":"Lesson 2","audio":null},
-    {"id":"L2043","english":"You are well (plural)","armenian":"\u0534\u0578\u0582\u0584 \u056C\u0561\u057E-\u0565\u0584","pronunciation":"duq lav-eq","category":"Lesson 2","audio":null},
-    {"id":"L2044","english":"They are well","armenian":"\u0546\u0565\u0580\u0561\u0576\u0584 \u056C\u0561\u057E-\u0565\u0576","pronunciation":"neranq lav-en","category":"Lesson 2","audio":null},
-    {"id":"L2045","english":"I am Armenian","armenian":"\u0535\u057D \u0570\u0561\u0575-\u0565\u0574","pronunciation":"yes hy-em","category":"Lesson 2","audio":null},
-    {"id":"L2046","english":"You are Armenian","armenian":"\u0534\u0578\u0582 \u0570\u0561\u0575-\u0565\u057D","pronunciation":"du hy-es","category":"Lesson 2","audio":null},
-    {"id":"L2047","english":"He / She is Armenian","armenian":"\u0546\u0561 \u0570\u0561\u0575-\u0567","pronunciation":"na hy-e","category":"Lesson 2","audio":null},
-    {"id":"L2048","english":"We are Armenian","armenian":"\u0544\u0565\u0576\u0584 \u0570\u0561\u0575-\u0565\u0576\u0584","pronunciation":"menq hy-enq","category":"Lesson 2","audio":null},
-    {"id":"L2049","english":"You are Armenian (plural)","armenian":"\u0534\u0578\u0582\u0584 \u0570\u0561\u0575-\u0565\u0584","pronunciation":"duq hy-eq","category":"Lesson 2","audio":null},
-    {"id":"L2050","english":"They are Armenian","armenian":"\u0546\u0565\u0580\u0561\u0576\u0584 \u0570\u0561\u0575-\u0565\u0576","pronunciation":"neranq hy-en","category":"Lesson 2","audio":null},
-    {"id":"L3001","english":"Good / Well","armenian":"Լավ","pronunciation":"lav","category":"Lesson 3","audio":null},
-    {"id":"L3002","english":"Bad","armenian":"Վաթ","pronunciation":"vat’","category":"Lesson 3","audio":null},
-    {"id":"L3003","english":"Hungry","armenian":"սոված","pronunciation":"sovatz","category":"Lesson 3","audio":null},
-    {"id":"L3004","english":"Thirsty","armenian":"ծարավ","pronunciation":"tzarav","category":"Lesson 3","audio":null},
-    {"id":"L3005","english":"Full / Not hungry","armenian":"կուշթ","pronunciation":"kusht’","category":"Lesson 3","audio":null},
-    {"id":"L3006","english":"Tired","armenian":"հոգնած","pronunciation":"hoqnatz","category":"Lesson 3","audio":null},
-    {"id":"L3007","english":"Free / Available","armenian":"Ազատ","pronunciation":"azat","category":"Lesson 3","audio":null},
-    {"id":"L3008","english":"Busy","armenian":"զբագված","pronunciation":"zbaghvatz","category":"Lesson 3","audio":null},
-    {"id":"L3009","english":"Cheerful / Happy","armenian":"ուրախ","pronunciation":"urakh","category":"Lesson 3","audio":null},
-    {"id":"L3010","english":"Sad","armenian":"թկխուր","pronunciation":"t’uhkhur","category":"Lesson 3","audio":null},
-    {"id":"L3011","english":"Pretty / Nice","armenian":"Սիրուն","pronunciation":"sirun","category":"Lesson 3","audio":null},
-    {"id":"L3012","english":"Foreigner","armenian":"Արտասահմանցի","pronunciation":"art’asahmantsi","category":"Lesson 3","audio":null},
-    {"id":"L3013","english":"Abroad","armenian":"Արտասահման","pronunciation":"art’asahman","category":"Lesson 3","audio":null},
-    {"id":"L3016","english":"Armenian (person)","armenian":"Հայ","pronunciation":"ahay","category":"Lesson 3","audio":null},
-    {"id":"L3017","english":"What?","armenian":"Ինչ","pronunciation":"inch","category":"Lesson 3","audio":null},
-    {"id":"L3018","english":"What’s your name?","armenian":"Ինչե քո անունդ","pronunciation":"inch e qo anuny?","category":"Lesson 3","audio":null},
-    {"id":"L3019","english":"My name is Grace","armenian":"Իմ անունդ Grace է","pronunciation":"im anuny Grace e","category":"Lesson 3","audio":null},
-    {"id":"L3020","english":"No news / Nothing new","armenian":"Նորություն չկա","pronunciation":"norutyun chka","category":"Lesson 3","audio":null},
-    {"id":"L3021","english":"Pretty (like sirun)","armenian":"Գեղեցիկ","pronunciation":"geghetsik","category":"Lesson 3","audio":null},
-    {"id":"L3022","english":"Bless you","armenian":"Արողիություն","pronunciation":"aroghjutyun","category":"Lesson 3","audio":null},
-    {"id":"L3023","english":"And you? (use “isk” only when comparing 2 things or in a longer phrase)","armenian":"Իսկ դու։","pronunciation":"isk du?","category":"Lesson 3","audio":null},
-    {"id":"L3024","english":"Good-natured / Kind","armenian":"Բարի","pronunciation":"bari","category":"Lesson 3","audio":null},
-    {"id":"L4001","english":"Room","armenian":"\u057d\u0565\u0576\u0575\u0561\u056f","pronunciation":"senyak","category":"Lesson 4","audio":null},
-    {"id":"L4002","english":"Window","armenian":"\u054a\u0561\u057f\u0578\u0582\u0570\u0561\u0576","pronunciation":"p\u2019at\u2019uhan","category":"Lesson 4","audio":null},
-    {"id":"L4003","english":"Door","armenian":"\u0534\u0578\u0582\u057c","pronunciation":"dur\u2019","category":"Lesson 4","audio":null},
-    {"id":"L4004","english":"Chair","armenian":"\u0531\u0569\u0578\u057c","pronunciation":"ator\u2019","category":"Lesson 4","audio":null},
-    {"id":"L4005","english":"Building","armenian":"\u0547\u0565\u0576\u0584","pronunciation":"shenq","category":"Lesson 4","audio":null},
-    {"id":"L4006","english":"Table","armenian":"\u054d\u0565\u0572\u0561\u0576","pronunciation":"seghan","category":"Lesson 4","audio":null},
-    {"id":"L4007","english":"Street","armenian":"\u0553\u0578\u0572\u0578\u0581","pronunciation":"poghots","category":"Lesson 4","audio":null},
-    {"id":"L4008","english":"Shop (the shop = khanuty)","armenian":"\u053d\u0561\u0576\u0578\u0582\u0569","pronunciation":"khanut","category":"Lesson 4","audio":null},
-    {"id":"L4009","english":"Park (the park = aygin)","armenian":"\u0531\u0575\u0563\u056b","pronunciation":"aygi (sounds like: i-gi)","category":"Lesson 4","audio":null},
-    {"id":"L4010","english":"House","armenian":"\u054f\u0578\u0582\u0576","pronunciation":"t\u2019un","category":"Lesson 4","audio":null},
-    {"id":"L4011","english":"Bank","armenian":"\u0532\u0561\u0576\u056f","pronunciation":"bank","category":"Lesson 4","audio":null},
-    {"id":"L4012","english":"Cafe","armenian":"\u054d\u0565\u057c\u0564\u056b\u0561\u0580\u0561\u0576","pronunciation":"sehrdjaran (ser-djaran)","category":"Lesson 4","audio":null},
-    {"id":"L4013","english":"Job / Work","armenian":"\u0531\u0577\u056d\u0561\u057f\u0561\u0576\u0584","pronunciation":"ashkhat\u2019anq","category":"Lesson 4","audio":null},
-    {"id":"L4014","english":"Hotel (hyur = guest)","armenian":"\u0540\u0575\u0578\u0582\u0580\u0561\u0576\u0578\u0581","pronunciation":"hyuranots","category":"Lesson 4","audio":null},
-    {"id":"L4015","english":"City","armenian":"\u0554\u0561\u0572\u0561\u0584","pronunciation":"qaghaq","category":"Lesson 4","audio":null},
-    {"id":"L4016","english":"Wall","armenian":"\u054a\u0561\u057f","pronunciation":"p\u2019at (sounds like: baht)","category":"Lesson 4","audio":null},
-    {"id":"L4017","english":"Coffee","armenian":"\u054d\u0578\u0582\u0580\u0573","pronunciation":"suhrd","category":"Lesson 4","audio":null},
-    {"id":"L4018","english":"Old / New","armenian":"\u0540\u056b\u0576 / \u0546\u0578\u0580","pronunciation":"hin / nor","category":"Lesson 4","audio":null},
-    {"id":"L4019","english":"Open / Closed","armenian":"\u0532\u0561\u0581 / \u0553\u0561\u056f","pronunciation":"bats / pak","category":"Lesson 4","audio":null},
-    {"id":"L4020","english":"Comfortable","armenian":"\u0540\u0561\u0580\u0574\u0561\u0580","pronunciation":"harmar","category":"Lesson 4","audio":null},
-    {"id":"L4021","english":"And","armenian":"\u0535\u057e / \u0578\u0582","pronunciation":"yev / u","category":"Lesson 4","audio":null},
-    {"id":"L4022","english":"But","armenian":"\u0532\u0561\u0575\u0581","pronunciation":"bayts","category":"Lesson 4","audio":null},
-    {"id":"L4023","english":"And / While / But","armenian":"\u053b\u057d\u056f","pronunciation":"isk","category":"Lesson 4","audio":null},
-    {"id":"L4024","english":"Or","armenian":"\u053f\u0561\u0574","pronunciation":"kam","category":"Lesson 4","audio":null},
-    {"id":"L4025","english":"Because","armenian":"\u0548\u0580\u0578\u057e\u0570\u0565\u057f\u0587","pronunciation":"vorovhet\u2019ev","category":"Lesson 4","audio":null},
-    {"id":"L5001", "english":"Fish", "armenian":"Ձուկ", "pronunciation":"dzuk", "category":"Lesson 5", "audio":null},
-    {"id":"L5002", "english":"Mountain", "armenian":"Լեռ / Սար", "pronunciation":"ler’ / sar", "category":"Lesson 5", "audio":null},
-    {"id":"L5003", "english":"Finger", "armenian":"Մատ", "pronunciation":"mat’", "category":"Lesson 5", "audio":null},
-    {"id":"L5004", "english":"Grandchild", "armenian":"Թոռ", "pronunciation":"tor’", "category":"Lesson 5", "audio":null},
-    {"id":"L5005", "english":"Woman", "armenian":"Կին", "pronunciation":"kin", "category":"Lesson 5", "audio":null},
-    {"id":"L5006", "english":"Person", "armenian":"Մարդ", "pronunciation":"mart", "category":"Lesson 5", "audio":null},
-    {"id":"L5007", "english":"Man", "armenian":"Տղամարդ", "pronunciation":"tghamart", "category":"Lesson 5", "audio":null},
-    {"id":"L5008", "english":"Doors (plural)", "armenian":"Դռներ", "pronunciation":"dur’ner (exception — not dur’er)", "category":"Lesson 5", "audio":null},
-    {"id":"L5009", "english":"Fish (plural)", "armenian":"Ձկներ", "pronunciation":"dzukner (exception)", "category":"Lesson 5", "audio":null},
-    {"id":"L5010", "english":"Women (plural)", "armenian":"Կանայք", "pronunciation":"kanaik (exception — never takes article)", "category":"Lesson 5", "audio":null},
-    {"id":"L5011", "english":"People (plural)", "armenian":"Մարդիկ", "pronunciation":"martik (exception — never takes article)", "category":"Lesson 5", "audio":null},
-    {"id":"L5012", "english":"Men (plural)", "armenian":"Տղամարդիկ", "pronunciation":"tghamartik (exception — never takes article)", "category":"Lesson 5", "audio":null},
-    {"id":"L7001", "english":"Airport (ot = air, nav = boat/ship)", "armenian":"Օդանավակայան", "pronunciation":"otanavakayan", "category":"Lesson 7", "audio":null},
-    {"id":"L7002", "english":"Restaurant", "armenian":"Ռեստորան", "pronunciation":"r’est’oran", "category":"Lesson 7", "audio":null},
-    {"id":"L7003", "english":"Embassy (desp’an = ambassador)", "armenian":"Դեսպանատուն", "pronunciation":"desp’anat’un", "category":"Lesson 7", "audio":null},
-    {"id":"L7004", "english":"Pharmacy (degh = medicine)", "armenian":"Դեղատուն", "pronunciation":"deghat’un", "category":"Lesson 7", "audio":null},
-    {"id":"L7005", "english":"Hospital (hivand = sick)", "armenian":"Հիվանդանոց", "pronunciation":"hivandanots", "category":"Lesson 7", "audio":null},
-    {"id":"L7006", "english":"Church", "armenian":"Եկեղեցի", "pronunciation":"yekeghetsi", "category":"Lesson 7", "audio":null},
-    {"id":"L7007", "english":"Market", "armenian":"Շուկա", "pronunciation":"shuka", "category":"Lesson 7", "audio":null},
-    {"id":"L7008", "english":"Theatre", "armenian":"Թատրոն", "pronunciation":"tat’ron", "category":"Lesson 7", "audio":null},
-    {"id":"L7009", "english":"Bag / Purse", "armenian":"Պայուսակ", "pronunciation":"p’ayusak", "category":"Lesson 7", "audio":null},
-    {"id":"L7010", "english":"School", "armenian":"Դպրոց", "pronunciation":"dep’rots", "category":"Lesson 7", "audio":null},
-    {"id":"L7011", "english":"Square (public facility)", "armenian":"Հրապարակ", "pronunciation":"h’rap’arak", "category":"Lesson 7", "audio":null},
-    {"id":"L7012", "english":"Cinema / Movie theater (kino+tat’ron)", "armenian":"Կինոթատրոն", "pronunciation":"kinotat’ron", "category":"Lesson 7", "audio":null},
-    {"id":"L7013", "english":"Museum", "armenian":"Թանգարան", "pronunciation":"tangaran", "category":"Lesson 7", "audio":null},
-    {"id":"L7014", "english":"Taxi", "armenian":"Տաքսի", "pronunciation":"t’aqsi", "category":"Lesson 7", "audio":null},
-    {"id":"L7015", "english":"Bus (short: bous)", "armenian":"Ավտոբուս", "pronunciation":"avt’obus (short: bous)", "category":"Lesson 7", "audio":null},
-    {"id":"L7016", "english":"Airplane", "armenian":"Ինքնաթիռ", "pronunciation":"inqnatir’", "category":"Lesson 7", "audio":null},
-    {"id":"L7017", "english":"Metro", "armenian":"Մետրո", "pronunciation":"met’ro", "category":"Lesson 7", "audio":null},
-    {"id":"L7018", "english":"Car", "armenian":"Մեքենա", "pronunciation":"meqena", "category":"Lesson 7", "audio":null},
-    {"id":"L7019", "english":"Film / Movie", "armenian":"Ֆիլm", "pronunciation":"film", "category":"Lesson 7", "audio":null},
-    {"id":"L8001", "english":"What? (singular)", "armenian":"Ինչ", "pronunciation":"inch", "category":"Lesson 8", "audio":null},
-    {"id":"L8002", "english":"What? (plural)", "armenian":"Ինչեր", "pronunciation":"incher", "category":"Lesson 8", "audio":null},
-    {"id":"L8003", "english":"Who? (singular)", "armenian":"Ով", "pronunciation":"ov", "category":"Lesson 8", "audio":null},
-    {"id":"L8004", "english":"Who? (plural)", "armenian":"Ովքեր", "pronunciation":"ovqer", "category":"Lesson 8", "audio":null},
-    {"id":"L8005", "english":"Where? (location)", "armenian":"Որտեղ", "pronunciation":"vort’egh", "category":"Lesson 8", "audio":null},
-    {"id":"L8006", "english":"Where? (direction)", "armenian":"Ուր", "pronunciation":"ur", "category":"Lesson 8", "audio":null},
-    {"id":"L8007", "english":"When?", "armenian":"Երբ", "pronunciation":"yerp", "category":"Lesson 8", "audio":null},
-    {"id":"L8008", "english":"Why?", "armenian":"Ինչու", "pronunciation":"inchu", "category":"Lesson 8", "audio":null},
-    {"id":"L8009", "english":"Which?", "armenian":"Որ", "pronunciation":"vor", "category":"Lesson 8", "audio":null},
-    {"id":"L8010", "english":"Whose? / Whom?", "armenian":"Ում", "pronunciation":"um", "category":"Lesson 8", "audio":null},
-    {"id":"L8011", "english":"What kind of?", "armenian":"Ինչպիսի", "pronunciation":"inchp’isi", "category":"Lesson 8", "audio":null},
-    {"id":"L8012", "english":"How many? (countable nouns, e.g. qani mart = how many people)", "armenian":"Քանի", "pronunciation":"qani", "category":"Lesson 8", "audio":null},
-    {"id":"L8013", "english":"How much? (uncountable nouns, e.g. how much water)", "armenian":"Ինչքան", "pronunciation":"inchqan", "category":"Lesson 8", "audio":null},
-    {"id":"L8014", "english":"Book", "armenian":"Գիրք", "pronunciation":"girq", "category":"Lesson 8", "audio":null},
-    {"id":"L8015", "english":"Health", "armenian":"Առողջություն", "pronunciation":"aroghjutyun", "category":"Lesson 8", "audio":null},
-    {"id":"L8016", "english":"Healthy", "armenian":"Առողջ", "pronunciation":"aroghch", "category":"Lesson 8", "audio":null},
-    {"id":"L8017", "english":"Your (informal)", "armenian":"Քո", "pronunciation":"qo", "category":"Lesson 8", "audio":null},
-    {"id":"L8018", "english":"Your (formal)", "armenian":"Ձեր", "pronunciation":"dzer", "category":"Lesson 8", "audio":null},
-    {"id":"L8019", "english":"My", "armenian":"Իմ", "pronunciation":"im", "category":"Lesson 8", "audio":null},
-    {"id":"L8020", "english":"Where are you from? (informal — du can be skipped)", "armenian":"Որտեղից ես?", "pronunciation":"vort’eghits es?", "category":"Lesson 8", "audio":null},
-    {"id":"L8021", "english":"Where are you from? (formal)", "armenian":"Որտեղից եք?", "pronunciation":"vort’eghits eq?", "category":"Lesson 8", "audio":null},
-    {"id":"L8022", "english":"Where are they from? (don’t skip neranq)", "armenian":"Որտեղից են նրանք?", "pronunciation":"vort’eghits en neranq?", "category":"Lesson 8", "audio":null},
-    {"id":"L8023", "english":"Where is Grace from? (add “the” to names)", "armenian":"Որտեղից է Grace-ը?", "pronunciation":"vort’eghits e Grace-uh?", "category":"Lesson 8", "audio":null},
-    {"id":"L8024", "english":"I’m from America", "armenian":"Ես Ամերիկայից եմ", "pronunciation":"yes Amerikayits em", "category":"Lesson 8", "audio":null},
-    {"id":"L8025", "english":"I’m from London", "armenian":"Ես Լոնդոնից եմ", "pronunciation":"yes Londonits em", "category":"Lesson 8", "audio":null},
-    {"id":"L8026", "english":"He/She is from London", "armenian":"Նա Լոնդոնից է", "pronunciation":"na Londonits e", "category":"Lesson 8", "audio":null},
-    {"id":"L8027", "english":"What is your name? (informal)", "armenian":"Ինչ է քո անունը?", "pronunciation":"inch e qo anunը", "category":"Lesson 8", "audio":null},
-    {"id":"L8028", "english":"What is your name? (formal / first meeting)", "armenian":"Ինչ է ձեր անունը?", "pronunciation":"inch e dzer anunը", "category":"Lesson 8", "audio":null},
-    {"id":"L8029", "english":"My name is Grace", "armenian":"Իմ անունը Grace է", "pronunciation":"im anunը Grace e", "category":"Lesson 8", "audio":null},
-    {"id":"L8030", "english":"Who are they? (W-question word order: ov en neranq, not neranq en ov)", "armenian":"Ովքեր են նրանք?", "pronunciation":"ovqer en neranq?", "category":"Lesson 8", "audio":null},
-    {"id":"L8031", "english":"Who is he? (word order: ov e na, not na-e ov)", "armenian":"Ով է նա?", "pronunciation":"ov e na?", "category":"Lesson 8", "audio":null},
-    {"id":"L8032", "english":"Are you hungry? (yes/no question — same word order as a statement)", "armenian":"Դու սովածես?", "pronunciation":"du sovatzes?", "category":"Lesson 8", "audio":null},
-    {"id":"L10001", "english":"Worried", "armenian":"Անհանգիստ", "pronunciation":"anhangist'", "category":"Lesson 10", "audio":null},
-    {"id":"L10002", "english":"Calm", "armenian":"Հանգիստ", "pronunciation":"hangist'", "category":"Lesson 10", "audio":null},
-    {"id":"L10003", "english":"Surprised", "armenian":"Զարմացած", "pronunciation":"zarmatsatz", "category":"Lesson 10", "audio":null},
-    {"id":"L10004", "english":"Angry", "armenian":"Բարկացած", "pronunciation":"barkatsatz", "category":"Lesson 10", "audio":null},
-    {"id":"L10005", "english":"Disappointed", "armenian":"Հիասթափված", "pronunciation":"hiastapvatz", "category":"Lesson 10", "audio":null},
-    {"id":"L10006", "english":"Displeased", "armenian":"Դժգոհ", "pronunciation":"dezhgoh", "category":"Lesson 10", "audio":null},
-    {"id":"L10007", "english":"Pleased", "armenian":"Գոհ", "pronunciation":"goh", "category":"Lesson 10", "audio":null},
-    {"id":"L10008", "english":"Touched", "armenian":"Հուզված", "pronunciation":"huzvatz", "category":"Lesson 10", "audio":null},
-    {"id":"L10009", "english":"Happy", "armenian":"Երջանիկ", "pronunciation":"yerjanik", "category":"Lesson 10", "audio":null},
-    {"id":"L10010", "english":"Insulted", "armenian":"Վիրավորված", "pronunciation":"viravorvatz", "category":"Lesson 10", "audio":null},
-    {"id":"L10011", "english":"Doctor", "armenian":"Բժիշկ", "pronunciation":"bezhishk", "category":"Lesson 10", "audio":null},
-    {"id":"L10012", "english":"Lawyer", "armenian":"Իրավաբան", "pronunciation":"iravaban", "category":"Lesson 10", "audio":null},
-    {"id":"L10013", "english":"Musician", "armenian":"Երաժիշտ", "pronunciation":"yerazhisht'", "category":"Lesson 10", "audio":null},
-    {"id":"L10014", "english":"Actor (der = role)", "armenian":"Դերասան", "pronunciation":"derasan", "category":"Lesson 10", "audio":null},
-    {"id":"L10015", "english":"Painter", "armenian":"Նկարիչ", "pronunciation":"nekarich", "category":"Lesson 10", "audio":null},
-    {"id":"L10016", "english":"Journalist", "armenian":"Լրագրող", "pronunciation":"leragrogh", "category":"Lesson 10", "audio":null},
-    {"id":"L10017", "english":"Businessman", "armenian":"Գործարար", "pronunciation":"gortzarar", "category":"Lesson 10", "audio":null},
-    {"id":"L10019", "english":"Engineer", "armenian":"Ինժեներ", "pronunciation":"inzhener", "category":"Lesson 10", "audio":null},
-    {"id":"L10020", "english":"Driver", "armenian":"Վարորդ", "pronunciation":"varort", "category":"Lesson 10", "audio":null},
-    {"id":"L10022", "english":"Singer", "armenian":"Երգիչ", "pronunciation":"yerqich", "category":"Lesson 10", "audio":null},
-    {"id":"L10023", "english":"Role", "armenian":"Դեր", "pronunciation":"der", "category":"Lesson 10", "audio":null},
-    {"id":"L10024", "english":"Picture / Photo", "armenian":"Նկար", "pronunciation":"nuhkar", "category":"Lesson 10", "audio":null},
-    {"id":"L10025", "english":"News", "armenian":"Լուր", "pronunciation":"luhr", "category":"Lesson 10", "audio":null},
-    {"id":"L10026", "english":"Song", "armenian":"Երգ", "pronunciation":"yerq", "category":"Lesson 10", "audio":null},
-    {"id":"L10028", "english":"Profession", "armenian":"Մասնագիթություն", "pronunciation":"masnagit'utyun", "category":"Lesson 10", "audio":null},
-    {"id":"L10029", "english":"Master (of a skill)", "armenian":"Մասնագևտ", "pronunciation":"masnaget", "category":"Lesson 10", "audio":null},
-    {"id":"N001", "english":"1 — One", "armenian":"Մեկ", "pronunciation":"mek", "category":"Numbers", "audio":null},
-    {"id":"N002", "english":"2 — Two", "armenian":"Երկու", "pronunciation":"yerku", "category":"Numbers", "audio":null},
-    {"id":"N003", "english":"3 — Three", "armenian":"Երեք", "pronunciation":"yerek", "category":"Numbers", "audio":null},
-    {"id":"N004", "english":"4 — Four", "armenian":"Չորս", "pronunciation":"chors", "category":"Numbers", "audio":null},
-    {"id":"N005", "english":"5 — Five", "armenian":"Հինգ", "pronunciation":"hing", "category":"Numbers", "audio":null},
-    {"id":"N006", "english":"6 — Six", "armenian":"վեց", "pronunciation":"vets", "category":"Numbers", "audio":null},
-    {"id":"N007", "english":"7 — Seven", "armenian":"յոթ", "pronunciation":"yot’h", "category":"Numbers", "audio":null},
-    {"id":"N008", "english":"8 — Eight", "armenian":"ութը", "pronunciation":"ut’h", "category":"Numbers", "audio":null},
-    {"id":"N009", "english":"9 — Nine", "armenian":"ինը", "pronunciation":"inn", "category":"Numbers", "audio":null},
-    {"id":"N010", "english":"10 — Ten", "armenian":"տասը", "pronunciation":"tas", "category":"Numbers", "audio":null},
-    {"id":"L11001", "english":"I was", "armenian":"Ես Էի", "pronunciation":"yes ei", "category":"Lesson 11", "audio":null},
-    {"id":"L11002", "english":"You were", "armenian":"Դու Էիր", "pronunciation":"du eir", "category":"Lesson 11", "audio":null},
-    {"id":"L11003", "english":"He / She was", "armenian":"Նա Էր", "pronunciation":"na er", "category":"Lesson 11", "audio":null},
-    {"id":"L11004", "english":"We were", "armenian":"Մենք Էինք", "pronunciation":"menq einq", "category":"Lesson 11", "audio":null},
-    {"id":"L11005", "english":"You were (plural)", "armenian":"Դուք Էիք", "pronunciation":"duq eiq", "category":"Lesson 11", "audio":null},
-    {"id":"L11006", "english":"They were", "armenian":"Նրանք Էին", "pronunciation":"neranq ein", "category":"Lesson 11", "audio":null},
-    {"id":"L11007", "english":"I was not", "armenian":"Ես չԷի", "pronunciation":"yes chei", "category":"Lesson 11", "audio":null},
-    {"id":"L11008", "english":"You were not", "armenian":"Դու չԷիր", "pronunciation":"du cheir", "category":"Lesson 11", "audio":null},
-    {"id":"L11009", "english":"He / She was not", "armenian":"Նա չԷր", "pronunciation":"na cher", "category":"Lesson 11", "audio":null},
-    {"id":"L11010", "english":"We were not", "armenian":"Մենք չԷինք", "pronunciation":"menq cheinq", "category":"Lesson 11", "audio":null},
-    {"id":"L11011", "english":"You were not (plural)", "armenian":"Դուք չԷիք", "pronunciation":"duq cheiq", "category":"Lesson 11", "audio":null},
-    {"id":"L11012", "english":"They were not", "armenian":"Նրանք չԷին", "pronunciation":"neranq chein", "category":"Lesson 11", "audio":null},
-    {"id":"L11013", "english":"Now", "armenian":"Հիմա", "pronunciation":"hima", "category":"Lesson 11", "audio":null},
-    {"id":"L11014", "english":"Yesterday (note: sounds like “three” yerEK, but different word — yesterday = yerEK, three = yerEQ)", "armenian":"Երեկ", "pronunciation":"yerek", "category":"Lesson 11", "audio":null},
-    {"id":"L12001", "english":"Today (aysor = ay + or, where or = day)", "armenian":"Այսոր", "pronunciation":"aysor", "category":"Lesson 12", "audio":null},
-    {"id":"L12002", "english":"Day", "armenian":"օր", "pronunciation":"or", "category":"Lesson 12", "audio":null},
-    {"id":"L13001", "english":"To want", "armenian":"Ուզել", "pronunciation":"uzel → uzum (yes uzum em = I want)", "category":"Lesson 13", "audio":null},
-    {"id":"L13002", "english":"To speak", "armenian":"Խոսել", "pronunciation":"khosel → khosum (yes khosum em = I speak)", "category":"Lesson 13", "audio":null},
-    {"id":"L13003", "english":"To live", "armenian":"Ապրել", "pronunciation":"ap’rel → ap’rum (yes ap’rum em = I live)", "category":"Lesson 13", "audio":null},
-    {"id":"L13004", "english":"To go", "armenian":"Գնալ", "pronunciation":"guhnal → guhnum (yes guhnum em = I go)", "category":"Lesson 13", "audio":null},
-    {"id":"L13005", "english":"To eat", "armenian":"Ուտել", "pronunciation":"ut’el → ut’um (yes ut’um em = I eat)", "category":"Lesson 13", "audio":null},
-    {"id":"L13006", "english":"To drink", "armenian":"Խմել", "pronunciation":"khuhmel → khuhmum (yes khuhmum em = I drink)", "category":"Lesson 13", "audio":null},
-    {"id":"L13007", "english":"To wake up", "armenian":"Արթնանալ", "pronunciation":"artnanal → artnanum (yes artnanum em = I wake up)", "category":"Lesson 13", "audio":null},
-    {"id":"L13008", "english":"To be late", "armenian":"Ուշանալ", "pronunciation":"ushanal → ushanum (yes ushanum em = I am late)", "category":"Lesson 13", "audio":null},
-    {"id":"L13009", "english":"To do", "armenian":"Անել", "pronunciation":"anel → anum (yes anum em = I do)", "category":"Lesson 13", "audio":null},
-    {"id":"L13010", "english":"To walk", "armenian":"Քայլել", "pronunciation":"qaylel → qaylum (yes qaylum em = I walk)", "category":"Lesson 13", "audio":null},
-    {"id":"L13011", "english":"To say", "armenian":"Ասել", "pronunciation":"asel → asum (yes asum em = I say)", "category":"Lesson 13", "audio":null},
-    {"id":"L13012", "english":"To stay", "armenian":"Մնալ", "pronunciation":"muhnal → muhnum (yes muhnum em = I stay)", "category":"Lesson 13", "audio":null},
-    {"id":"L13013", "english":"To love / Like", "armenian":"Սիրել", "pronunciation":"sirel → sirum (yes sirum em = I love — note: “a lot” before verb: yes shat em sirum = I love a lot)", "category":"Lesson 13", "audio":null},
-    {"id":"L13014", "english":"To dance", "armenian":"Պարել", "pronunciation":"p’arel → p’arum (yes p’arum em = I dance)", "category":"Lesson 13", "audio":null},
-    {"id":"L13015", "english":"To sing", "armenian":"Երգել", "pronunciation":"yerqel → yerqum (yes yerqum em = I sing)", "category":"Lesson 13", "audio":null},
-    {"id":"L13016", "english":"To be / Feel cold", "armenian":"Մրսել", "pronunciation":"muhrsel → muhrsum (yes muhrsum em = I’m cold)", "category":"Lesson 13", "audio":null},
-    {"id":"L13017", "english":"To play (games)", "armenian":"Խաղալ", "pronunciation":"khaghal → khaghum (yes khaghum em = I play)", "category":"Lesson 13", "audio":null},
-    {"id":"L13018", "english":"To study", "armenian":"Սովորել", "pronunciation":"sovorel → sovorum (yes sovorum em = I study)", "category":"Lesson 13", "audio":null},
-    {"id":"L13019", "english":"To work", "armenian":"Աշխատել", "pronunciation":"ashkhat’el → ashkhat’um (yes ashkhat’um em = I work)", "category":"Lesson 13", "audio":null},
-    {"id":"L13020", "english":"To come", "armenian":"Գալ", "pronunciation":"gal", "category":"Lesson 13", "audio":null},
-    {"id":"L13021", "english":"To give", "armenian":"Տալ", "pronunciation":"t’al", "category":"Lesson 13", "audio":null},
-    {"id":"L13022", "english":"I don’t want — (rule: negative comes BEFORE verb)", "armenian":"Ես չեմ ուզում", "pronunciation":"yes chem uzum", "category":"Lesson 13", "audio":null},
-    {"id":"L13023", "english":"You don’t want", "armenian":"Դու չես ուզում", "pronunciation":"du ches uzum", "category":"Lesson 13", "audio":null},
-    {"id":"L13024", "english":"He / She doesn’t want", "armenian":"Նա չի ուզում", "pronunciation":"na chi uzum", "category":"Lesson 13", "audio":null},
-    {"id":"L13025", "english":"We don’t want", "armenian":"Մենք չենք ուզում", "pronunciation":"menq chenq uzum", "category":"Lesson 13", "audio":null},
-    {"id":"L13026", "english":"You don’t want (formal / plural)", "armenian":"Դուք չեք ուզում", "pronunciation":"duq cheq uzum", "category":"Lesson 13", "audio":null},
-    {"id":"L13027", "english":"They don’t want", "armenian":"Նրանք չեն ուզում", "pronunciation":"nranq chen uzum", "category":"Lesson 13", "audio":null},
-    {"id":"L13028", "english":"To sleep", "armenian":"Քնել", "pronunciation":"qnel", "category":"Lesson 13", "audio":null},
-    {"id":"L13029", "english":"Half", "armenian":"Կես", "pronunciation":"ges", "category":"Lesson 13", "audio":null},
-    {"id":"L13030", "english":"Noon (half day)", "armenian":"Կեսօր", "pronunciation":"gesor", "category":"Lesson 13", "audio":null},
-    {"id":"L13031", "english":"Early", "armenian":"Շուտ", "pronunciation":"shut’", "category":"Lesson 13", "audio":null},
-    {"id":"L13032", "english":"Late", "armenian":"Ուշ", "pronunciation":"ush", "category":"Lesson 13", "audio":null},
-    {"id":"L13033", "english":"To have dinner", "armenian":"Ճաշել", "pronunciation":"chashel / djashel", "category":"Lesson 13", "audio":null},
-    {"id":"L13034", "english":"A little", "armenian":"Քիչ", "pronunciation":"qich", "category":"Lesson 13", "audio":null},
-    {"id":"L13035", "english":"Always", "armenian":"Միշտ", "pronunciation":"misht’", "category":"Lesson 13", "audio":null},
-    {"id":"L13036", "english":"Sometimes", "armenian":"Երբեմն", "pronunciation":"yerpemən", "category":"Lesson 13", "audio":null},
-    {"id":"L13037", "english":"Usually", "armenian":"Սովորաբար", "pronunciation":"sovorabar", "category":"Lesson 13", "audio":null},
-    {"id":"L13038", "english":"Often", "armenian":"Հաճախ", "pronunciation":"hadjakh", "category":"Lesson 13", "audio":null},
-    {"id":"L13039", "english":"Never", "armenian":"Երբեք", "pronunciation":"yerpeq", "category":"Lesson 13", "audio":null},
-    {"id":"L13040", "english":"In the morning", "armenian":"Առավոտյան", "pronunciation":"ar’avot’yan", "category":"Lesson 13", "audio":null},
-    {"id":"L13041", "english":"In the afternoon", "armenian":"Կեսօրին", "pronunciation":"kesorin", "category":"Lesson 13", "audio":null},
-    {"id":"L13042", "english":"In the evening", "armenian":"Երեկոյան", "pronunciation":"yerekoyan", "category":"Lesson 13", "audio":null},
-    {"id":"L13043", "english":"At night", "armenian":"Գիշերը", "pronunciation":"gisherə", "category":"Lesson 13", "audio":null},
-    {"id":"AL011", "english":"Ի ի — eleventh letter", "armenian":"Ի ի", "pronunciation":"ini (ee)", "category":"Alphabet", "audio":null},
-    {"id":"AL012", "english":"Լ լ — twelfth letter", "armenian":"Լ լ", "pronunciation":"lyun (l)", "category":"Alphabet", "audio":null},
-    {"id":"AL013", "english":"Խ խ — thirteenth letter — kh = throaty h", "armenian":"Խ խ", "pronunciation":"khe (throaty h)", "category":"Alphabet", "audio":null},
-    {"id":"AL014", "english":"Ծ ծ — fourteenth letter", "armenian":"Ծ ծ", "pronunciation":"tsa (ts)", "category":"Alphabet", "audio":null},
-    {"id":"AL015", "english":"Կ կ — fifteenth letter — sounds like g", "armenian":"Կ կ", "pronunciation":"ken (sounds like g)", "category":"Alphabet", "audio":null},
-    {"id":"AL001", "english":"Ա ա — first letter", "armenian":"Ա ա", "pronunciation":"ah", "category":"Alphabet", "audio":null},
-    {"id":"AL002", "english":"Բ բ — second letter", "armenian":"Բ բ", "pronunciation":"buh", "category":"Alphabet", "audio":null},
-    {"id":"AL003", "english":"Գ գ — third letter — note:գ (guh) easily confused with զ (zuh)", "armenian":"Գ գ", "pronunciation":"guh", "category":"Alphabet", "audio":null},
-    {"id":"AL004", "english":"Դ դ — fourth letter", "armenian":"Դ դ", "pronunciation":"duh", "category":"Alphabet", "audio":null},
-    {"id":"AL005", "english":"Ե ե — fifth letter", "armenian":"Ե ե", "pronunciation":"ye / e", "category":"Alphabet", "audio":null},
-    {"id":"AL006", "english":"Զ զ — sixth letter — note:զ (zuh) easily confused with գ (guh)", "armenian":"Զ զ", "pronunciation":"zuh", "category":"Alphabet", "audio":null},
-    {"id":"AL007", "english":"Է է — seventh letter — means “is”", "armenian":"Է է", "pronunciation":"e", "category":"Alphabet", "audio":null},
-    {"id":"AL008", "english":"Ը ը — eighth letter — the definite article, add to end of word (e.g. tunը)", "armenian":"Ը ը", "pronunciation":"uh (upside down e) — also the definite article “the”", "category":"Alphabet", "audio":null},
-    {"id":"AL009", "english":"Թ թ — ninth letter — e.g. tutak", "armenian":"Թ թ", "pronunciation":"tuh", "category":"Alphabet", "audio":null},
-    {"id":"AL010", "english":"Ժ ժ — tenth letter — e.g. zham", "armenian":"Ժ ժ", "pronunciation":"zhuh", "category":"Alphabet", "audio":null},
-    {"id":"DLG201", "english":"To get acquainted / to meet", "armenian":"Ծանոթանալ", "pronunciation":"tsanotanal", "category":"Dialogue", "audio":null},
-    {"id":"DLG202", "english":"Pleasant / nice", "armenian":"Հաճելի", "pronunciation":"hajeli", "category":"Dialogue", "audio":null},
-    {"id":"DLG203", "english":"Month", "armenian":"Ամիս", "pronunciation":"amis", "category":"Dialogue", "audio":null},
-    {"id":"DLG204", "english":"University", "armenian":"Համալսարան", "pronunciation":"hamalsaran", "category":"Dialogue", "audio":null},
-    {"id":"DLG205", "english":"Dad", "armenian":"Հայրիկ", "pronunciation":"hayrik", "category":"Dialogue", "audio":null},
-    {"id":"DLG206", "english":"Mom", "armenian":"Մայրիկ", "pronunciation":"mayrik", "category":"Dialogue", "audio":null},
-    {"id":"DLG207", "english":"Professor", "armenian":"Պրոֆեսոր", "pronunciation":"professor", "category":"Dialogue", "audio":null},
-    {"id":"DLG208", "english":"To have", "armenian":"Ունենալ", "pronunciation":"unenal → unem (yes unem = I have)", "category":"Dialogue", "audio":null},
-    {"id":"DLG209", "english":"Brother", "armenian":"Եղբայր", "pronunciation":"yeghbayr", "category":"Dialogue", "audio":null},
-    {"id":"DLG210", "english":"To move (change location)", "armenian":"Տեղափոխվել", "pronunciation":"teghap'okhvel", "category":"Dialogue", "audio":null},
-    {"id":"DLG211", "english":"To read", "armenian":"Կարդալ", "pronunciation":"kardal", "category":"Dialogue", "audio":null},
-    {"id":"DLG212", "english":"To travel", "armenian":"Ճանապարհորդել", "pronunciation":"chanaparhortel", "category":"Dialogue", "audio":null},
-    {"id":"DLG213", "english":"To understand", "armenian":"Հասկանալ", "pronunciation":"haskanal → haskanum (yes haskanum em = I understand)", "category":"Dialogue", "audio":null},
-    {"id":"DLG301", "english":"My name is Grace, nice to get acquainted", "armenian":"Իմ անունը Grace է, հաճելի է ծանոթանալ", "pronunciation":"im anune Grace e, hajeli e tsanotanal", "category":"Dialogue", "audio":null},
-    {"id":"DLG302", "english":"For some months, I've been studying Armenian", "armenian":"Մի քանի ամիս է, որ սովորում եմ հայերեն", "pronunciation":"mi qani amis e, vor sovorumem hyaren", "category":"Dialogue", "audio":null},
-    {"id":"DLG303", "english":"I understand a little", "armenian":"Ես մի քիչ եմ հասկանում", "pronunciation":"yes mi qich em haskanum", "category":"Dialogue", "audio":null},
-    {"id":"DLG304", "english":"I studied at Penn", "armenian":"Ես սովորել եմ Փենի համալսարանում", "pronunciation":"yes soverelem Penn hamalsaranum", "category":"Dialogue", "audio":null},
-    {"id":"DLG305", "english":"I work in fintech", "armenian":"Ես ֆինթեքում եմ աշխատում", "pronunciation":"yes fintechumem ashkatum", "category":"Dialogue", "audio":null},
-    {"id":"DLG306", "english":"I'm from Irvine, California", "armenian":"Ես Irvine-ից եմ, California-ից եմ", "pronunciation":"yes Irvineits-em, california-itsem", "category":"Dialogue", "audio":null},
-    {"id":"DLG307", "english":"My parents live in Irvine", "armenian":"Իմ ծնողներս ապրում են Irvine-ում", "pronunciation":"im tsnoghneruh aprumen Irvine-um", "category":"Dialogue", "audio":null},
-    {"id":"DLG308", "english":"My dad is a professor", "armenian":"Իմ հայրիկս պրոֆեսոր է", "pronunciation":"im hayrikuh professor-e", "category":"Dialogue", "audio":null},
-    {"id":"DLG309", "english":"I have a brother, he lives in New York", "armenian":"Ես ունեմ եղբայր: Նա ապրում է Նյու Յորքում", "pronunciation":"yes unem yeghbayr. na aprume New Yorkum", "category":"Dialogue", "audio":null},
-    {"id":"DLG310", "english":"Usually I live in New York, but I want to move to London", "armenian":"Սովորաբար ապրում եմ Նյու Յորքում, բայց ես ուզում եմ տեղափոխվել Լոնդոն", "pronunciation":"sovorabar, aprumem new yorkum, bays yes uzum em teghapokhvel London", "category":"Dialogue", "audio":null},
-    {"id":"DLG311", "english":"I like to read, and I like to travel, and I go to the gym", "armenian":"Ես սիրում եմ կարդալ, և սիրում եմ ճանապարհորդել, և գնում եմ gym", "pronunciation":"yes sirumem kardal, yev sirumem chanaparhortel, yev gnumem gym", "category":"Dialogue", "audio":null},
-    {"id":"DLG312", "english":"How was Armenia?", "armenian":"Ինչպես էր Հայաստանում?", "pronunciation":"inchpes-er Hyastanum?", "category":"Dialogue", "audio":null},
-    {"id":"AL016", "english":"Հ հ — sixteenth letter", "armenian":"Հ հ", "pronunciation":"huh", "category":"Alphabet", "audio":null},
-    {"id":"AL017", "english":"Ձ ձ — seventeenth letter — e.g. barev dzez", "armenian":"Ձ ձ", "pronunciation":"dzuh (dz)", "category":"Alphabet", "audio":null},
-    {"id":"AL018", "english":"Ղ ղ — eighteenth letter", "armenian":"Ղ ղ", "pronunciation":"ghuh (gh)", "category":"Alphabet", "audio":null},
-    {"id":"AL019", "english":"Ճ ճ — nineteenth letter — e.g. djanap'ar", "armenian":"Ճ ճ", "pronunciation":"djuh (dj)", "category":"Alphabet", "audio":null},
-    {"id":"AL020", "english":"Մ մ — twentieth letter — e.g. muhnal", "armenian":"Մ մ", "pronunciation":"muh (m)", "category":"Alphabet", "audio":null},
-    {"id":"L15001", "english":"To come (exception verb — present stem is irregular: galis, not the expected -um form)", "armenian":"Գալ", "pronunciation":"gal → present stem: galis", "category":"Lesson 15", "audio":null},
-    {"id":"L15002", "english":"I'm coming / I come to the theater", "armenian":"Ես գալիս եմ թատրոն", "pronunciation":"yes galis em tatron", "category":"Lesson 15", "audio":null},
-    {"id":"L15003", "english":"I'm not coming to the theater (negative before verb)", "armenian":"Ես չեմ գալիս թատրոն", "pronunciation":"yes chem galis tatron", "category":"Lesson 15", "audio":null},
-    {"id":"L15004", "english":"I'm going / I go to school (present continuous = Armenian present tense)", "armenian":"Ես գնում եմ դպրոց", "pronunciation":"yes gnum em d'prots", "category":"Lesson 15", "audio":null},
-    {"id":"L15005", "english":"To give (exception verb — present stem: talis)", "armenian":"Տալ", "pronunciation":"t'al → present stem: talis", "category":"Lesson 15", "audio":null},
-    {"id":"L15006", "english":"To cry (exception verb — present stem: lalis)", "armenian":"Լալ", "pronunciation":"l'al → present stem: lalis", "category":"Lesson 15", "audio":null},
-    {"id":"L15007", "english":"Party — going to an activity (not a building) takes suffix -ի, not -ում", "armenian":"Երեկույթ → երեկույթի", "pronunciation":"yerekuyt → yerekuyti (yes gnumem yerekuyti = I'm going to a party)", "category":"Lesson 15", "audio":null},
-    {"id":"L15008", "english":"Class — activity, takes suffix -ի", "armenian":"Դաս → դասի", "pronunciation":"das → dasi (yes gnumem dasi = I'm going to class)", "category":"Lesson 15", "audio":null},
-    {"id":"L15009", "english":"Meeting — activity, irregular genitive (not just +ի)", "armenian":"Հանդիպում → հանդիպման", "pronunciation":"handipum → handipman (yes gnumem handipman = I'm going to a meeting)", "category":"Lesson 15", "audio":null},
-    {"id":"L15010", "english":"Job / work — activity, takes suffix -ի", "armenian":"Աշխատանք → աշխատանքի", "pronunciation":"ashkhatanq → ashkhatanqi (yes gnumem ashkhatanqi = I'm going to work)", "category":"Lesson 15", "audio":null},
-    {"id":"L15011", "english":"I'm late for work (from = suffix -ից on the activity)", "armenian":"Ես ուշանում եմ աշխատանքից", "pronunciation":"yes ushanum em ashkhatanqits", "category":"Lesson 15", "audio":null},
-    {"id":"L15012", "english":"I'm not late", "armenian":"Ես չեմ ուշանում", "pronunciation":"yes chem ushanum", "category":"Lesson 15", "audio":null},
-    {"id":"L15013", "english":"He/She is late for school", "armenian":"Նա ուշանում է դպրոցից", "pronunciation":"na ushanum e d'protsits", "category":"Lesson 15", "audio":null},
-    {"id":"N011", "english":"11 — Eleven", "armenian":"Տասնմեկ", "pronunciation":"t'asnəmek", "category":"Numbers", "audio":null},
-    {"id":"N012", "english":"12 — Twelve", "armenian":"Տասներկու", "pronunciation":"t'asnerku", "category":"Numbers", "audio":null},
-    {"id":"N013", "english":"13 — Thirteen", "armenian":"Տասներեք", "pronunciation":"t'asnereq", "category":"Numbers", "audio":null},
-    {"id":"N014", "english":"14 — Fourteen", "armenian":"Տասնչորս", "pronunciation":"t'asnəchors", "category":"Numbers", "audio":null},
-    {"id":"N015", "english":"15 — Fifteen", "armenian":"Տասնհինգ", "pronunciation":"t'asnəhing", "category":"Numbers", "audio":null},
-    {"id":"N016", "english":"16 — Sixteen", "armenian":"Տասնվեց", "pronunciation":"t'asnəvets", "category":"Numbers", "audio":null},
-    {"id":"N017", "english":"17 — Seventeen", "armenian":"Տասնյոթ", "pronunciation":"t'asnəyot", "category":"Numbers", "audio":null},
-    {"id":"N018", "english":"18 — Eighteen", "armenian":"Տասնութ", "pronunciation":"t'asnut", "category":"Numbers", "audio":null},
-    {"id":"N019", "english":"19 — Nineteen", "armenian":"Տասնինը", "pronunciation":"t'asninə", "category":"Numbers", "audio":null},
-    {"id":"N020", "english":"20 — Twenty", "armenian":"Քսան", "pronunciation":"qsan", "category":"Numbers", "audio":null},
-    {"id":"N021", "english":"30 — Thirty", "armenian":"Երեսուն", "pronunciation":"yeresun", "category":"Numbers", "audio":null},
-    {"id":"N022", "english":"40 — Forty", "armenian":"Քառասուն", "pronunciation":"qar'asun", "category":"Numbers", "audio":null},
-    {"id":"N023", "english":"50 — Fifty", "armenian":"Հիսուն", "pronunciation":"hisun", "category":"Numbers", "audio":null},
-    {"id":"N024", "english":"60 — Sixty", "armenian":"Վաթսուն", "pronunciation":"vatsun", "category":"Numbers", "audio":null},
-    {"id":"N025", "english":"70 — Seventy", "armenian":"Յոթանասուն", "pronunciation":"yotanasun", "category":"Numbers", "audio":null},
-    {"id":"N026", "english":"80 — Eighty", "armenian":"Ութսուն", "pronunciation":"utsun", "category":"Numbers", "audio":null},
-    {"id":"N027", "english":"90 — Ninety", "armenian":"Իննսուն", "pronunciation":"innəsun", "category":"Numbers", "audio":null},
-    {"id":"N028", "english":"100 — One hundred", "armenian":"Հարյուր", "pronunciation":"haryur", "category":"Numbers", "audio":null},
-    {"id":"N029", "english":"1,000 — One thousand", "armenian":"Հազար", "pronunciation":"hazar", "category":"Numbers", "audio":null},
-    {"id":"N030", "english":"1,000,000 — One million", "armenian":"Միլիոն", "pronunciation":"milion", "category":"Numbers", "audio":null},
-    {"id":"N031", "english":"21 — compound: 20+1 written together", "armenian":"Քսան+մեկ=Քսանմեկ", "pronunciation":"qsanmek", "category":"Numbers", "audio":null},
-    {"id":"N032", "english":"43 — compound: 40+3 written together", "armenian":"Քառասուն+երեք=Քառասուներեք", "pronunciation":"qar'asunereq", "category":"Numbers", "audio":null},
-    {"id":"N033", "english":"67 — compound: 60+7 written together", "armenian":"Վաթսուն+յոթ=Վաթսունյոթ", "pronunciation":"vatsunyot", "category":"Numbers", "audio":null},
-    {"id":"N034", "english":"99 — compound: 90+9 written together", "armenian":"Իննսուն+ինը=Իննսունինը", "pronunciation":"innəsuninə", "category":"Numbers", "audio":null},
-    {"id":"N035", "english":"105 — hundreds + remainder, written separately", "armenian":"Հարյուր հինգ", "pronunciation":"haryur hing", "category":"Numbers", "audio":null},
-    {"id":"N036", "english":"407 — hundreds + remainder, written separately", "armenian":"Չորս հարյուր յոթ", "pronunciation":"chors haryur yot", "category":"Numbers", "audio":null},
-    {"id":"N037", "english":"077 — leading zero + compound tens", "armenian":"Զրո յոթանասունյոթ", "pronunciation":"zəro yotanasunyot", "category":"Numbers", "audio":null},
-    {"id":"N038", "english":"Rule: numerals 11–99 are written together as one word", "armenian":"", "pronunciation":"e.g. tasnmek, qarasunereq", "category":"Numbers", "audio":null},
-    {"id":"N039", "english":"Rule: nouns stay singular after a numeral", "armenian":"Երկու աղջիկ", "pronunciation":"yerku akhchik = two girls (not akhchikner)", "category":"Numbers", "audio":null},
-    {"id":"N040", "english":"Times / occurrences", "armenian":"Անգամ", "pronunciation":"anqam (mek anqam = once)", "category":"Numbers", "audio":null},
-    {"id":"L16031", "english":"Phone", "armenian":"Հեռախոս", "pronunciation":"herrakhos", "category":"Lesson 16", "audio":null},
-    {"id":"L16032", "english":"Number", "armenian":"Համար", "pronunciation":"hamar", "category":"Lesson 16", "audio":null},
-    {"id":"L16033", "english":"Phone number", "armenian":"Հեռախոսի համար", "pronunciation":"herrakhosi hamar", "category":"Lesson 16", "audio":null},
-    {"id":"L16034", "english":"To be born", "armenian":"Ծնվել", "pronunciation":"tsnvel", "category":"Lesson 16", "audio":null},
-    {"id":"L16035", "english":"How old are you? (informal)", "armenian":"Քանի՞ տարեկան ես", "pronunciation":"qani tarekan es?", "category":"Lesson 16", "audio":null},
-    {"id":"L16036", "english":"How old are you? (formal)", "armenian":"Քանի՞ տարեկան եք", "pronunciation":"qani tarekan eq?", "category":"Lesson 16", "audio":null},
-    {"id":"L16037", "english":"I am 10 years old", "armenian":"Ես տասը տարեկան եմ", "pronunciation":"yes tasə tarekan em", "category":"Lesson 16", "audio":null},
-    {"id":"L16038", "english":"Year (calendar year)", "armenian":"Թվական", "pronunciation":"tvakan", "category":"Lesson 16", "audio":null},
-    {"id":"L16039", "english":"I was born in 1993", "armenian":"Ես ծնվել եմ 1993 թվականին", "pronunciation":"yes tsnvel em 1993 tvakanin", "category":"Lesson 16", "audio":null},
-    {"id":"L17001", "english":"Place (noun)", "armenian":"Տեղ", "pronunciation":"tegh", "category":"Lesson 17", "audio":null},
-    {"id":"L17002", "english":"Purpose", "armenian":"Նպատակ", "pronunciation":"nəp'at'ak", "category":"Lesson 17", "audio":null},
-    {"id":"L17003", "english":"Home / house", "armenian":"Տուն", "pronunciation":"tun", "category":"Lesson 17", "audio":null},
-    {"id":"L17004", "english":"What by / how — used for transportation or the tool/utensil used", "armenian":"Ինչով", "pronunciation":"inchov", "category":"Lesson 17", "audio":null},
-    {"id":"L17005", "english":"Pen", "armenian":"Գրիչ", "pronunciation":"grich", "category":"Lesson 17", "audio":null},
-    {"id":"L17006", "english":"Taxi", "armenian":"Տաքսի", "pronunciation":"taqsi", "category":"Lesson 17", "audio":null},
-    {"id":"L17007", "english":"Bus", "armenian":"Ավտոբուս", "pronunciation":"avt'obus", "category":"Lesson 17", "audio":null},
-    {"id":"L17008", "english":"Foot / leg", "armenian":"Ոտք", "pronunciation":"vot'q → vot'qov (by foot)", "category":"Lesson 17", "audio":null},
-    {"id":"L17009", "english":"From home (irregular — drop the \"u\" from tun before adding -ից)", "armenian":"Տնից", "pronunciation":"t'nits", "category":"Lesson 17", "audio":null},
-    {"id":"L17010", "english":"To have fun", "armenian":"Զվարճանալ", "pronunciation":"z'vardjanal", "category":"Lesson 17", "audio":null},
-    {"id":"L17011", "english":"There is (singular)", "armenian":"Կա", "pronunciation":"ka", "category":"Lesson 17", "audio":null},
-    {"id":"L17012", "english":"There is not (singular)", "armenian":"Չկա", "pronunciation":"chka", "category":"Lesson 17", "audio":null},
-    {"id":"L17013", "english":"There are (plural)", "armenian":"Կան", "pronunciation":"kan", "category":"Lesson 17", "audio":null},
-    {"id":"L17014", "english":"There are not (plural)", "armenian":"Չկան", "pronunciation":"chkan", "category":"Lesson 17", "audio":null},
-    {"id":"L17015", "english":"Rule: a number already implies plural, so keep ka + a singular noun — not kan + plural noun", "armenian":"Կա չորս աղջիկ", "pronunciation":"ka chors aghjik = there are four girls (NOT: kan chors aghjikner)", "category":"Lesson 17", "audio":null},
-    {"id":"L17016", "english":"To know (irregular verb — present stem shortens instead of the expected -umem)", "armenian":"Գիտենալ", "pronunciation":"gitenal", "category":"Lesson 17", "audio":null},
-    {"id":"L17017", "english":"I know", "armenian":"Ես գիտեմ", "pronunciation":"yes gitem", "category":"Lesson 17", "audio":null},
-    {"id":"L17018", "english":"You know (informal)", "armenian":"Դու գիտես", "pronunciation":"du gites", "category":"Lesson 17", "audio":null},
-    {"id":"L17019", "english":"He/She knows", "armenian":"Նա գիտի", "pronunciation":"na giti", "category":"Lesson 17", "audio":null},
-    {"id":"L17020", "english":"We know", "armenian":"Մենք գիտենք", "pronunciation":"menq gitenq", "category":"Lesson 17", "audio":null},
-    {"id":"L17021", "english":"You know (plural / formal)", "armenian":"Դուք գիտեք", "pronunciation":"duq giteq", "category":"Lesson 17", "audio":null},
-    {"id":"L17022", "english":"They know", "armenian":"Նրանք գիտեն", "pronunciation":"nranq giten", "category":"Lesson 17", "audio":null},
-    {"id":"L17023", "english":"I don't know", "armenian":"Ես չգիտեմ", "pronunciation":"yes chgitem (not: yes chem gitem)", "category":"Lesson 17", "audio":null},
-    {"id":"L17024", "english":"You don't know (informal)", "armenian":"Դու չգիտես", "pronunciation":"du chgites", "category":"Lesson 17", "audio":null},
-    {"id":"L17025", "english":"He/She doesn't know", "armenian":"Նա չգիտի", "pronunciation":"na chgiti", "category":"Lesson 17", "audio":null},
-    {"id":"L17026", "english":"We don't know", "armenian":"Մենք չգիտենք", "pronunciation":"menq chgitenq", "category":"Lesson 17", "audio":null},
-    {"id":"L17027", "english":"You don't know (plural)", "armenian":"Դուք չգիտեք", "pronunciation":"duq chgiteq", "category":"Lesson 17", "audio":null},
-    {"id":"L17028", "english":"They don't know", "armenian":"Նրանք չգիտեն", "pronunciation":"nranq chgiten", "category":"Lesson 17", "audio":null},
-    {"id":"L17029", "english":"I have (unenal is irregular the same way as gitenal)", "armenian":"Ես ունեմ", "pronunciation":"yes unem", "category":"Lesson 17", "audio":null},
-    {"id":"L17030", "english":"You have (informal)", "armenian":"Դու ունես", "pronunciation":"du unes", "category":"Lesson 17", "audio":null},
-    {"id":"L17031", "english":"He/She has", "armenian":"Նա ունի", "pronunciation":"na uni", "category":"Lesson 17", "audio":null},
-    {"id":"L17032", "english":"We have", "armenian":"Մենք ունենք", "pronunciation":"menq unenq", "category":"Lesson 17", "audio":null},
-    {"id":"L17033", "english":"You have (plural / formal)", "armenian":"Դուք ունեք", "pronunciation":"duq uneq", "category":"Lesson 17", "audio":null},
-    {"id":"L17034", "english":"They have", "armenian":"Նրանք ունեն", "pronunciation":"nranq unen", "category":"Lesson 17", "audio":null},
-    {"id":"L17035", "english":"I don't have", "armenian":"Ես չունեմ", "pronunciation":"yes chunem", "category":"Lesson 17", "audio":null},
-    {"id":"L17036", "english":"You don't have (informal)", "armenian":"Դու չունես", "pronunciation":"du chunes", "category":"Lesson 17", "audio":null},
-    {"id":"L17037", "english":"He/She doesn't have", "armenian":"Նա չունի", "pronunciation":"na chuni", "category":"Lesson 17", "audio":null},
-    {"id":"L17038", "english":"We don't have", "armenian":"Մենք չունենք", "pronunciation":"menq chunenq", "category":"Lesson 17", "audio":null},
-    {"id":"L17039", "english":"You don't have (plural)", "armenian":"Դուք չունեք", "pronunciation":"duq chuneq", "category":"Lesson 17", "audio":null},
-    {"id":"L17040", "english":"They don't have", "armenian":"Նրանք չունեն", "pronunciation":"nranq chunen", "category":"Lesson 17", "audio":null},
-    {"id":"L17041", "english":"Where are you going?", "armenian":"Ուր ես գնում", "pronunciation":"ur es gənum?", "category":"Lesson 17", "audio":null},
-    {"id":"L17042", "english":"I am going home", "armenian":"Ես գնում եմ տուն", "pronunciation":"yes gənum em t'un", "category":"Lesson 17", "audio":null},
-    {"id":"L17043", "english":"I am going to a hotel", "armenian":"Ես գնում եմ հյուրանոց", "pronunciation":"yes gənum em hyuranots", "category":"Lesson 17", "audio":null},
-    {"id":"L17044", "english":"I am going to a bank", "armenian":"Ես գնում եմ բանկ", "pronunciation":"yes gənum em bank", "category":"Lesson 17", "audio":null},
-    {"id":"L17045", "english":"I am going to work", "armenian":"Ես գնում եմ աշխատանքի", "pronunciation":"yes gənum em ashkhat'anqi", "category":"Lesson 17", "audio":null},
-    {"id":"L17046", "english":"I am going to a lesson", "armenian":"Ես գնում եմ դասի", "pronunciation":"yes gənum em dasi", "category":"Lesson 17", "audio":null},
-    {"id":"L17047", "english":"I am going to a party", "armenian":"Ես գնում եմ երեկույթի", "pronunciation":"yes gənum em yerekuyti", "category":"Lesson 17", "audio":null},
-    {"id":"L17048", "english":"I am going to a meeting", "armenian":"Ես գնում եմ հանդիպման", "pronunciation":"yes gənum em handip'man", "category":"Lesson 17", "audio":null},
-    {"id":"L17049", "english":"Where are you coming from?", "armenian":"Որտեղից ես գալիս", "pronunciation":"vort'eghits es galis?", "category":"Lesson 17", "audio":null},
-    {"id":"L17050", "english":"I am coming from home", "armenian":"Ես գալիս եմ տնից", "pronunciation":"yes galis em t'ənits", "category":"Lesson 17", "audio":null},
-    {"id":"L17051", "english":"I am coming from a hotel", "armenian":"Ես գալիս եմ հյուրանոցից", "pronunciation":"yes galis em hyuranotsits", "category":"Lesson 17", "audio":null},
-    {"id":"L17052", "english":"I am coming from work", "armenian":"Ես գալիս եմ աշխատանքից", "pronunciation":"yes galis em ashkhat'anqits", "category":"Lesson 17", "audio":null},
-    {"id":"L17053", "english":"I am coming from a lesson", "armenian":"Ես գալիս եմ դասից", "pronunciation":"yes galis em dasits", "category":"Lesson 17", "audio":null},
-    {"id":"L17054", "english":"I am coming from a meeting", "armenian":"Ես գալիս եմ հանդիպումից", "pronunciation":"yes galis em handip'umits", "category":"Lesson 17", "audio":null},
-    {"id":"L17055", "english":"How are you getting there?", "armenian":"Ինչով ես գնում", "pronunciation":"inchov es gənum?", "category":"Lesson 17", "audio":null},
-    {"id":"L17056", "english":"I am going by car", "armenian":"Ես գնում եմ մեքենայով", "pronunciation":"yes gənum em meqenayov", "category":"Lesson 17", "audio":null},
-    {"id":"L17057", "english":"I am going by bus", "armenian":"Ես գնում եմ ավտոբուսով", "pronunciation":"yes gənum em avt'obusov", "category":"Lesson 17", "audio":null},
-    {"id":"L17058", "english":"I am going on foot", "armenian":"Ես գնում եմ ոտքով", "pronunciation":"yes gənum em vot'qov", "category":"Lesson 17", "audio":null},
-    {"id":"L17059", "english":"What are you writing with?", "armenian":"Ինչով ես գրում", "pronunciation":"inchov es g'rum?", "category":"Lesson 17", "audio":null},
-    {"id":"L17060", "english":"I'm writing with a pen", "armenian":"Գրում եմ գրիչով", "pronunciation":"grum em grichov", "category":"Lesson 17", "audio":null},
-    {"id":"L17061", "english":"I'm going by taxi", "armenian":"Գնում եմ տաքսիով", "pronunciation":"g'num em taqsiov", "category":"Lesson 17", "audio":null},
-    {"id":"L17062", "english":"Where are you going from?", "armenian":"Որտեղից ես գնում", "pronunciation":"vort'eghits es g'num?", "category":"Lesson 17", "audio":null},
-    {"id":"L17063", "english":"I work from home", "armenian":"Ես աշխատում եմ տնից", "pronunciation":"yes ashkhatumem t'nits", "category":"Lesson 17", "audio":null},
-    {"id":"L17064", "english":"Rule: the purpose of going somewhere = infinitive verb + -ու/-նու (genitive case)", "armenian":"Ուտել → Ուտելու", "pronunciation":"infinitive + u/nu = the aim of doing something (e.g. ut'el → ut'elu = \"(in order) to eat\")", "category":"Lesson 17", "audio":null},
-    {"id":"L17065", "english":"Restaurant", "armenian":"Ռեստորան", "pronunciation":"rest'oran", "category":"Lesson 17", "audio":null},
-    {"id":"L17066", "english":"To eat", "armenian":"Ուտել", "pronunciation":"ut'el → ut'elu (genitive/purpose form)", "category":"Lesson 17", "audio":null},
-    {"id":"L17067", "english":"Club", "armenian":"Ակումբ", "pronunciation":"akumb", "category":"Lesson 17", "audio":null},
-    {"id":"L17068", "english":"To dine / have a meal", "armenian":"Ճաշել", "pronunciation":"djashel → djashelu (genitive/purpose form)", "category":"Lesson 17", "audio":null},
-    {"id":"L17069", "english":"Why are you going?", "armenian":"Ինչու՞ ես գնում", "pronunciation":"inchu es gənum?", "category":"Lesson 17", "audio":null},
-    {"id":"L17070", "english":"I am going to a restaurant to eat", "armenian":"Ես գնում եմ ռեստորան ուտելու", "pronunciation":"yes gənum em rest'oran ut'elu", "category":"Lesson 17", "audio":null},
-    {"id":"L17071", "english":"I am going to a club to have fun", "armenian":"Ես գնում եմ ակումբ զվարճանալու", "pronunciation":"yes gənum em akumb zəvardjanalu", "category":"Lesson 17", "audio":null},
-    {"id":"L17072", "english":"I am going home to dine", "armenian":"Ես գնում եմ տուն ճաշելու", "pronunciation":"yes gənum em t'un djashelu", "category":"Lesson 17", "audio":null},
-    {"id":"DMT001", "english":"Century", "armenian":"Դար", "pronunciation":"dar", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT002", "english":"Year", "armenian":"Տարի", "pronunciation":"t'ari", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT003", "english":"Week", "armenian":"Շաբաթ", "pronunciation":"shabat", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT004", "english":"Hour", "armenian":"Ժամ", "pronunciation":"zham", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT005", "english":"Minute", "armenian":"Րոպե", "pronunciation":"rop'e", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT006", "english":"Second", "armenian":"Վայրկյան", "pronunciation":"varkyan", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT007", "english":"Monday", "armenian":"Երկուշաբթի", "pronunciation":"yerkushapti", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT008", "english":"Tuesday", "armenian":"Երեքշաբթի", "pronunciation":"yereqshapti", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT009", "english":"Wednesday", "armenian":"Չորեքշաբթի", "pronunciation":"choreqshapti", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT010", "english":"Thursday", "armenian":"Հինգշաբթի", "pronunciation":"hingshapti", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT011", "english":"Friday", "armenian":"Ուրբաթ", "pronunciation":"urpat", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT012", "english":"Saturday", "armenian":"Շաբաթ", "pronunciation":"shapat", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT013", "english":"Sunday", "armenian":"Կիրակի", "pronunciation":"kiraki", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT014", "english":"Note: shapat means both \"week\" and \"Saturday\" — to specify Saturday, say shapat oruh", "armenian":"Շաբաթ օրը", "pronunciation":"shapat oruh (Saturday, lit. \"the Saturday day\")", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT015", "english":"Note: no preposition needed for \"on [day]\" — just use the day name alone", "armenian":"Երկուշաբթի", "pronunciation":"yerkushapti = on Monday (no separate word for \"on\")", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT016", "english":"January", "armenian":"Հունվար", "pronunciation":"hunvar", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT017", "english":"February", "armenian":"Փետրվար", "pronunciation":"pet'ervar", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT018", "english":"March", "armenian":"Մարտ", "pronunciation":"mart'", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT019", "english":"April", "armenian":"Ապրիլ", "pronunciation":"ap'ril", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT020", "english":"May", "armenian":"Մայիս", "pronunciation":"mayis", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT021", "english":"June", "armenian":"Հունիս", "pronunciation":"hunis", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT022", "english":"July", "armenian":"Հուլիս", "pronunciation":"hulis", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT023", "english":"August", "armenian":"Օգոստոս", "pronunciation":"ogost'os", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT024", "english":"September", "armenian":"Սեպտեմբեր", "pronunciation":"sept'ember", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT025", "english":"October", "armenian":"Հոկտեմբեր", "pronunciation":"hokt'ember", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT026", "english":"November", "armenian":"Նոյեմբեր", "pronunciation":"noyember", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT027", "english":"December", "armenian":"Դեկտեմբեր", "pronunciation":"dekt'ember", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT028", "english":"Note: for dates, numbers ending in 2, 12, 22 add an \"s\" before the ending", "armenian":"Սեպտեմբերի տասներկուսին", "pronunciation":"sept'emberi t'asnerkusin = on September 12th", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT029", "english":"Which day of the month? (used to ask the date)", "armenian":"Ամսի քանիսը", "pronunciation":"amsi qanisə (amis + qani, \"month's how-manieth\")", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT030", "english":"What day is it today?", "armenian":"Ի՞նչ օր է այսօր", "pronunciation":"inch or e aysor?", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT031", "english":"Today is Sunday", "armenian":"Այսօր կիրակի է", "pronunciation":"aysor kiraki e", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT032", "english":"On Monday", "armenian":"Երկուշաբթի", "pronunciation":"yerkushapti", "category":"Days/Months/Time", "audio":null},
-    {"id":"DMT033", "english":"What's today's date?", "armenian":"Այսօր ամսի քանիսն է", "pronunciation":"aysor amsi qanisne?", "category":"Days/Months/Time", "audio":null}
+    {"id": "AL003", "english": "Գ գ — third letter — note:գ (guh) easily confused with զ (zuh)", "armenian": "Գ գ", "pronunciation": "guh", "category": "Alphabet", "audio": null},
+    {"id": "AL005", "english": "Ե ե — fifth letter", "armenian": "Ե ե", "pronunciation": "ye / e", "category": "Alphabet", "audio": null},
+    {"id": "AL006", "english": "Զ զ — sixth letter — note:զ (zuh) easily confused with գ (guh)", "armenian": "Զ զ", "pronunciation": "zuh", "category": "Alphabet", "audio": null},
+    {"id": "AL007", "english": "Է է — seventh letter — means “is”", "armenian": "Է է", "pronunciation": "e", "category": "Alphabet", "audio": null},
+    {"id": "AL010", "english": "Ժ ժ — tenth letter — e.g. zham", "armenian": "Ժ ժ", "pronunciation": "zhuh", "category": "Alphabet", "audio": null},
+    {"id": "AL011", "english": "Ի ի — eleventh letter", "armenian": "Ի ի", "pronunciation": "ini (ee)", "category": "Alphabet", "audio": null},
+    {"id": "AL013", "english": "Խ խ — thirteenth letter — kh = throaty h", "armenian": "Խ խ", "pronunciation": "khe (throaty h)", "category": "Alphabet", "audio": null},
+    {"id": "AL014", "english": "Ծ ծ — fourteenth letter", "armenian": "Ծ ծ", "pronunciation": "tsa (ts)", "category": "Alphabet", "audio": null},
+    {"id": "AL015", "english": "Կ կ — fifteenth letter — sounds like g", "armenian": "Կ կ", "pronunciation": "ken (sounds like g)", "category": "Alphabet", "audio": null},
+    {"id": "AL016", "english": "Հ հ — sixteenth letter", "armenian": "Հ հ", "pronunciation": "huh", "category": "Alphabet", "audio": null},
+    {"id": "AL017", "english": "Ձ ձ — seventeenth letter — e.g. barev dzez", "armenian": "Ձ ձ", "pronunciation": "dzuh (dz)", "category": "Alphabet", "audio": null},
+    {"id": "AL018", "english": "Ղ ղ — eighteenth letter", "armenian": "Ղ ղ", "pronunciation": "ghuh (gh)", "category": "Alphabet", "audio": null},
+    {"id": "AL019", "english": "Ճ ճ — nineteenth letter — e.g. djanap'ar", "armenian": "Ճ ճ", "pronunciation": "djuh (dj)", "category": "Alphabet", "audio": null},
+    {"id": "AL020", "english": "Մ մ — twentieth letter — e.g. muhnal", "armenian": "Մ մ", "pronunciation": "muh (m)", "category": "Alphabet", "audio": null},
+    {"id": "AL021", "english": "Յ յ — twenty-first letter", "armenian": "Յ յ", "pronunciation": "yuh (y)", "category": "Alphabet", "audio": null},
+    {"id": "AL022", "english": "Ն ն — twenty-second letter", "armenian": "Ն ն", "pronunciation": "nuh (n)", "category": "Alphabet", "audio": null},
+    {"id": "AL023", "english": "Շ շ — twenty-third letter", "armenian": "Շ շ", "pronunciation": "shuh (sh)", "category": "Alphabet", "audio": null},
+    {"id": "AL024", "english": "Ո ո — twenty-fourth letter — \"vo\" at the start of a word, just \"o\" in the middle (like Ե: \"ye\" at the start, \"ay\" in the middle)", "armenian": "Ո ո", "pronunciation": "vo (start of word) / o (middle of word)", "category": "Alphabet", "audio": null},
+    {"id": "AL025", "english": "Չ չ — twenty-fifth letter", "armenian": "Չ չ", "pronunciation": "chuh (ch)", "category": "Alphabet", "audio": null},
+    {"id": "L22001", "english": "Father (-ik = affectionate: dad)", "armenian": "Հայր / Հայրիկ", "pronunciation": "hayr / hayrik", "category": "People & Things", "audio": null},
+    {"id": "L22002", "english": "Mother (-ik = affectionate: mom)", "armenian": "Մայր / Մայրիկ", "pronunciation": "mayr / mayrik", "category": "People & Things", "audio": null},
+    {"id": "L22003", "english": "Sister", "armenian": "Քույր / Քույրիկ", "pronunciation": "quyr / quyrik", "category": "People & Things", "audio": null},
+    {"id": "L22004", "english": "Brother", "armenian": "Եղբայր", "pronunciation": "yekhp'ayr", "category": "People & Things", "audio": null},
+    {"id": "L22005", "english": "Cousin", "armenian": "Զարմիկ", "pronunciation": "zarmik", "category": "People & Things", "audio": null},
+    {"id": "L22006", "english": "Grandfather", "armenian": "Պապիկ", "pronunciation": "p'ap'ik", "category": "People & Things", "audio": null},
+    {"id": "L22007", "english": "Grandmother", "armenian": "Տատիկ", "pronunciation": "t'at'ik", "category": "People & Things", "audio": null},
+    {"id": "L22008", "english": "Aunt (paternal — dad's sister)", "armenian": "Հորաքույր", "pronunciation": "horaquyr (hor = father's + quyr)", "category": "People & Things", "audio": null},
+    {"id": "L22009", "english": "Aunt (maternal — mom's sister)", "armenian": "Մորաքույր", "pronunciation": "moraquyr (mor = mother's + quyr)", "category": "People & Things", "audio": null},
+    {"id": "L22010", "english": "Uncle (maternal — mom's brother)", "armenian": "Քեռի", "pronunciation": "qer'i", "category": "People & Things", "audio": null},
+    {"id": "L22011", "english": "Uncle (paternal — dad's brother)", "armenian": "Հորեղբայր", "pronunciation": "horekhp'ayr (hor + yekhp'ayr)", "category": "People & Things", "audio": null},
+    {"id": "L22012", "english": "Relative", "armenian": "Բարեկամ", "pronunciation": "barekam", "category": "People & Things", "audio": null},
+    {"id": "L2022", "english": "Family", "armenian": "Ընտանիք", "pronunciation": "uhnt’aniq", "category": "People & Things", "audio": null},
+    {"id": "L2023", "english": "Girl", "armenian": "Աղջիկ", "pronunciation": "akhchik", "category": "People & Things", "audio": null},
+    {"id": "L2024", "english": "Boy", "armenian": "Տղա", "pronunciation": "t’uhgha", "category": "People & Things", "audio": null},
+    {"id": "L2026", "english": "Student", "armenian": "Ուսանող", "pronunciation": "usanogh", "category": "People & Things", "audio": null},
+    {"id": "L5004", "english": "Grandchild", "armenian": "Թոռ", "pronunciation": "tor’", "category": "People & Things", "audio": null},
+    {"id": "L22037", "english": "Me (object — not \"yes\")", "armenian": "Ինձ", "pronunciation": "indz", "category": "People & Things", "audio": null},
+    {"id": "L22038", "english": "You (object, informal — not subject \"du\")", "armenian": "Քեզ", "pronunciation": "qez", "category": "People & Things", "audio": null},
+    {"id": "L22039", "english": "Him / Her (object)", "armenian": "Նրան", "pronunciation": "nəran", "category": "People & Things", "audio": null},
+    {"id": "L22040", "english": "Us (object)", "armenian": "Մեզ", "pronunciation": "mez", "category": "People & Things", "audio": null},
+    {"id": "L22041", "english": "You (object, formal / plural)", "armenian": "Ձեզ", "pronunciation": "dzez", "category": "People & Things", "audio": null},
+    {"id": "L22042", "english": "Them (object)", "armenian": "Նրանց", "pronunciation": "nərants", "category": "People & Things", "audio": null},
+    {"id": "POS001", "english": "My", "armenian": "Իմ", "pronunciation": "im", "category": "People & Things", "audio": null},
+    {"id": "POS002", "english": "Your (informal)", "armenian": "Քո", "pronunciation": "qo", "category": "People & Things", "audio": null},
+    {"id": "POS003", "english": "His / Her", "armenian": "Նրա", "pronunciation": "nəra", "category": "People & Things", "audio": null},
+    {"id": "POS004", "english": "Our", "armenian": "Մեր", "pronunciation": "mer", "category": "People & Things", "audio": null},
+    {"id": "POS005", "english": "Your (formal / plural)", "armenian": "Ձեր", "pronunciation": "dzer", "category": "People & Things", "audio": null},
+    {"id": "POS006", "english": "Their", "armenian": "Նրանց", "pronunciation": "nərants", "category": "People & Things", "audio": null},
+    {"id": "POS007", "english": "Rule: for my / your (informal) only, you can drop im / qo and add -s (my) or -d (your) to the noun", "armenian": "Իմ տունը → տունս · Քո տունը → տունդ", "pronunciation": "im t'unnuh → t'unnuhs · qo t'unnuh → t'unnuh'd", "category": "People & Things", "audio": null},
+    {"id": "POS008", "english": "My house (short form)", "armenian": "Տունս", "pronunciation": "t'unnuhs", "category": "People & Things", "audio": null},
+    {"id": "POS009", "english": "Your house (informal, short form)", "armenian": "Տունդ", "pronunciation": "t'unnuh'd", "category": "People & Things", "audio": null},
+    {"id": "POS010", "english": "My book (short form)", "armenian": "Գիրքս", "pronunciation": "girqs", "category": "People & Things", "audio": null},
+    {"id": "POS011", "english": "Your book (informal, short form)", "armenian": "Գիրքդ", "pronunciation": "girq'd", "category": "People & Things", "audio": null},
+    {"id": "VOC001", "english": "Dog", "armenian": "Շուն", "pronunciation": "shun → shunə (the dog)", "category": "People & Things", "audio": null},
+    {"id": "L4001", "english": "Room", "armenian": "սենյակ", "pronunciation": "senyak", "category": "People & Things", "audio": null},
+    {"id": "L4007", "english": "Street", "armenian": "Փողոց", "pronunciation": "poghots", "category": "People & Things", "audio": null},
+    {"id": "L7001", "english": "Airport (ot = air, nav = boat/ship)", "armenian": "Օդանավակայան", "pronunciation": "otanavakayan", "category": "People & Things", "audio": null},
+    {"id": "L7006", "english": "Church", "armenian": "Եկեղեցի", "pronunciation": "yekeghetsi", "category": "People & Things", "audio": null},
+    {"id": "L7011", "english": "Square (public facility)", "armenian": "Հրապարակ", "pronunciation": "h’rap’arak", "category": "People & Things", "audio": null},
+    {"id": "L5002", "english": "Mountain", "armenian": "Լեռ / Սար", "pronunciation": "ler’ / sar", "category": "People & Things", "audio": null},
+    {"id": "L22045", "english": "Place", "armenian": "Տեղ", "pronunciation": "t'egh", "category": "People & Things", "audio": null},
+    {"id": "L17009", "english": "From home (irregular — drop the \"u\" from tun before adding -ից)", "armenian": "Տնից", "pronunciation": "t'nits", "category": "People & Things", "audio": null},
+    {"id": "L4002", "english": "Window", "armenian": "Պատուհան", "pronunciation": "p’at’uhan", "category": "People & Things", "audio": null},
+    {"id": "L4004", "english": "Chair", "armenian": "Աթոռ", "pronunciation": "ator’", "category": "People & Things", "audio": null},
+    {"id": "L4006", "english": "Table", "armenian": "Սեղան", "pronunciation": "seghan", "category": "People & Things", "audio": null},
+    {"id": "L4016", "english": "Wall", "armenian": "Պատ", "pronunciation": "p’at (sounds like: baht)", "category": "People & Things", "audio": null},
+    {"id": "L7016", "english": "Airplane", "armenian": "Ինքնաթիռ", "pronunciation": "inqnatir’", "category": "People & Things", "audio": null},
+    {"id": "L10026", "english": "Song", "armenian": "Երգ", "pronunciation": "yerq", "category": "People & Things", "audio": null},
+    {"id": "L17005", "english": "Pen", "armenian": "Գրիչ", "pronunciation": "grich", "category": "People & Things", "audio": null},
+    {"id": "L5003", "english": "Finger", "armenian": "Մատ", "pronunciation": "mat’", "category": "People & Things", "audio": null},
+    {"id": "L17008", "english": "Foot / leg", "armenian": "Ոտք", "pronunciation": "vot'q → vot'qov (by foot)", "category": "People & Things", "audio": null},
+    {"id": "L16033", "english": "Phone number", "armenian": "Հեռախոսի համար", "pronunciation": "herrakhosi hamar", "category": "People & Things", "audio": null},
+    {"id": "L22046", "english": "A call (phone call)", "armenian": "Զանգ", "pronunciation": "zang (zangel = to call)", "category": "People & Things", "audio": null},
+    {"id": "L3004", "english": "Thirsty", "armenian": "ծարավ", "pronunciation": "tzarav", "category": "Describing", "audio": null},
+    {"id": "L3006", "english": "Tired", "armenian": "հոգնած", "pronunciation": "hoqnatz", "category": "Describing", "audio": null},
+    {"id": "L3007", "english": "Free / Available", "armenian": "Ազատ", "pronunciation": "azat", "category": "Describing", "audio": null},
+    {"id": "L3010", "english": "Sad", "armenian": "թկխուր", "pronunciation": "t’uhkhur", "category": "Describing", "audio": null},
+    {"id": "L3021", "english": "Pretty (like sirun)", "armenian": "Գեղեցիկ", "pronunciation": "geghetsik", "category": "Describing", "audio": null},
+    {"id": "L4018", "english": "Old / New", "armenian": "Հին / Նոր", "pronunciation": "hin / nor", "category": "Describing", "audio": null},
+    {"id": "L4019", "english": "Open / Closed", "armenian": "Բաց / Փակ", "pronunciation": "bats / pak", "category": "Describing", "audio": null},
+    {"id": "L10003", "english": "Surprised", "armenian": "Զարմացած", "pronunciation": "zarmatsatz", "category": "Describing", "audio": null},
+    {"id": "L10005", "english": "Disappointed", "armenian": "Հիասթափված", "pronunciation": "hiastapvatz", "category": "Describing", "audio": null},
+    {"id": "L10008", "english": "Touched", "armenian": "Հուզված", "pronunciation": "huzvatz", "category": "Describing", "audio": null},
+    {"id": "L10009", "english": "Happy", "armenian": "Երջանիկ", "pronunciation": "yerjanik", "category": "Describing", "audio": null},
+    {"id": "L10010", "english": "Insulted", "armenian": "Վիրավորված", "pronunciation": "viravorvatz", "category": "Describing", "audio": null},
+    {"id": "L8001", "english": "What? (singular)", "armenian": "Ինչ", "pronunciation": "inch", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8002", "english": "What? (plural)", "armenian": "Ինչեր", "pronunciation": "incher", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8003", "english": "Who? (singular)", "armenian": "Ով", "pronunciation": "ov", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8004", "english": "Who? (plural)", "armenian": "Ովքեր", "pronunciation": "ovqer", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8005", "english": "Where? (location)", "armenian": "Որտեղ", "pronunciation": "vort’egh", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8006", "english": "Where? (direction)", "armenian": "Ուր", "pronunciation": "ur", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8007", "english": "When?", "armenian": "Երբ", "pronunciation": "yerp", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8008", "english": "Why?", "armenian": "Ինչու", "pronunciation": "inchu", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8009", "english": "Which?", "armenian": "Որ", "pronunciation": "vor", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8010", "english": "Whose? / Whom?", "armenian": "Ում", "pronunciation": "um", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8011", "english": "What kind of?", "armenian": "Ինչպիսի", "pronunciation": "inchp’isi", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8012", "english": "How many? (countable nouns, e.g. qani mart = how many people)", "armenian": "Քանի", "pronunciation": "qani", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8013", "english": "How much? (uncountable nouns, e.g. how much water)", "armenian": "Ինչքան", "pronunciation": "inchqan", "category": "Questions & Phrases", "audio": null},
+    {"id": "L17004", "english": "What by / how — used for transportation or the tool/utensil used", "armenian": "Ինչով", "pronunciation": "inchov", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8022", "english": "Where are they from? (don’t skip neranq)", "armenian": "Որտեղից են նրանք?", "pronunciation": "vort’eghits en neranq?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8023", "english": "Where is Grace from? (add “the” to names)", "armenian": "Որտեղից է Grace-ը?", "pronunciation": "vort’eghits e Grace-uh?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L8030", "english": "Who are they? (W-question word order: ov en neranq, not neranq en ov)", "armenian": "Ովքեր են նրանք?", "pronunciation": "ovqer en neranq?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L17041", "english": "Where are you going?", "armenian": "Ուր ես գնում", "pronunciation": "ur es gənum?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L17049", "english": "Where are you coming from?", "armenian": "Որտեղից ես գալիս", "pronunciation": "vort'eghits es galis?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L17055", "english": "How are you getting there?", "armenian": "Ինչով ես գնում", "pronunciation": "inchov es gənum?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L17059", "english": "What are you writing with?", "armenian": "Ինչով ես գրում", "pronunciation": "inchov es g'rum?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L17069", "english": "Why are you going?", "armenian": "Ինչու՞ ես գնում", "pronunciation": "inchu es gənum?", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM001", "english": "This [is / was] — pointing, no noun after", "armenian": "Սա", "pronunciation": "sa", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM002", "english": "That [is / was] — pointing, no noun after", "armenian": "Դա", "pronunciation": "da", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM003", "english": "These [are / were]", "armenian": "Սրանք", "pronunciation": "seranq (s'ranq)", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM004", "english": "Those [are / were]", "armenian": "Դրանք", "pronunciation": "deranq (d'ranq)", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM005", "english": "This / these [+ noun] — the noun takes \"the\" (-ը)", "armenian": "Այս", "pronunciation": "ays", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM006", "english": "This is a school", "armenian": "Սա դպրոց է", "pronunciation": "sa dprots e", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM007", "english": "This is a new taxi", "armenian": "Սա նոր տաքսի է", "pronunciation": "sa nor taqsi e", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM008", "english": "That is a school", "armenian": "Դա դպրոց է", "pronunciation": "da dprots e", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM009", "english": "These are schools", "armenian": "Սրանք դպրոցներ են", "pronunciation": "s'ranq dprotsner en", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM010", "english": "Those are schools", "armenian": "Դրանք դպրոցներ են", "pronunciation": "d'ranq dprotsner en", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM011", "english": "This dog / these dogs", "armenian": "Այս շունը / Այս շները", "pronunciation": "ays shunə / ays shnerə", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM012", "english": "This theater / these theaters", "armenian": "Այս թատրոնը / Այս թատրոնները", "pronunciation": "ays t'at'ronuh / ays t'at'roneruh", "category": "Questions & Phrases", "audio": null},
+    {"id": "DEM013", "english": "This city is old", "armenian": "Այս քաղաքը հին է", "pronunciation": "ays qaghaquh hin e", "category": "Questions & Phrases", "audio": null},
+    {"id": "seed007", "english": "Good luck / Goodbye (less formal, short: hajo)", "armenian": "Հաջողություն", "pronunciation": "hajoghutyun (short: hajo)", "category": "Questions & Phrases", "audio": null},
+    {"id": "seed009", "english": "You’re welcome", "armenian": "Խնտրեմ", "pronunciation": "khentrem", "category": "Questions & Phrases", "audio": null},
+    {"id": "seed010", "english": "Please", "armenian": "Խնտրումեն", "pronunciation": "khentrumen", "category": "Questions & Phrases", "audio": null},
+    {"id": "L2001", "english": "No problem", "armenian": "Խնդիր չկա", "pronunciation": "khentir cheka", "category": "Questions & Phrases", "audio": null},
+    {"id": "L2002", "english": "Sorry / Excuse me", "armenian": "Ներեցեք", "pronunciation": "kenereq / neretseq", "category": "Questions & Phrases", "audio": null},
+    {"id": "L2007", "english": "So so / Nothing / It’s ok", "armenian": "Ոչինչ", "pronunciation": "vochinch", "category": "Questions & Phrases", "audio": null},
+    {"id": "L2008", "english": "How are things going?", "armenian": "Ինչպես են գործերդ։", "pronunciation": "inchp’es en gortzerd?", "category": "Questions & Phrases", "audio": null},
+    {"id": "L3020", "english": "No news / Nothing new", "armenian": "Նորություն չկա", "pronunciation": "norutyun chka", "category": "Questions & Phrases", "audio": null},
+    {"id": "L2018", "english": "Yes (colloquial)", "armenian": "Հա", "pronunciation": "ha", "category": "Questions & Phrases", "audio": null},
+    {"id": "L2020", "english": "No (colloquial)", "armenian": "Չե", "pronunciation": "che", "category": "Questions & Phrases", "audio": null},
+    {"id": "L4024", "english": "Or", "armenian": "Կամ", "pronunciation": "kam", "category": "Questions & Phrases", "audio": null},
+    {"id": "L11001", "english": "I was", "armenian": "Ես Էի", "pronunciation": "yes ei", "category": "Verbs", "audio": null},
+    {"id": "L11002", "english": "You were", "armenian": "Դու Էիր", "pronunciation": "du eir", "category": "Verbs", "audio": null},
+    {"id": "L11003", "english": "He / She was", "armenian": "Նա Էր", "pronunciation": "na er", "category": "Verbs", "audio": null},
+    {"id": "L11004", "english": "We were", "armenian": "Մենք Էինք", "pronunciation": "menq einq", "category": "Verbs", "audio": null},
+    {"id": "L11005", "english": "You were (plural)", "armenian": "Դուք Էիք", "pronunciation": "duq eiq", "category": "Verbs", "audio": null},
+    {"id": "L11006", "english": "They were", "armenian": "Նրանք Էին", "pronunciation": "neranq ein", "category": "Verbs", "audio": null},
+    {"id": "L11007", "english": "I was not", "armenian": "Ես չԷի", "pronunciation": "yes chei", "category": "Verbs", "audio": null},
+    {"id": "L11008", "english": "You were not", "armenian": "Դու չԷիր", "pronunciation": "du cheir", "category": "Verbs", "audio": null},
+    {"id": "L11009", "english": "He / She was not", "armenian": "Նա չԷր", "pronunciation": "na cher", "category": "Verbs", "audio": null},
+    {"id": "L11010", "english": "We were not", "armenian": "Մենք չԷինք", "pronunciation": "menq cheinq", "category": "Verbs", "audio": null},
+    {"id": "L11011", "english": "You were not (plural)", "armenian": "Դուք չԷիք", "pronunciation": "duq cheiq", "category": "Verbs", "audio": null},
+    {"id": "L11012", "english": "They were not", "armenian": "Նրանք չԷին", "pronunciation": "neranq chein", "category": "Verbs", "audio": null},
+    {"id": "L13002", "english": "To speak", "armenian": "Խոսել", "pronunciation": "khosel → khosum (yes khosum em = I speak)", "category": "Verbs", "audio": null},
+    {"id": "L13011", "english": "To say", "armenian": "Ասել", "pronunciation": "asel → asum (yes asum em = I say)", "category": "Verbs", "audio": null},
+    {"id": "L13016", "english": "To be / Feel cold", "armenian": "Մրսել", "pronunciation": "muhrsel → muhrsum (yes muhrsum em = I’m cold)", "category": "Verbs", "audio": null},
+    {"id": "L13017", "english": "To play (games)", "armenian": "Խաղալ", "pronunciation": "khaghal → khaghum (yes khaghum em = I play)", "category": "Verbs", "audio": null},
+    {"id": "L13020", "english": "To come", "armenian": "Գալ", "pronunciation": "gal", "category": "Verbs", "audio": null},
+    {"id": "L13021", "english": "To give", "armenian": "Տալ", "pronunciation": "t’al", "category": "Verbs", "audio": null},
+    {"id": "L13028", "english": "To sleep", "armenian": "Քնել", "pronunciation": "qnel", "category": "Verbs", "audio": null},
+    {"id": "L15006", "english": "To cry (exception verb — present stem: lalis)", "armenian": "Լալ", "pronunciation": "l'al → present stem: lalis", "category": "Verbs", "audio": null},
+    {"id": "DLG211", "english": "To read", "armenian": "Կարդալ", "pronunciation": "kardal", "category": "Verbs", "audio": null},
+    {"id": "DLG212", "english": "To travel", "armenian": "Ճանապարհորդել", "pronunciation": "chanaparhortel", "category": "Verbs", "audio": null},
+    {"id": "DLG213", "english": "To understand", "armenian": "Հասկանալ", "pronunciation": "haskanal → haskanum (yes haskanum em = I understand)", "category": "Verbs", "audio": null},
+    {"id": "L16034", "english": "To be born", "armenian": "Ծնվել", "pronunciation": "tsnvel", "category": "Verbs", "audio": null},
+    {"id": "L17010", "english": "To have fun", "armenian": "Զվարճանալ", "pronunciation": "z'vardjanal", "category": "Verbs", "audio": null},
+    {"id": "L17016", "english": "To know (irregular verb — present stem shortens instead of the expected -umem)", "armenian": "Գիտենալ", "pronunciation": "gitenal", "category": "Verbs", "audio": null},
+    {"id": "L22013", "english": "To trust", "armenian": "Վստահել", "pronunciation": "vəst'ahel → vəst'ahelu em (I will trust)", "category": "Verbs", "audio": null},
+    {"id": "L22014", "english": "To get married", "armenian": "Ամուսնանալ", "pronunciation": "amusnanal → amusnanalu em (I will get married)", "category": "Verbs", "audio": null},
+    {"id": "L22015", "english": "To get divorced", "armenian": "Բաժանվել", "pronunciation": "bazhanvel → bazhanvelu em (I will get divorced)", "category": "Verbs", "audio": null},
+    {"id": "L22016", "english": "To move (to a place)", "armenian": "Տեղափոխվել", "pronunciation": "t'eghapokhvel → t'eghapokhvelu em (I will move)", "category": "Verbs", "audio": null},
+    {"id": "L22017", "english": "To carry / to take", "armenian": "Տանել", "pronunciation": "t'anel → t'anelu em (I will take)", "category": "Verbs", "audio": null},
+    {"id": "L22018", "english": "To write", "armenian": "Գրել", "pronunciation": "gərel → gərelu em (I will write)", "category": "Verbs", "audio": null},
+    {"id": "L22019", "english": "To finish", "armenian": "Ավարտել", "pronunciation": "avart'el → avart'elu em (I will finish)", "category": "Verbs", "audio": null},
+    {"id": "L22020", "english": "To return", "armenian": "Վերադառնալ", "pronunciation": "veradar'nal → veradar'nalu em (I will return)", "category": "Verbs", "audio": null},
+    {"id": "L22021", "english": "To enter", "armenian": "Մտնել", "pronunciation": "mət'nel → mət'nelu em (I will enter)", "category": "Verbs", "audio": null},
+    {"id": "L22022", "english": "To see", "armenian": "Տեսնել", "pronunciation": "t'esnel → t'esnelu em (I will see)", "category": "Verbs", "audio": null},
+    {"id": "L22023", "english": "To remember", "armenian": "Հիշել", "pronunciation": "hishel → hishelu em (I will remember)", "category": "Verbs", "audio": null},
+    {"id": "L22024", "english": "To start", "armenian": "Սկսել", "pronunciation": "skəsel → skəselu em (I will start)", "category": "Verbs", "audio": null},
+    {"id": "L22025", "english": "To call (on the phone)", "armenian": "Զանգել", "pronunciation": "zangel → zangelu em (I will call)", "category": "Verbs", "audio": null},
+    {"id": "L22026", "english": "To miss (someone)", "armenian": "Կարոտել", "pronunciation": "karot'el → karot'elu em (I will miss)", "category": "Verbs", "audio": null},
+    {"id": "L22027", "english": "To change", "armenian": "Փոխել", "pronunciation": "pokhel → pokhelu em (I will change)", "category": "Verbs", "audio": null},
+    {"id": "L22028", "english": "Rule: \"u\" future = infinitive + -ու + em/es/e/enq/eq/en", "armenian": "Ես վստահելու եմ", "pronunciation": "yes vəst'ahelu em = I will trust (same -u form as the purpose-of-going rule)", "category": "Verbs", "audio": null},
+    {"id": "L17011", "english": "There is (singular)", "armenian": "Կա", "pronunciation": "ka", "category": "Verbs", "audio": null},
+    {"id": "L17012", "english": "There is not (singular)", "armenian": "Չկա", "pronunciation": "chka", "category": "Verbs", "audio": null},
+    {"id": "L17013", "english": "There are (plural)", "armenian": "Կան", "pronunciation": "kan", "category": "Verbs", "audio": null},
+    {"id": "L17014", "english": "There are not (plural)", "armenian": "Չկան", "pronunciation": "chkan", "category": "Verbs", "audio": null},
+    {"id": "L17015", "english": "Rule: a number already implies plural, so keep ka + a singular noun — not kan + plural noun", "armenian": "Կա չորս աղջիկ", "pronunciation": "ka chors aghjik = there are four girls (NOT: kan chors aghjikner)", "category": "Verbs", "audio": null},
+    {"id": "L17017", "english": "I know", "armenian": "Ես գիտեմ", "pronunciation": "yes gitem", "category": "Verbs", "audio": null},
+    {"id": "L17023", "english": "I don't know", "armenian": "Ես չգիտեմ", "pronunciation": "yes chgitem (not: yes chem gitem)", "category": "Verbs", "audio": null},
+    {"id": "L17029", "english": "I have (unenal is irregular the same way as gitenal)", "armenian": "Ես ունեմ", "pronunciation": "yes unem", "category": "Verbs", "audio": null},
+    {"id": "L17035", "english": "I don't have", "armenian": "Ես չունեմ", "pronunciation": "yes chunem", "category": "Verbs", "audio": null},
+    {"id": "KAR001", "english": "Rule: after karogh (can), the second verb stays in the infinitive", "armenian": "Ես կարող եմ պարել", "pronunciation": "yes karogh em p'arel = I can dance", "category": "Verbs", "audio": null},
+    {"id": "KAR002", "english": "I can", "armenian": "Ես կարող եմ", "pronunciation": "yes karogh em", "category": "Verbs", "audio": null},
+    {"id": "KAR003", "english": "You can (informal)", "armenian": "Դու կարող ես", "pronunciation": "du karogh es", "category": "Verbs", "audio": null},
+    {"id": "KAR004", "english": "He / She can", "armenian": "Նա կարող է", "pronunciation": "na karogh e", "category": "Verbs", "audio": null},
+    {"id": "KAR005", "english": "We can", "armenian": "Մենք կարող ենք", "pronunciation": "menq karogh enq", "category": "Verbs", "audio": null},
+    {"id": "KAR006", "english": "You can (formal / plural)", "armenian": "Դուք կարող եք", "pronunciation": "duq karogh eq", "category": "Verbs", "audio": null},
+    {"id": "KAR007", "english": "They can", "armenian": "Նրանք կարող են", "pronunciation": "nəranq karogh en", "category": "Verbs", "audio": null},
+    {"id": "KAR008", "english": "I can't (ch- goes on the helper verb, before karogh)", "armenian": "Ես չեմ կարող", "pronunciation": "yes chem karogh", "category": "Verbs", "audio": null},
+    {"id": "KAR009", "english": "You can't (informal)", "armenian": "Դու չես կարող", "pronunciation": "du ches karogh", "category": "Verbs", "audio": null},
+    {"id": "KAR010", "english": "He / She can't", "armenian": "Նա չի կարող", "pronunciation": "na chi karogh", "category": "Verbs", "audio": null},
+    {"id": "KAR011", "english": "We can't", "armenian": "Մենք չենք կարող", "pronunciation": "menq chenq karogh", "category": "Verbs", "audio": null},
+    {"id": "KAR012", "english": "You can't (formal / plural)", "armenian": "Դուք չեք կարող", "pronunciation": "duq cheq karogh", "category": "Verbs", "audio": null},
+    {"id": "KAR013", "english": "They can't", "armenian": "Նրանք չեն կարող", "pronunciation": "nəranq chen karogh", "category": "Verbs", "audio": null},
+    {"id": "KAR014", "english": "To be able / to know how (general ability)", "armenian": "Կարողանալ", "pronunciation": "karoghanal → karoghanum em (I am able)", "category": "Verbs", "audio": null},
+    {"id": "KAR015", "english": "I can dance tango (= I know how to)", "armenian": "Ես կարողանում եմ պարել տանգո", "pronunciation": "yes karoghanum em p'arel t'ango", "category": "Verbs", "audio": null},
+    {"id": "KAR016", "english": "I can't dance because I'm tired", "armenian": "Ես չեմ կարող պարել, որովհետև հոգնած եմ", "pronunciation": "yes chem karogh p'arel, vorovhet'ev hoqnatz em", "category": "Verbs", "audio": null},
+    {"id": "KAR017", "english": "Rule: karoghanal = general ability (know how); karogh em = a specific situation", "armenian": "Կարողանալ / Կարող եմ", "pronunciation": "karoghanum em p'arel (I know how to dance) vs. chem karogh p'arel (I can't dance right now)", "category": "Verbs", "audio": null},
+    {"id": "L15002", "english": "I'm coming / I come to the theater", "armenian": "Ես գալիս եմ թատրոն", "pronunciation": "yes galis em tatron", "category": "Verbs", "audio": null},
+    {"id": "L15003", "english": "I'm not coming to the theater (negative before verb)", "armenian": "Ես չեմ գալիս թատրոն", "pronunciation": "yes chem galis tatron", "category": "Verbs", "audio": null},
+    {"id": "L15011", "english": "I'm late for work (from = suffix -ից on the activity)", "armenian": "Ես ուշանում եմ աշխատանքից", "pronunciation": "yes ushanum em ashkhatanqits", "category": "Verbs", "audio": null},
+    {"id": "L15013", "english": "He/She is late for school", "armenian": "Նա ուշանում է դպրոցից", "pronunciation": "na ushanum e d'protsits", "category": "Verbs", "audio": null},
+    {"id": "L17042", "english": "I am going home", "armenian": "Ես գնում եմ տուն", "pronunciation": "yes gənum em t'un", "category": "Verbs", "audio": null},
+    {"id": "L17045", "english": "I am going to work", "armenian": "Ես գնում եմ աշխատանքի", "pronunciation": "yes gənum em ashkhat'anqi", "category": "Verbs", "audio": null},
+    {"id": "L17046", "english": "I am going to a lesson", "armenian": "Ես գնում եմ դասի", "pronunciation": "yes gənum em dasi", "category": "Verbs", "audio": null},
+    {"id": "L17047", "english": "I am going to a party", "armenian": "Ես գնում եմ երեկույթի", "pronunciation": "yes gənum em yerekuyti", "category": "Verbs", "audio": null},
+    {"id": "L17048", "english": "I am going to a meeting", "armenian": "Ես գնում եմ հանդիպման", "pronunciation": "yes gənum em handip'man", "category": "Verbs", "audio": null},
+    {"id": "L17050", "english": "I am coming from home", "armenian": "Ես գալիս եմ տնից", "pronunciation": "yes galis em t'ənits", "category": "Verbs", "audio": null},
+    {"id": "L17063", "english": "I work from home", "armenian": "Ես աշխատում եմ տնից", "pronunciation": "yes ashkhatumem t'nits", "category": "Verbs", "audio": null},
+    {"id": "L17056", "english": "I am going by car", "armenian": "Ես գնում եմ մեքենայով", "pronunciation": "yes gənum em meqenayov", "category": "Verbs", "audio": null},
+    {"id": "L17058", "english": "I am going on foot", "armenian": "Ես գնում եմ ոտքով", "pronunciation": "yes gənum em vot'qov", "category": "Verbs", "audio": null},
+    {"id": "L17060", "english": "I'm writing with a pen", "armenian": "Գրում եմ գրիչով", "pronunciation": "grum em grichov", "category": "Verbs", "audio": null},
+    {"id": "L22043", "english": "I love you", "armenian": "Ես սիրում եմ քեզ", "pronunciation": "yes sirumem qez", "category": "Verbs", "audio": null},
+    {"id": "L22044", "english": "He/She gives me (use indz, not yes)", "armenian": "Նա ինձ տալիս է", "pronunciation": "na indz talis e", "category": "Verbs", "audio": null},
+    {"id": "N020", "english": "20 — Twenty", "armenian": "Քսան", "pronunciation": "qsan", "category": "Time & Numbers", "audio": null},
+    {"id": "N021", "english": "30 — Thirty", "armenian": "Երեսուն", "pronunciation": "yeresun", "category": "Time & Numbers", "audio": null},
+    {"id": "N022", "english": "40 — Forty", "armenian": "Քառասուն", "pronunciation": "qar'asun", "category": "Time & Numbers", "audio": null},
+    {"id": "N023", "english": "50 — Fifty", "armenian": "Հիսուն", "pronunciation": "hisun", "category": "Time & Numbers", "audio": null},
+    {"id": "N024", "english": "60 — Sixty", "armenian": "Վաթսուն", "pronunciation": "vatsun", "category": "Time & Numbers", "audio": null},
+    {"id": "N025", "english": "70 — Seventy", "armenian": "Յոթանասուն", "pronunciation": "yotanasun", "category": "Time & Numbers", "audio": null},
+    {"id": "N026", "english": "80 — Eighty", "armenian": "Ութսուն", "pronunciation": "utsun", "category": "Time & Numbers", "audio": null},
+    {"id": "N027", "english": "90 — Ninety", "armenian": "Իննսուն", "pronunciation": "innəsun", "category": "Time & Numbers", "audio": null},
+    {"id": "N028", "english": "100 — One hundred", "armenian": "Հարյուր", "pronunciation": "haryur", "category": "Time & Numbers", "audio": null},
+    {"id": "N029", "english": "1,000 — One thousand", "armenian": "Հազար", "pronunciation": "hazar", "category": "Time & Numbers", "audio": null},
+    {"id": "N032", "english": "43 — compound: 40+3 written together", "armenian": "Քառասուն+երեք=Քառասուներեք", "pronunciation": "qar'asunereq", "category": "Time & Numbers", "audio": null},
+    {"id": "N036", "english": "407 — hundreds + remainder, written separately", "armenian": "Չորս հարյուր յոթ", "pronunciation": "chors haryur yot", "category": "Time & Numbers", "audio": null},
+    {"id": "N039", "english": "Rule: nouns stay singular after a numeral", "armenian": "Երկու աղջիկ", "pronunciation": "yerku akhchik = two girls (not akhchikner)", "category": "Time & Numbers", "audio": null},
+    {"id": "N040", "english": "Times / occurrences", "armenian": "Անգամ", "pronunciation": "anqam (mek anqam = once)", "category": "Time & Numbers", "audio": null},
+    {"id": "L16035", "english": "How old are you? (informal)", "armenian": "Քանի՞ տարեկան ես", "pronunciation": "qani tarekan es?", "category": "Time & Numbers", "audio": null},
+    {"id": "L16037", "english": "I am 10 years old", "armenian": "Ես տասը տարեկան եմ", "pronunciation": "yes tasə tarekan em", "category": "Time & Numbers", "audio": null},
+    {"id": "L16038", "english": "Year (calendar year)", "armenian": "Թվական", "pronunciation": "tvakan", "category": "Time & Numbers", "audio": null},
+    {"id": "L16039", "english": "I was born in 1993", "armenian": "Ես ծնվել եմ 1993 թվականին", "pronunciation": "yes tsnvel em 1993 tvakanin", "category": "Time & Numbers", "audio": null},
+    {"id": "L13031", "english": "Early", "armenian": "Շուտ", "pronunciation": "shut’", "category": "Time & Numbers", "audio": null},
+    {"id": "L13032", "english": "Late", "armenian": "Ուշ", "pronunciation": "ush", "category": "Time & Numbers", "audio": null},
+    {"id": "L13041", "english": "In the afternoon", "armenian": "Կեսօրին", "pronunciation": "kesorin", "category": "Time & Numbers", "audio": null},
+    {"id": "L13036", "english": "Sometimes", "armenian": "Երբեմն", "pronunciation": "yerpemən", "category": "Time & Numbers", "audio": null},
+    {"id": "L13037", "english": "Usually", "armenian": "Սովորաբար", "pronunciation": "sovorabar", "category": "Time & Numbers", "audio": null},
+    {"id": "L13038", "english": "Often", "armenian": "Հաճախ", "pronunciation": "hadjakh", "category": "Time & Numbers", "audio": null},
+    {"id": "L13039", "english": "Never", "armenian": "Երբեք", "pronunciation": "yerpeq", "category": "Time & Numbers", "audio": null},
+    {"id": "L22029", "english": "Then / after", "armenian": "Հետո", "pronunciation": "het'o", "category": "Time & Numbers", "audio": null},
+    {"id": "L22030", "english": "After one month", "armenian": "Մեկ ամիս հետո", "pronunciation": "mek amis het'o", "category": "Time & Numbers", "audio": null},
+    {"id": "L22031", "english": "Next", "armenian": "Հաջորդ", "pronunciation": "hajort", "category": "Time & Numbers", "audio": null},
+    {"id": "L22032", "english": "Next year", "armenian": "Հաջորդ տարի", "pronunciation": "hajort t'ari", "category": "Time & Numbers", "audio": null},
+    {"id": "L22033", "english": "Tomorrow", "armenian": "Վաղը", "pronunciation": "vaghə", "category": "Time & Numbers", "audio": null},
+    {"id": "L22034", "english": "In five minutes", "armenian": "Հինգ րոպեից", "pronunciation": "hing rop'eits", "category": "Time & Numbers", "audio": null},
+    {"id": "L22035", "english": "In half an hour", "armenian": "Կես ժամից", "pronunciation": "kes zhamits", "category": "Time & Numbers", "audio": null},
+    {"id": "L22036", "english": "The day after tomorrow", "armenian": "Վաղը չէ մյուս օրը", "pronunciation": "vaghə che myus orə", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT001", "english": "Century", "armenian": "Դար", "pronunciation": "dar", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT002", "english": "Year", "armenian": "Տարի", "pronunciation": "t'ari", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT005", "english": "Minute", "armenian": "Րոպե", "pronunciation": "rop'e", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT006", "english": "Second", "armenian": "Վայրկյան", "pronunciation": "varkyan", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT007", "english": "Monday", "armenian": "Երկուշաբթի", "pronunciation": "yerkushapti", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT008", "english": "Tuesday", "armenian": "Երեքշաբթի", "pronunciation": "yereqshapti", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT009", "english": "Wednesday", "armenian": "Չորեքշաբթի", "pronunciation": "choreqshapti", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT010", "english": "Thursday", "armenian": "Հինգշաբթի", "pronunciation": "hingshapti", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT011", "english": "Friday", "armenian": "Ուրբաթ", "pronunciation": "urpat", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT013", "english": "Sunday", "armenian": "Կիրակի", "pronunciation": "kiraki", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT015", "english": "Note: no preposition needed for \"on [day]\" — just use the day name alone", "armenian": "Երկուշաբթի", "pronunciation": "yerkushapti = on Monday (no separate word for \"on\")", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT032", "english": "On Monday", "armenian": "Երկուշաբթի", "pronunciation": "yerkushapti", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT016", "english": "January", "armenian": "Հունվար", "pronunciation": "hunvar", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT017", "english": "February", "armenian": "Փետրվար", "pronunciation": "pet'ervar", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT028", "english": "Note: for dates, numbers ending in 2, 12, 22 add an \"s\" before the ending", "armenian": "Սեպտեմբերի տասներկուսին", "pronunciation": "sept'emberi t'asnerkusin = on September 12th", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT029", "english": "Which day of the month? (used to ask the date)", "armenian": "Ամսի քանիսը", "pronunciation": "amsi qanisə (amis + qani, \"month's how-manieth\")", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT030", "english": "What day is it today?", "armenian": "Ի՞նչ օր է այսօր", "pronunciation": "inch or e aysor?", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT031", "english": "Today is Sunday", "armenian": "Այսօր կիրակի է", "pronunciation": "aysor kiraki e", "category": "Time & Numbers", "audio": null},
+    {"id": "DMT033", "english": "What's today's date?", "armenian": "Այսօր ամսի քանիսն է", "pronunciation": "aysor amsi qanisne?", "category": "Time & Numbers", "audio": null},
+    {"id": "L11014", "english": "Yesterday (note: sounds like “three” yerEK, but different word — yesterday = yerEK, three = yerEQ)", "armenian": "Երեկ", "pronunciation": "yerek", "category": "Time & Numbers", "audio": null},
+    {"id": "DT001", "english": "Today is the 8th of August", "armenian": "Այսօր օգոստոսի 8-ն է", "pronunciation": "aysor ogost'osi 8-n e", "category": "Time & Numbers", "audio": null},
+    {"id": "DT002", "english": "On what date?", "armenian": "Ամսի քանիսի՞ն", "pronunciation": "amsi qanisin?", "category": "Time & Numbers", "audio": null},
+    {"id": "DT003", "english": "On the 8th of August", "armenian": "Օգոստոսի 8-ին", "pronunciation": "ogost'osi 8-in", "category": "Time & Numbers", "audio": null},
+    {"id": "FD001", "english": "Fruit", "armenian": "Միրգ", "pronunciation": "mirq", "category": "Foods", "audio": null},
+    {"id": "FD002", "english": "Peach", "armenian": "Դեղձ", "pronunciation": "dekhts", "category": "Foods", "audio": null},
+    {"id": "FD003", "english": "Apple", "armenian": "Խնձոր", "pronunciation": "khəndzor", "category": "Foods", "audio": null},
+    {"id": "FD004", "english": "Apricot", "armenian": "Ծիրան", "pronunciation": "tziran", "category": "Foods", "audio": null},
+    {"id": "FD005", "english": "Cheese", "armenian": "Պանիր", "pronunciation": "p'anir", "category": "Foods", "audio": null},
+    {"id": "FD006", "english": "Butter", "armenian": "Կարագ", "pronunciation": "karaq", "category": "Foods", "audio": null},
+    {"id": "FD007", "english": "Egg", "armenian": "Ձու", "pronunciation": "dzu", "category": "Foods", "audio": null},
+    {"id": "FD008", "english": "Bread", "armenian": "Հաց", "pronunciation": "hats", "category": "Foods", "audio": null},
+    {"id": "FD009", "english": "Sugar", "armenian": "Շաքար", "pronunciation": "shaqar", "category": "Foods", "audio": null},
+    {"id": "FD010", "english": "Meat", "armenian": "Միս", "pronunciation": "mis", "category": "Foods", "audio": null},
+    {"id": "FD011", "english": "Vegetables", "armenian": "Բանջարեղեն", "pronunciation": "banjareghen", "category": "Foods", "audio": null},
+    {"id": "FD012", "english": "Potato", "armenian": "Կարտոֆիլ", "pronunciation": "kart'ofil", "category": "Foods", "audio": null},
+    {"id": "FD013", "english": "Tomato", "armenian": "Լոլիկ", "pronunciation": "lolik", "category": "Foods", "audio": null},
+    {"id": "FD014", "english": "Cucumber", "armenian": "Վարունգ", "pronunciation": "varung", "category": "Foods", "audio": null},
+    {"id": "FD015", "english": "Soup", "armenian": "Ապուր", "pronunciation": "ap'ur", "category": "Foods", "audio": null},
+    {"id": "FD016", "english": "Scrambled eggs", "armenian": "Ձվածեղ", "pronunciation": "dzəvatzegh", "category": "Foods", "audio": null},
+    {"id": "FD017", "english": "Juice", "armenian": "Հյութ", "pronunciation": "hyut", "category": "Foods", "audio": null},
+    {"id": "FD018", "english": "Water", "armenian": "Ջուր", "pronunciation": "jur", "category": "Foods", "audio": null},
+    {"id": "FD019", "english": "Coffee", "armenian": "Սուրճ", "pronunciation": "surdj", "category": "Foods", "audio": null},
+    {"id": "FD020", "english": "Tea", "armenian": "Թեյ", "pronunciation": "tey", "category": "Foods", "audio": null},
+    {"id": "FD021", "english": "Banana", "armenian": "Պանան", "pronunciation": "banan", "category": "Foods", "audio": null},
+    {"id": "FD022", "english": "Grape", "armenian": "Խաղող", "pronunciation": "khaghogh", "category": "Foods", "audio": null},
+    {"id": "FD023", "english": "Watermelon", "armenian": "Ձմերուկ", "pronunciation": "dzmeruk", "category": "Foods", "audio": null},
+    {"id": "FD024", "english": "Melon", "armenian": "Սեխ", "pronunciation": "sekh", "category": "Foods", "audio": null},
+    {"id": "FD025", "english": "Celery", "armenian": "Նեխուր", "pronunciation": "nekhur", "category": "Foods", "audio": null},
+    {"id": "FD026", "english": "Broccoli", "armenian": "Պրոքոլի", "pronunciation": "broccoli", "category": "Foods", "audio": null},
+    {"id": "FD027", "english": "Kiwi", "armenian": "Քիվի", "pronunciation": "kivi", "category": "Foods", "audio": null},
+    {"id": "FD028", "english": "Asparagus", "armenian": "Ծնեբեկ", "pronunciation": "tsnebek", "category": "Foods", "audio": null},
+    {"id": "FD029", "english": "Cabbage", "armenian": "Կաղամբ", "pronunciation": "kaghamb", "category": "Foods", "audio": null},
+    {"id": "FD030", "english": "Flower (→ cauliflower = “flower cabbage”)", "armenian": "Ծաղիկ", "pronunciation": "tsaghik", "category": "Foods", "audio": null},
+    {"id": "FD031", "english": "Cauliflower (literally “flower cabbage”: ծաղիկ + կաղամբ)", "armenian": "Ծաղկակաղամբ", "pronunciation": "tsaghkakaghamb", "category": "Foods", "audio": null},
+    {"id": "PC001", "english": "To ask (a question)", "armenian": "Հարցնել", "pronunciation": "hartsnel", "category": "Past Continuous", "audio": null},
+    {"id": "PC002", "english": "To cry", "armenian": "Լացել", "pronunciation": "latsel", "category": "Past Continuous", "audio": null},
+    {"id": "PC003", "english": "To look (at)", "armenian": "Նայել", "pronunciation": "nayel", "category": "Past Continuous", "audio": null},
+    {"id": "PC004", "english": "To open", "armenian": "Բացել", "pronunciation": "batsel", "category": "Past Continuous", "audio": null},
+    {"id": "PC005", "english": "To prepare", "armenian": "Պատրաստել", "pronunciation": "p'at'rast'el", "category": "Past Continuous", "audio": null},
+    {"id": "PC006", "english": "To listen", "armenian": "Լսել", "pronunciation": "ləsel", "category": "Past Continuous", "audio": null},
+    {"id": "PC007", "english": "To answer", "armenian": "Պատասխանել", "pronunciation": "p'at'askhanel", "category": "Past Continuous", "audio": null},
+    {"id": "PT001", "english": "The day before yesterday", "armenian": "Երեկ չէ առաջին օրը", "pronunciation": "yerek che ar'achin orə", "category": "Past Time Adverbs", "audio": null},
+    {"id": "PT002", "english": "Last (e.g. last year)", "armenian": "Անցյալ", "pronunciation": "antsyal", "category": "Past Time Adverbs", "audio": null},
+    {"id": "PT003", "english": "Last year", "armenian": "Անցյալ տարի", "pronunciation": "antsyal t'ari", "category": "Past Time Adverbs", "audio": null},
+    {"id": "PT004", "english": "Last time", "armenian": "Անցյալ անգամ", "pronunciation": "antsyal anqam", "category": "Past Time Adverbs", "audio": null},
+    {"id": "PT005", "english": "Before, ago, in front of (both a place postposition and a time adverb)", "armenian": "Առաջ", "pronunciation": "ar'ach", "category": "Past Time Adverbs", "audio": null},
+    {"id": "PT006", "english": "Five minutes ago", "armenian": "Հինգ րոպե առաջ", "pronunciation": "hing rop'e ar'ach", "category": "Past Time Adverbs", "audio": null},
+    {"id": "PT007", "english": "Years ago", "armenian": "Տարիներ առաջ", "pronunciation": "t'ariner ar'ach", "category": "Past Time Adverbs", "audio": null},
+    {"id": "PT008", "english": "Two days ago", "armenian": "Երկու օր առաջ", "pronunciation": "yerku or ar'ach", "category": "Past Time Adverbs", "audio": null},
+    {"id": "VOC002", "english": "Also", "armenian": "Նաև", "pronunciation": "nayev", "category": "Questions & Phrases", "audio": null}
   ]
 };
 
@@ -548,21 +397,31 @@ function loadData() {
     const raw = localStorage.getItem(DB_KEY);
     if (raw) {
       const d = JSON.parse(raw);
-      // One-time cleanup: remove old full alphabet entries (alpha001-alpha039)
-      const before = d.entries.length;
-      d.entries = d.entries.filter(e => !e.id.match(/^alpha\d+$/));
-      // Merge any new seed entries
+      const seedById = new Map(SEED_DATA.entries.map(e => [e.id, e]));
+      if (localStorage.getItem(SEED_VERSION_KEY) !== SEED_VERSION) {
+        // New deck version: built-in cards are rebuilt from SEED_DATA (new categories/order);
+        // cards you added yourself on the phone are kept at the end.
+        const custom = d.entries.filter(e => !seedById.has(e.id));
+        d.entries = [...SEED_DATA.entries.map(e => ({...e})), ...custom];
+        const used = new Set(d.entries.map(e => e.category));
+        d.categories = [...new Set([...SEED_DATA.categories, ...d.categories.filter(c => used.has(c))])];
+        localStorage.setItem(DB_KEY, JSON.stringify(d));
+        localStorage.setItem(SEED_VERSION_KEY, SEED_VERSION);
+        return d;
+      }
+      // Same version: merge any new seed entries
       const ids = new Set(d.entries.map(e => e.id));
       const added = SEED_DATA.entries.filter(e => !ids.has(e.id));
-      if (added.length || d.entries.length < before) {
+      if (added.length) {
         d.entries.push(...added);
-        d.categories = [...new Set([...SEED_DATA.categories, ...d.categories.filter(c => !['Greetings','Farewells','Useful Words','Pronunciation Rules','Family'].includes(c))])];
+        d.categories = [...new Set([...SEED_DATA.categories, ...d.categories])];
         localStorage.setItem(DB_KEY, JSON.stringify(d));
       }
       return d;
     }
   } catch(e) {}
   localStorage.setItem(DB_KEY, JSON.stringify(SEED_DATA));
+  localStorage.setItem(SEED_VERSION_KEY, SEED_VERSION);
   return JSON.parse(JSON.stringify(SEED_DATA));
 }
 function saveData(data) { localStorage.setItem(DB_KEY, JSON.stringify(data)); }
@@ -570,7 +429,7 @@ function shuffle(a) { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor
 function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
 // ─── Spaced Repetition ─────────────────────────────────────────────
-const REVIEWS_KEY = 'hayeren-reviews';
+const REVIEWS_KEY = 'hayaren2-reviews';
 // Each review: { interval: days, due: ISO date string, streak: number }
 // Intervals: new→1→3→7→14→30→60→∞
 const INTERVALS = [1, 3, 7, 14, 30, 60, 120];
@@ -602,18 +461,6 @@ function recordReview(cardId, correct) {
   saveReviews(reviews);
 }
 
-function sortByDue(entries) {
-  const reviews = loadReviews();
-  const now = new Date();
-  return [...entries].sort((a, b) => {
-    const ra = reviews[a.id];
-    const rb = reviews[b.id];
-    const aDue = ra ? new Date(ra.due) : new Date(0); // never seen = oldest due
-    const bDue = rb ? new Date(rb.due) : new Date(0);
-    return aDue - bDue; // earliest due first
-  });
-}
-
 function getDueCount(entries) {
   const reviews = loadReviews();
   return entries.filter(e => isDue(reviews[e.id])).length;
@@ -623,25 +470,22 @@ function getDueCount(entries) {
 let data = loadData();
 let view = 'quiz';
 let editId = null;
-// Quiz state
 let quiz = { queue:[], current:null, revealed:false, score:{correct:0,total:0}, filterCat:'All', active:false };
 
 function render() {
   const app = document.getElementById('app');
   app.innerHTML = `
-    <header><h1>\u0540\u0561\u0575\u0565\u0580\u0565\u0576</h1><p>ARMENIAN PRACTICE</p></header>
+    <header><h1>Հայերեն 2</h1><p>ARMENIAN PRACTICE</p></header>
     <div class="nav">
       <button class="${view==='quiz'?'active':''}" onclick="setView('quiz')">Quiz</button>
       <button class="${view==='manage'?'active':''}" onclick="setView('manage')">Library</button>
       <button class="${view==='add'?'active':''}" onclick="setView('add')">+ Add</button>
-      <button class="${view==='scores'?'active':''}" onclick="setView('scores')">Scores</button>
     </div>
     <div id="content"></div>
   `;
   if (view==='quiz') renderQuiz();
   else if (view==='manage') renderManage();
   else if (view==='add'||view==='edit') renderForm();
-  else if (view==='scores') renderScores();
 }
 
 function setView(v) { view=v; editId=null; if(v==='quiz'){quiz.active=false;} render(); }
@@ -692,7 +536,6 @@ function renderQuiz() {
 
   let front, revealHTML;
   if (isQA) {
-    // Dialogue Q&A: Armenian question on front (recognition), your response on back
     front = `
       <p style="font-family:var(--font-armenian);font-size:24px;font-weight:700;text-align:center;margin:20px 0 8px;line-height:1.4">${esc(c.armenian)}</p>
       ${c.pronunciation ? `<p style="font-size:14px;color:var(--muted);font-style:italic;text-align:center">${esc(c.pronunciation)}</p>` : ''}
@@ -709,7 +552,6 @@ function renderQuiz() {
       </div>
     `;
   } else if (isAlpha) {
-    // Alphabet: Armenian letter on front, name + sound on back
     front = `<p style="font-family:var(--font-armenian);font-size:64px;font-weight:700;text-align:center;margin:24px 0;letter-spacing:16px">${esc(c.armenian)}</p>`;
     revealHTML = `
       <div class="reveal-box alpha">
@@ -719,7 +561,6 @@ function renderQuiz() {
       </div>
     `;
   } else {
-    // Lesson cards: English on front, pronunciation + Armenian on back
     front = `<p style="font-family:var(--font-body);font-size:22px;font-weight:700;text-align:center;margin:20px 0 8px;line-height:1.4">${esc(c.english)}</p>`;
     revealHTML = `
       <div class="reveal-box">
@@ -762,8 +603,6 @@ function renderQuiz() {
 function startQuiz() {
   const pool = quiz.filterCat==='All' ? data.entries : data.entries.filter(e=>e.category===quiz.filterCat);
   if (!pool.length) return;
-  // Sort: due cards first (earliest due first), then not-yet-due cards
-  // Within each group, shuffle for variety
   const reviews = loadReviews();
   const due = shuffle(pool.filter(e => isDue(reviews[e.id])));
   const notDue = shuffle(pool.filter(e => !isDue(reviews[e.id])));
@@ -776,7 +615,6 @@ function startQuiz() {
   renderQuiz();
 }
 function nextCard(correct) {
-  // Record the review result immediately to localStorage
   recordReview(quiz.current.id, correct);
   quiz.score.correct += correct?1:0;
   quiz.score.total += 1;
@@ -807,7 +645,7 @@ function renderManage() {
 
   el.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <span style="font-size:13px;color:var(--muted)">${alphaCount} alphabet cards, ${vocabCount} vocab cards</span>
+      <span style="font-size:13px;color:var(--muted)">${alphaCount ? alphaCount + ' alphabet cards, ' : ''}${vocabCount} vocab cards</span>
     </div>
     <input type="text" placeholder="Search entries\u2026" value="${esc(manageSearch)}" oninput="manageSearch=this.value;renderManage()" style="margin-bottom:10px">
     <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px">
@@ -836,29 +674,18 @@ function renderManage() {
       </div>
     `}
     <details style="margin-top:24px">
-      <summary>\u{1F4D6} Pronunciation Notes</summary>
+      <summary>\u{1F4D6} Pronunciation &amp; Grammar Notes</summary>
       <div class="card" style="margin-top:8px;padding:16px;font-size:13px;line-height:1.7">
         <p style="margin-bottom:8px"><strong>kh</strong> = throaty "h" (like clearing your throat gently)</p>
         <p style="margin-bottom:8px"><strong>k</strong> sounds a bit like <strong>g</strong></p>
         <p style="margin-bottom:8px"><strong>\u0565</strong> (ech) = pronounced more like "ay"</p>
         <p style="margin-bottom:8px"><strong>\u0568</strong> (y\u0259) = the "upside down e" = sounds like "uh"</p>
         <p style="margin-bottom:8px"><strong>gh</strong> = similar to the French r (as in <em>rue</em>); if you can't produce it, a quick throaty h works</p>
-        <p style="margin-bottom:8px"><strong>e</strong> = &quot;is&quot; (e.g. na e = he/she is)</p>
-        <p style="margin-bottom:8px"><strong>No indefinite article</strong> &mdash; no word for &quot;a&quot; in Armenian</p>
-        <p style="margin-bottom:8px"><strong>Definite article singular</strong> (&quot;the&quot;) = add -ը to end of word &mdash; e.g. tun &rarr; tunը = the house</p>
-        <p style="margin-bottom:8px"><strong>Definite article plural</strong> = make plural first, then add -ը &mdash; e.g. sar &rarr; sarևր &rarr; sarևրը = the mountains</p>
-        <p style="margin-bottom:8px"><strong>Plural rule (1 syllable):</strong> add -ևր &mdash; e.g. shenq &rarr; shenqևր</p>
-        <p style="margin-bottom:8px"><strong>Plural rule (2+ syllables):</strong> add -նևր &mdash; e.g. hyuranots &rarr; hyuranotsնևր</p>
-        <p style="margin-bottom:8px"><strong>These plurals never take articles:</strong> martik (people), kanaik (women), tghamartik (men)</p>
-        <p style="margin-bottom:8px"><strong>From</strong> = suffix -ից (its) — e.g. dep’rotsits (from school). Exception: from home = tnits (drop tun)</p>
-        <p style="margin-bottom:8px"><strong>At / in / on (the)</strong> = suffix -ում (um) — e.g. restoranum, hyuranotsum, poghotsum, khanutum. Exception: at home = t’anuh; deghat’un → deghatanը; desp’anat’un → desp’at’anը</p>
-        <p style="margin-bottom:8px"><strong>By (means of transport)</strong> = suffix -ով (ov) — e.g. taqsiov, inqnatirrov. If word ends in a vowel (ah/oh), add y first — e.g. metro → metroyov, meqena → meqenayov</p>
-        <p style="margin-bottom:8px"><strong>Whose + noun</strong> and <strong>which + noun</strong> ALWAYS take the definite article — e.g. um payusaknը harmar e; vor girqը-n e p’ayusakum</p>
-        <p style="margin-bottom:8px"><strong>W-question word order</strong> matches English, not statement order — e.g. “who is he” = ov e na (not na e ov)</p>
-        <p style="margin-bottom:8px"><strong>Yes/No questions</strong> keep statement word order — e.g. “are you hungry?” = du sovatzes? (same as the statement “you are hungry”)</p>
-        <p style="margin-bottom:8px"><strong>vort’eghits</strong> (where from): skip du/duq in casual speech, but don’t skip neranq (they)</p>
-        <p style="margin-bottom:8px"><strong>qani</strong> (how many) is for countable nouns; <strong>inchqan</strong> (how much) is for uncountable nouns. Both always take a singular noun — e.g. qani mart = how many people, not qani martik</p>
-        <p style="margin-bottom:8px"><strong>vort’egh</strong> (location) can be used generally for both location and direction questions; vort’egh vs. ur distinction mostly matters when "go" is in the question</p>
+        <p style="margin-bottom:8px"><strong>Object pronouns</strong> (the person receiving the action): indz (me), qez (you), nəran (him/her), mez (us), dzez (you formal/plural), nərants (them) &mdash; e.g. yes sirumem qez = I love you; na indz talis e = he/she gives me</p>
+        <p style="margin-bottom:8px"><strong>"u" future</strong> = infinitive + -u + em/es/e/enq/eq/en &mdash; e.g. yes vəst'ahelu em = I will trust. Same -u form as the purpose-of-going rule (ut'elu = to eat)</p>
+        <p style="margin-bottom:8px"><strong>From</strong> = suffix -ից (its) — e.g. dep’rotsits (from school). Exception: from home = tnits</p>
+        <p style="margin-bottom:8px"><strong>At / in / on (the)</strong> = suffix -ում (um) — e.g. restoranum, hyuranotsum</p>
+        <p style="margin-bottom:8px"><strong>By (means of transport)</strong> = suffix -ով (ov) — e.g. taqsiov; if word ends in a vowel, add y first — meqena → meqenayov</p>
         <p style="color:var(--muted);font-style:italic">Add your own notes here by editing this section after each lesson!</p>
       </div>
     </details>
@@ -867,81 +694,6 @@ function renderManage() {
 
 function deleteEntry(id) { data.entries = data.entries.filter(e=>e.id!==id); saveData(data); renderManage(); }
 function startEdit(id) { editId=id; view='edit'; render(); }
-
-// ─── Scores ────────────────────────────────────────────────────────
-// Score = streak (correct answers in a row). A miss resets it to 0.
-function scoreBuckets() {
-  const reviews = loadReviews();
-  const labels = ['Never reviewed', '0 · missed last time', '1', '2', '3', '4', '5', '6+'];
-  const counts = new Array(labels.length).fill(0);
-  data.entries.forEach(e => {
-    const r = reviews[e.id];
-    if (!r) counts[0]++;
-    else counts[Math.min(Math.max(parseInt(r.streak, 10) || 0, 0), 6) + 1]++;
-  });
-  return { labels, counts };
-}
-
-function buildScoreExport() {
-  const reviews = loadReviews();
-  const seed = {};
-  SEED_DATA.entries.forEach(e => { seed[e.id] = e; });
-  const fields = ['english', 'armenian', 'pronunciation', 'category', 'answerArmenian', 'answerPronunciation', 'answerEnglish'];
-  const lines = ['HAYEREN-SCORES v1 ' + new Date().toISOString() + ' cards=' + data.entries.length];
-  const custom = [];
-  data.entries.forEach(e => {
-    const r = reviews[e.id];
-    const s = seed[e.id];
-    // "c" = card was added or edited on this phone, so its text is included below
-    const changed = !s || fields.some(k => (e[k] || '') !== (s[k] || ''));
-    lines.push([e.id, r ? r.streak : '-', r ? String(r.due || '').slice(0, 10) : '-', (e.audio ? 'a' : '') + (changed ? 'c' : '')].join(','));
-    if (changed) { const c = Object.assign({}, e); delete c.audio; custom.push(JSON.stringify(c)); }
-  });
-  if (custom.length) { lines.push('#CARDS'); custom.forEach(c => lines.push(c)); }
-  return lines.join('\n');
-}
-
-function renderScores() {
-  const el = document.getElementById('content');
-  const { labels, counts } = scoreBuckets();
-  const total = data.entries.length;
-  const max = Math.max(1, ...counts);
-  const colors = ['var(--muted)', 'var(--red)', 'var(--terracotta)', 'var(--gold)', 'var(--olive)', 'var(--olive)', 'var(--olive)', 'var(--olive)'];
-  el.innerHTML = `
-    <div class="card">
-      <h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:6px">Scores</h2>
-      <p style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:18px">${total} cards, grouped by streak &mdash; correct answers in a row. A miss resets a card to 0.</p>
-      ${labels.map((l, i) => `
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span style="width:128px;flex-shrink:0;font-size:13px;font-weight:600">${l}</span>
-          <div style="flex:1;height:14px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="height:100%;width:${counts[i] / max * 100}%;background:${colors[i]};border-radius:4px"></div></div>
-          <span style="width:68px;flex-shrink:0;text-align:right;font-size:13px;font-variant-numeric:tabular-nums">${counts[i]} <span style="color:var(--muted)">(${total ? Math.round(counts[i] / total * 100) : 0}%)</span></span>
-        </div>`).join('')}
-    </div>
-    <div class="card" style="margin-top:12px">
-      <p style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:12px">Copy every card&rsquo;s score as text to share outside the app.</p>
-      <button class="btn btn-terracotta" style="width:100%;padding:14px 0;font-size:16px" onclick="copyScores()">Copy scores</button>
-      <p id="copy-msg" style="font-size:13px;color:var(--olive);font-weight:600;margin:10px 0;min-height:18px"></p>
-      <textarea id="score-export" readonly rows="4" style="font-size:11px;font-family:monospace;color:var(--muted)"></textarea>
-    </div>
-  `;
-  document.getElementById('score-export').value = buildScoreExport();
-}
-
-function copyScores() {
-  const ta = document.getElementById('score-export');
-  const text = ta.value;
-  const done = ok => {
-    const m = document.getElementById('copy-msg');
-    if (m) m.textContent = ok ? 'Copied — paste it wherever you need it.' : 'Couldn’t copy automatically. Tap the box below, choose Select All, then Copy.';
-  };
-  const fallback = () => {
-    try { ta.focus(); ta.select(); ta.setSelectionRange(0, text.length); done(document.execCommand('copy')); }
-    catch (e) { done(false); }
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true)).catch(fallback);
-  else fallback();
-}
 
 // ─── Add / Edit Form ──────────────────────────────────────────────
 let formState = {};
@@ -958,7 +710,6 @@ function initForm() {
 function renderForm() {
   initForm();
   const el = document.getElementById('content');
-  const ex = editId ? data.entries.find(e=>e.id===editId) : null;
   el.innerHTML = `<div class="card" id="form-card"></div>`;
   renderFormInner();
 }
@@ -1014,11 +765,11 @@ function renderFormInner() {
       <div style="margin-bottom:14px;padding:12px;background:var(--olive-light);border-radius:8px">
         <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--terracotta);margin-bottom:8px">Your response (leave blank for a plain phrase card)</p>
         <label style="font-size:12px;font-weight:600;color:var(--muted)">Response — Armenian Script</label>
-        <input id="f-answer-armenian" style="margin-top:6px;margin-bottom:10px;font-family:var(--font-armenian)" placeholder="Ես Irvine-ից եմ" value="${esc(formState.answerArmenian)}">
+        <input id="f-answer-armenian" style="margin-top:6px;margin-bottom:10px;font-family:var(--font-armenian)" value="${esc(formState.answerArmenian)}">
         <label style="font-size:12px;font-weight:600;color:var(--muted)">Response — Pronunciation</label>
-        <input id="f-answer-pronunciation" style="margin-top:6px;margin-bottom:10px" placeholder="yes Irvine-its em" value="${esc(formState.answerPronunciation)}">
+        <input id="f-answer-pronunciation" style="margin-top:6px;margin-bottom:10px" value="${esc(formState.answerPronunciation)}">
         <label style="font-size:12px;font-weight:600;color:var(--muted)">Response — English</label>
-        <input id="f-answer-english" style="margin-top:6px" placeholder="I'm from Irvine." value="${esc(formState.answerEnglish)}">
+        <input id="f-answer-english" style="margin-top:6px" value="${esc(formState.answerEnglish)}">
       </div>
       ` : ''}
       <div style="margin-bottom:20px">
@@ -1113,9 +864,18 @@ function startRecording() {
 // ─── Init ──────────────────────────────────────────────────────────
 render();
 
-// Register service worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  // Check for a new sw.js on every open, and reload once when a new version takes over.
+  navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+    .then(reg => reg.update())
+    .catch(()=>{});
+  let reloaded = false;
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || reloaded) return;
+    reloaded = true;
+    location.reload();
+  });
 }
 </script>
 </body>
